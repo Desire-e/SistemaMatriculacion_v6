@@ -75,13 +75,12 @@ public class Alumno {
             throw new NullPointerException("El NIA no puede estar vacío");
         }
 
-        //Validar vacío y patrón
+        //Validar patrón
         Pattern patronNia = Pattern.compile(ER_NIA);
         Matcher comparaNiaPatron = patronNia.matcher(nia);
-        if(nia.isBlank() || nia.isEmpty() || !comparaNiaPatron.matches()){
-            throw new IllegalArgumentException("El NIA no puede estar vacío");
-        }
-
+//        if(nia.isBlank() || nia.isEmpty() || !comparaNiaPatron.matches()){
+//            throw new IllegalArgumentException("El NIA no puede estar vacío");
+//        }
         this.nia=nia;
     }
     //Crear nia automático, se encuentra en el constructor

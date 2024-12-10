@@ -79,8 +79,6 @@ public class CicloFormativo {
             throw new NullPointerException("ERROR: El grado de un ciclo formativo no puede ser nulo.");
         }
 
-        //No valido vacío porque el enumerado siempre tiene un valor (GDCFGB, GDCFGM,...).
-
         this.grado = grado;
     }
 
