@@ -138,9 +138,9 @@ public class Consola {
 
     public static Grado leerGrado(){
         System.out.println("Grados existentes.");
-        System.out.println(Grado.GDCFGB);
-        System.out.println(Grado.GDCFGM);
-        System.out.println(Grado.GDCFGS);
+        System.out.println(Grado.GDCFGB.imprimir());
+        System.out.println(Grado.GDCFGM.imprimir());
+        System.out.println(Grado.GDCFGS.imprimir());
 
         Grado grado = null;
 
@@ -213,6 +213,7 @@ public class Consola {
         if (!hayCiclosValidos) {
             System.out.println("No hay ciclos formativos válidos.");
         }
+        System.out.println("-----------------------------------------------------------------------------------------");
     }
 
     /*
@@ -244,9 +245,8 @@ public class Consola {
 
 
     public static CicloFormativo getCicloFormativoPorCodigo() throws IllegalArgumentException{
-
-        System.out.println("-----------------------------------------------------------------------------------------");
-        System.out.println("Introduzca el código del ciclo formativo a buscar.");
+        ;
+        System.out.println("Introduzca el código del ciclo formativo: ");
             int codigoCiclo = Entrada.entero();
 
         return new CicloFormativo(codigoCiclo, "Informática", Grado.GDCFGB, "Base de Datos", 100);
@@ -254,9 +254,11 @@ public class Consola {
 
 
     public static Curso leerCurso(){
+        System.out.println("-----------------------------------------------------------------------------------------");
         System.out.println("Cursos existentes.");
-        System.out.println(Curso.PRIMERO);
-        System.out.println(Curso.SEGUNDO);
+        System.out.println(Curso.PRIMERO.imprimir());
+        System.out.println(Curso.SEGUNDO.imprimir());
+        System.out.println("-----------------------------------------------------------------------------------------");
 
         Curso curso = null;
 
@@ -277,10 +279,12 @@ public class Consola {
 
 
     public static EspecialidadProfesorado leerEspecialidadProfesorado(){
+        System.out.println("-----------------------------------------------------------------------------------------");
         System.out.println("Especialidades existentes.");
-        System.out.println(EspecialidadProfesorado.INFORMATICA);
-        System.out.println(EspecialidadProfesorado.SISTEMAS);
-        System.out.println(EspecialidadProfesorado.FOL);
+        System.out.println(EspecialidadProfesorado.INFORMATICA.imprimir());
+        System.out.println(EspecialidadProfesorado.SISTEMAS.imprimir());
+        System.out.println(EspecialidadProfesorado.FOL.imprimir());
+        System.out.println("-----------------------------------------------------------------------------------------");
 
         EspecialidadProfesorado especialidad = null;
 
@@ -342,17 +346,18 @@ public class Consola {
 
 
     public static Asignatura getAsignaturaPorCodigo() throws NullPointerException, IllegalArgumentException{
-        System.out.println("Introduzca el código de la asignatura a buscar.");
+        System.out.println("Introduzca el código de la asignatura.");
 
         String codigoAsignatura = Entrada.cadena();
 
-        CicloFormativo ciclo = new CicloFormativo(0500, "Informática", Grado.GDCFGB, "DAM", 10);
+        CicloFormativo ciclo = new CicloFormativo(5000, "Informática", Grado.GDCFGB, "DAM", 10);
 
         return new Asignatura(codigoAsignatura, "Programación", 200, Curso.PRIMERO, 3, EspecialidadProfesorado.INFORMATICA, ciclo);
     }
 
 
     private static void mostrarAsignaturas(Asignaturas asignaturas){
+        System.out.println("-----------------------------------------------------------------------------------------");
         System.out.println("Asignaturas existentes:");
         // Si parámetro está vacío:
         if (asignaturas == null) {
@@ -380,6 +385,7 @@ public class Consola {
         if (!hayAsignaturasValidas) {
             System.out.println("No hay asignaturas válidas.");
         }
+        System.out.println("-----------------------------------------------------------------------------------------");
     }
 
 
@@ -415,27 +421,35 @@ public class Consola {
         System.out.println("-----------------------------------------------------------------------------------------");
         System.out.println("Introduzca los datos de la matrícula.");
 
-        System.out.println("ID de la matrícula::");
+        System.out.println("ID de la matrícula:");
         int idMatricula = Entrada.entero();
 
-        System.out.println("Curso académico:");
+        System.out.println("Curso académico (AA-AA):");
         String cursoMatricula = Entrada.cadena();
 
         LocalDate fechaMatriculacion = leerFecha("Fecha de matriculación(DD/MM/AAAA):");
 
         ///////////////////////////////////////////////////////////////////////////////////
         // ELEGIR ALUMNO DE LA LISTA DEL OBJETO ALUMNOS
+        System.out.println("-----------------------------------------------------------------------------------------");
         System.out.println("Alumnos registrados:");
         Alumno alumnoSeleccionado;
         Alumno alumnoExistente;
-            do{
+        do{
             // Mostrar todos los alumnos no nulos de la colección Alumnos pasada...
             for (Alumno alumno : alumnos.get()) {
                 if (alumno != null) {
                     System.out.println(alumno);
                 }
             }
-            //... Y pedir un alumno según DNI
+
+            // Si no contiene nada:
+            if (alumnos.get() == null || alumnos.get().length == 0) {
+                System.out.println("No hay asignaturas registradas.");
+            }
+            System.out.println("-----------------------------------------------------------------------------------------");
+
+                //... Y pedir un alumno según DNI
             alumnoSeleccionado = getAlumnoPorDni();
 
             // Comprobar si el alumno seleccionado con getAlumnoPorDni() es nulo. Innecesario¿?
@@ -499,16 +513,16 @@ public class Consola {
             // Preguntar si se quieren añadir más asignaturas
             int respuesta;
             do{
-                System.out.print("¿Desea añadir otra asignatura? (1-2):");
-                System.out.print("1- Sí.");
-                System.out.print("2- No.");
+                System.out.println("¿Desea añadir otra asignatura? (1-2):");
+                System.out.println("1- Sí.");
+                System.out.println("2- No.");
                 respuesta = Entrada.entero();
             } while (respuesta < 1 || respuesta > 2);
             if (respuesta == 2){
                 agregarMasAsignaturas = false;
             } else agregarMasAsignaturas = true;
 
-        } while(!agregarMasAsignaturas);
+        } while(agregarMasAsignaturas);
 
         ///////////////////////////////////////////////////////////////////////////////////
 
