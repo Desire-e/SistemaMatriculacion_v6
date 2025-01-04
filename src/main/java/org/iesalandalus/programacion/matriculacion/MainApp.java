@@ -28,12 +28,6 @@ public class MainApp {
     private static Asignaturas asignaturas = new Asignaturas(CAPACIDAD);
     private static CiclosFormativos ciclosFormativos = new CiclosFormativos(CAPACIDAD);
 
-    // Debugg funciones de Alumno - HECHO.
-    // Debugg funciones de Asignatura - HECHO.
-    // Debugg funciones de Ciclo - HECHO.
-    // Debugg funciones de Matricula
-
-
 
     public static void main(String[] args) {
         Opcion opcion;

@@ -46,7 +46,6 @@ public class Alumno {
         setCorreo(correo);
         setTelefono(telefono);
         setFechaNacimiento(fechaNacimiento);
-        //Nia generado automático
         setNia();
     }
 
@@ -61,13 +60,12 @@ public class Alumno {
         setCorreo(alumno.getCorreo());
         setTelefono(alumno.getTelefono());
         setFechaNacimiento(alumno.getFechaNacimiento());
-        //Nia introducido por el usuario
         setNia(alumno.getNia());
     }
 
 
     public String getNia(){ return nia; }
-    //Establecer nia introduciéndolo el usuario, se encuentra en el constructor copia
+    //Establecer nia generado automáticamente en el siguiente setter, se encuentra en el constructor copia
     private void setNia (String nia){
 
         //Validar nulo
@@ -78,9 +76,6 @@ public class Alumno {
         //Validar patrón
         Pattern patronNia = Pattern.compile(ER_NIA);
         Matcher comparaNiaPatron = patronNia.matcher(nia);
-//        if(nia.isBlank() || nia.isEmpty() || !comparaNiaPatron.matches()){
-//            throw new IllegalArgumentException("El NIA no puede estar vacío");
-//        }
         this.nia=nia;
     }
     //Crear nia automático, se encuentra en el constructor
@@ -131,8 +126,6 @@ public class Alumno {
         if (!comprobarLetraDni(dni)) {
             throw new IllegalArgumentException("ERROR: La letra del dni del alumno no es correcta.");
         }
-
-
 
         this.dni = dni;
     }
@@ -227,9 +220,17 @@ public class Alumno {
         separados por espacios */
         for (String nombreParte : nombreSinEspacios.split(" ")) {
             if (!nombreParte.isEmpty()) {
+                /* .append(): agrega el carácter al final de un objeto StringBuilder.
+                .substring(): devuelve los valores que hay entre los índices indicados por parámetro.
+                .toUpperCase: clase Character método toUpperCase() pone caracter en mayus.
+
+                Crear el nombreFormateado caracter a caracter: Se añade el 1er caracter de nombreParte en mayus,
+                luego los demás carácteres hasta el final en minus. */
                 //Primer caracter en mayusculas, demás minusculas, añade espacio entre cada nombreParte
                 nombreFormateado.append(nombreParte.substring(0,1).toUpperCase())
+                        //Demás en minusculas
                         .append(nombreParte.substring(1).toLowerCase())
+                        //Añade espacio entre cada nombreParte
                         .append(" ");
             }
         }
@@ -240,6 +241,16 @@ public class Alumno {
     }
 
 
+    /*
+    Expresiones regulares:
+
+    - Crear una cadena que contenga la expresión regular.
+      private final String ER_DNI = "[0-9]{8}[A-Z a-z]";
+    - Compilar dicha expresión regular en un patrón, mediante la clase Pattern.
+      Pattern patronDni = Pattern.compile(ER_DNI);
+    - Comprobar las coincidencias de dicho patrón en un texto dado, mediante la clase Matcher.
+      Matcher comparaDniPatron = patronDni.matcher(dni);
+    */
     private boolean comprobarLetraDni(String dni){
         //Expresión regular.
         Pattern patronDni = Pattern.compile(ER_DNI);

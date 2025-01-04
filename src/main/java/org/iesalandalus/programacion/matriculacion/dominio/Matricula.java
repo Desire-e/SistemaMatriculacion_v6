@@ -152,12 +152,12 @@ public class Matricula {
         if (coleccionAsignaturas == null) {
             throw new NullPointerException("ERROR: La lista de asignaturas de una matrícula no puede ser nula.");
         }
-/* Se crea con el máximo número de asignaturas, no se comprueba.
+    /* Se crea con el máximo número de asignaturas, no se comprueba.
         // Validar tamaño mínimo y máximo
         if (coleccionAsignaturas.length < 1 || coleccionAsignaturas.length > MAXIMO_NUMERO_ASIGNATURAS_POR_MATRICULA) {
             throw new IllegalArgumentException("La colección debe tener 1 asignatura al menos y máximo 10.");
         }
-*/
+    */
         //Validar que nº horas totales de todas las asignaturas de la colección no sea > 1000
         if (superaMaximoNumeroHorasMatricula(coleccionAsignaturas)){
             throw new OperationNotSupportedException("ERROR: No se puede realizar la matrícula ya que supera el máximo de horas permitidas (" + Matricula.MAXIMO_NUMERO_HORAS_MATRICULA + " horas).");
@@ -197,7 +197,8 @@ public class Matricula {
                 asignaturas.append(asignatura.getNombre()).append(", ");
             }
         }
-        /* Si el StringBuilder no está vacío (hay asignaturas), elimina los últimos dos caracteres (coma y espacio)*/
+        /* Si el StringBuilder no está vacío (hay asignaturas), elimina los últimos dos caracteres (coma y espacio
+        de la última asignatura insertada)*/
         if (!asignaturas.isEmpty()) {
             asignaturas.setLength(asignaturas.length() - 2);
         }

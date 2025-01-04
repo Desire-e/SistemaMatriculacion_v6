@@ -152,7 +152,7 @@ public class Consola {
             } catch (ArrayIndexOutOfBoundsException e) {
                 System.out.println("Opción fuera de rango");
             } catch (Exception e) {
-                System.out.println("Entrada inválida. Introduzca un número entre 0 y 19.");
+                System.out.println("Entrada inválida. Introduzca un número entre 0 y 2.");
             }
         } while (grado == null);
 
