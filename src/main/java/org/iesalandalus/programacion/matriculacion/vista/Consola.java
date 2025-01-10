@@ -1,9 +1,9 @@
 package org.iesalandalus.programacion.matriculacion.vista;
 
-import org.iesalandalus.programacion.matriculacion.dominio.*;
-import org.iesalandalus.programacion.matriculacion.negocio.Alumnos;
-import org.iesalandalus.programacion.matriculacion.negocio.CiclosFormativos;
-import org.iesalandalus.programacion.matriculacion.negocio.Asignaturas;
+import org.iesalandalus.programacion.matriculacion.modelo.dominio.*;
+import org.iesalandalus.programacion.matriculacion.modelo.negocio.Alumnos;
+import org.iesalandalus.programacion.matriculacion.modelo.negocio.CiclosFormativos;
+import org.iesalandalus.programacion.matriculacion.modelo.negocio.Asignaturas;
 
 import org.iesalandalus.programacion.utilidades.Entrada;
 
@@ -183,10 +183,13 @@ public class Consola {
     }
 
 
-    public static void mostrarCiclosFormativos(CiclosFormativos ciclosFormativos) {
+    public static void mostrarCiclosFormativos(CicloFormativo[] ciclosFormativos) {
         System.out.println("-----------------------------------------------------------------------------------------");
         System.out.println("Ciclos formativos existentes:");
 
+        // CAMBIOS V.1: De parámetros obtiene CicloFormativo[] ciclosFormativos. Si obtenemos el array directamente,
+        // ya no hay que validar la variable clase CiclosFormativos ni obtener de ella el array
+        /*
         // Si está vacía
         if (ciclosFormativos == null) {
             System.out.println("La colección de ciclos formativos no se inició.");
@@ -194,15 +197,16 @@ public class Consola {
 
         // Obtener el array de ciclos formativos
         CicloFormativo[] arrayCiclos = ciclosFormativos.get();
+        */
 
         // Si no contiene nada:
-        if (arrayCiclos == null || arrayCiclos.length == 0) {
+        if (ciclosFormativos == null || ciclosFormativos.length == 0) {
             System.out.println("No hay ciclos formativos registrados.");
         }
 
         // Si sí contiene, recorrer y mostrar cada ciclo formativo:
         boolean hayCiclosValidos = false;
-        for (CicloFormativo ciclo : arrayCiclos) {
+        for (CicloFormativo ciclo : ciclosFormativos) {
             if (ciclo != null) {
                 hayCiclosValidos = true;
                 System.out.println(ciclo.imprimir());
@@ -215,34 +219,6 @@ public class Consola {
         }
         System.out.println("-----------------------------------------------------------------------------------------");
     }
-
-    /*
-    SOBRE LAS EXCEPCIONES:
-        No, la ejecución del método mostrarCiclosFormativos no dará una terminación abrupta debido a las excepciones
-        lanzadas por la clase CiclosFormativos, siempre y cuando dichas excepciones no se produzcan durante la ejecución
-        del método. Esto es porque el método mostrarCiclosFormativos no realiza operaciones que puedan directamente lanzar
-        las excepciones de CiclosFormativos o CicloFormativo bajo las condiciones actuales.
-
-
-        Análisis Detallado:
-        > Excepciones de CiclosFormativos:
-        Las excepciones como NullPointerException, IllegalArgumentException, y OperationNotSupportedException están
-        asociadas principalmente con métodos como insertar, borrar, y el constructor de CiclosFormativos.
-        El método get no lanza excepciones, ya que solo devuelve una copia profunda del array de ciclos formativos.
-
-        > Uso de ciclosFormativos.get():
-        En mostrarCiclosFormativos, se llama a ciclosFormativos.get(). Este método realiza una copia del array, iterando
-        sobre los elementos, pero no lanza excepciones.
-
-        > CicloFormativo:
-        Las excepciones de CicloFormativo solo se lanzan en sus setters y constructor. En este caso, el método toString
-        o imprimir no lanzan excepciones.
-
-        > Control de Nulos y Arrays Vacíos:
-        El método incluye verificaciones explícitas para evitar NullPointerException en los casos en que ciclosFormativos
-        sea null, o cuando el array interno esté vacío o contenga elementos null.
-    */
-
 
     public static CicloFormativo getCicloFormativoPorCodigo() throws IllegalArgumentException{
         ;
@@ -304,11 +280,11 @@ public class Consola {
     }
 
 
-    public static Asignatura leerAsignatura(CiclosFormativos ciclosFormativos) throws NullPointerException, IllegalArgumentException {
+    public static Asignatura leerAsignatura(CicloFormativo cicloFormativo) throws NullPointerException, IllegalArgumentException {
 
         // Validar que la colección de ciclos formativos no sea nula ni esté vacía
-        if (ciclosFormativos == null || ciclosFormativos.get().length == 0) {
-            System.out.println("No hay ciclos formativos registrados. No puede crear una asignatura.");
+        if (cicloFormativo == null) {
+            System.out.println("El ciclo porporcionado es nulo.");
             return null;
         }
 
@@ -335,13 +311,17 @@ public class Consola {
         // Llamar al método para seleccionar entre los grados disponibles
         EspecialidadProfesorado especialidadAsignatura = leerEspecialidadProfesorado();
 
+        //CAMBIOS V.1: De parámetros recibe CicloFormativo cicloFormativo. Por lo que nos podemos ahorrar el pedir
+        // seleccionar el ciclo si ya nos viene dado como parámetro
+        /*
         System.out.println("Ciclo formativo:");
         // Muestra los ciclos formativos actuales existentes. Imprime cada ciclo.
-        mostrarCiclosFormativos(ciclosFormativos);
+        mostrarCiclosFormativos(cicloFormativo);
         // Pide que busque un ciclo según su código. Devuelve el ciclo que se seleccionó.
         CicloFormativo cicloAsignatura = getCicloFormativoPorCodigo();
+        */
 
-        return new Asignatura(codAsignatura, nombreAsignatura, horasAnualAsignatura, cursoAsignatura, horasDesdoAsignatura, especialidadAsignatura, cicloAsignatura);
+        return new Asignatura(codAsignatura, nombreAsignatura, horasAnualAsignatura, cursoAsignatura, horasDesdoAsignatura, especialidadAsignatura, cicloFormativo);
     }
 
 
@@ -356,9 +336,13 @@ public class Consola {
     }
 
 
-    private static void mostrarAsignaturas(Asignaturas asignaturas){
+    private static void mostrarAsignaturas(Asignatura[] asignaturas){
         System.out.println("-----------------------------------------------------------------------------------------");
         System.out.println("Asignaturas existentes:");
+
+        // Si obtenemos el array directamente, ya no hay que validar la variable clase CiclosFormativos ni obtener de
+        // ella el array
+        /*
         // Si parámetro está vacío:
         if (asignaturas == null) {
             System.out.println("La colección de asignaturas no se inició.");
@@ -366,15 +350,16 @@ public class Consola {
 
         // Obtener array del parámetro
         Asignatura[] arrayAsignaturas = asignaturas.get();
+        */
 
         // Si no contiene nada:
-        if (arrayAsignaturas == null || arrayAsignaturas.length == 0) {
+        if (asignaturas == null || asignaturas.length == 0) {
             System.out.println("No hay asignaturas registradas.");
         }
 
         // Si sí contiene, recorrer y mostrar cada asignatura:
         boolean hayAsignaturasValidas = false;
-        for (Asignatura asignatura : arrayAsignaturas) {
+        for (Asignatura asignatura : asignaturas) {
             if (asignatura != null) {
                 hayAsignaturasValidas = true;
                 System.out.println(asignatura.imprimir());
@@ -389,7 +374,12 @@ public class Consola {
     }
 
 
-    private static boolean asignaturaYaMatriculada(Asignatura[] asignaturasMatricula, Asignatura asignatura){
+    static boolean asignaturaYaMatriculada(Asignatura[] asignaturasMatricula, Asignatura asignatura){
+        //CAMBIOS V.1: modificador predenterminado, llamado "modificador visible del paquete". No está indicado por una
+        //palabra clave, ya que Java lo aplica por defecto a todos los campos y métodos.
+        //Los campos y métodos marcados por el modificador de acceso protegido serán visibles:
+        //  > dentro de todas las clases incluidas en el mismo paquete que el nuestro.
+        //  > dentro de todas las clases que heredan nuestra clase.
 
         if (asignaturasMatricula == null){
             throw new NullPointerException("La lista pasada no ha sido iniciada aún.");
@@ -408,14 +398,14 @@ public class Consola {
     }
 
 
-    public static Matricula leerMatricula(Alumnos alumnos, Asignaturas asignaturas) throws OperationNotSupportedException, NullPointerException, IllegalArgumentException{
+    public static Matricula leerMatricula(Alumno alumno, Asignatura[] asignaturas) throws OperationNotSupportedException, NullPointerException, IllegalArgumentException{
 
         // Si parámetros están vacíos:
-        if (alumnos == null) {
-            throw new NullPointerException("La colección de alumnos no se inició.");
+        if (alumno == null) {
+            throw new NullPointerException("El alumno es nulo.");
         }
-        if (asignaturas == null) {
-            throw new NullPointerException("La colección de asignaturas no se inició.");
+        if (asignaturas == null || asignaturas.length == 0) {
+            throw new IllegalArgumentException("No hay asignaturas registradas en el sistema .");
         }
 
         System.out.println("-----------------------------------------------------------------------------------------");
@@ -430,6 +420,12 @@ public class Consola {
         LocalDate fechaMatriculacion = leerFecha("Fecha de matriculación(DD/MM/AAAA):");
 
         ///////////////////////////////////////////////////////////////////////////////////
+
+        //CAMBIOS V.1: Ahora como parámetro recibe Alumno alumno. Por lo que ya no hay que pedir que seleccione un
+        //alumno pues nos viene ya dado.
+        System.out.println("Alumno seleccionado:");
+        System.out.println(alumno);
+        /*
         // ELEGIR ALUMNO DE LA LISTA DEL OBJETO ALUMNOS
         System.out.println("-----------------------------------------------------------------------------------------");
         System.out.println("Alumnos registrados:");
@@ -465,27 +461,57 @@ public class Consola {
                 System.out.println("El alumno seleccionado por dni no está registrado.");
             }
         } while (alumnoExistente == null);
+        */
+        ///////////////////////////////////////////////////////////////////////////////////
+
+        //CAMBIOS V.1: Se migra la implementación de esta parte a otro método, donde de ese array puede seleccionar el
+        //usuario las asignaturas para la matrícula
+        // ELEGIR ASIGNATURA DE LA LISTA DE ASIGNATURAS REGISTRADAS EN EL SISTEMA.
+        Asignatura[] asignaturasMatricula = elegirAsignaturasMatricula(asignaturas);
 
         ///////////////////////////////////////////////////////////////////////////////////
-        // ELEGIR ASIGNATURA DE LA LISTA DEL OBJETO ASIGNATURAS
-        int capacidadMax = 10;
+
+        return new Matricula(idMatricula, cursoMatricula, fechaMatriculacion, alumno, asignaturasMatricula);
+    }
+
+
+    //CAMBIOS V.1: Crea el método elegirAsignaturasMatricula para obtener el array de asignaturas que se asignarán
+    //en una matrícula.
+    public static Asignatura[] elegirAsignaturasMatricula(Asignatura[] asignaturas){
+        //Nos dan por parámetro el array de asignaturas registradas en el sistema.
+        if (asignaturas == null || asignaturas.length == 0){
+            throw new IllegalArgumentException("No hay asignaturas registradas para poder seleccionar.");
+        }
+
+        final int CAPACIDAD_MAXIMA = 10;
+        Asignatura[] asignaturasMatriculadas = new Asignatura[CAPACIDAD_MAXIMA];
         int contador = 0;
         boolean agregarMasAsignaturas = false;
-        Asignatura[] asignaturasMatricula = new Asignatura[capacidadMax];
-
         do {
-            // Mostrar todas las asignaturas no nulas de la coleccion Asignaturas pasada...
+
+            // Mostrar todas las asignaturas no nulas de la coleccion pasada...
             mostrarAsignaturas(asignaturas);
 
             // ...y pedir una asignatura según código.
             Asignatura asignaturaSeleccionada = getAsignaturaPorCodigo();
 
+            //CAMBIOS V.1: Hacer que en iteraciones del array de asignaturas comprobar si la asignaturaSeleccionada
+            //==asignaturaRecorrida, para comprobar si está en el array obtenido. Si lo está, rompe bucle.
+            /*
             // Comprobar si la asignatura seleccionada existe en la coleccion de Asignaturas pasada
             Asignatura asignaturaExistente = asignaturas.buscar(asignaturaSeleccionada);
+            */
+            Asignatura asignaturaExistente = null;
+            for (Asignatura asignatura : asignaturas){
+                if (asignaturaSeleccionada != null && asignaturaSeleccionada.equals(asignatura)){
+                    asignaturaExistente = asignaturaSeleccionada;
+                    break;
+                }
+            }
 
             // Si no existe en la colección de Asignaturas pasada:
             if (asignaturaExistente == null) {
-                System.out.println("La asignatura seleccionada por código no está registrada.");
+                System.out.println("La asignatura seleccionada por código no está registrada en el sistema.");
                 continue;
                 // continue hace que el resto del código en esa iteración se omita por completo.
                 // La ejecución vuelve al inicio del bucle do-while, donde se repetirá el proceso para pedir
@@ -493,7 +519,7 @@ public class Consola {
             }
 
             // Comprobar si la asignatura ya está en la matrícula
-            boolean yaEnMatricula = asignaturaYaMatriculada(asignaturasMatricula, asignaturaExistente);
+            boolean yaEnMatricula = asignaturaYaMatriculada(asignaturasMatriculadas, asignaturaSeleccionada);
 
             // Si ya existe en la matrícula:
             if (yaEnMatricula) {
@@ -502,13 +528,13 @@ public class Consola {
             }
 
             // Comprobar si hay espacio en el array
-            if (contador >= capacidadMax) {
-                System.out.println("No se pueden añadir más asignaturas. Se ha alcanzado el límite de " + capacidadMax + " asignaturas.");
+            if (contador >= CAPACIDAD_MAXIMA) {
+                System.out.println("No se pueden añadir más asignaturas. Se ha alcanzado el límite de " + CAPACIDAD_MAXIMA + " asignaturas.");
                 break; // Salir del bucle ya que no se puede añadir más asignaturas
             }
 
             // Añadir la asignatura al array
-            asignaturasMatricula[contador++] = asignaturaExistente;
+            asignaturasMatriculadas[contador++] = asignaturaExistente;
 
             // Preguntar si se quieren añadir más asignaturas
             int respuesta;
@@ -524,9 +550,7 @@ public class Consola {
 
         } while(agregarMasAsignaturas);
 
-        ///////////////////////////////////////////////////////////////////////////////////
-
-        return new Matricula(idMatricula, cursoMatricula, fechaMatriculacion, alumnoExistente, asignaturasMatricula);
+        return asignaturasMatriculadas;
     }
 
 
@@ -543,19 +567,7 @@ public class Consola {
         return new Matricula(idMatricula, "24-25", fechaMat, alumno, coleccionAsignaturas);
     }
 
-
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
