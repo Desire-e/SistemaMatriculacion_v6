@@ -1,6 +1,5 @@
-package org.iesalandalus.programacion.matriculacion.dominio;
+package org.iesalandalus.programacion.matriculacion.modelo.dominio;
 
-import java.time.LocalDate;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -8,7 +7,7 @@ import java.util.regex.Pattern;
 public class Asignatura {
     public static final int MAX_NUM_HORAS_ANUALES = 300;
     public static final int MAX_NUM_HORAS_DESDOBLES = 6;
-    public static final String ER_CODIGO = "[0-9]{4}";
+    private static final String ER_CODIGO = "[0-9]{4}";
     private String codigo;
     private String nombre;
     private int horasAnuales;
@@ -125,7 +124,7 @@ public class Asignatura {
     public void setHorasDesdoble(int horasDesdoble){
 
         //Valida valores incorrectos
-        if (horasDesdoble > MAX_NUM_HORAS_DESDOBLES) {
+        if (horasDesdoble > MAX_NUM_HORAS_DESDOBLES || horasDesdoble < 0) {
             throw new IllegalArgumentException("ERROR: El número de horas de desdoble de una asignatura no puede ser menor a 0 ni mayor a " + MAX_NUM_HORAS_DESDOBLES + ".");
         }
 

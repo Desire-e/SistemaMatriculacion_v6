@@ -1,9 +1,8 @@
-package org.iesalandalus.programacion.matriculacion.dominio;
+package org.iesalandalus.programacion.matriculacion.modelo.dominio;
 
 import javax.naming.OperationNotSupportedException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -14,7 +13,7 @@ public class Matricula {
     public static final int MAXIMO_NUMERO_HORAS_MATRICULA = 1000;
     public static final int MAXIMO_NUMERO_ASIGNATURAS_POR_MATRICULA = 10;
     private static final String ER_CURSO_ACADEMICO = "[2]{1}[0-9]{1}-[2]{1}[0-9]{1}";
-    public static final String FORMATO_FECHA = "dd/MM/YYYY";     //APLICAR EN METODOS IMPRIMIR Y TOSTRING
+    public static final String FORMATO_FECHA = "dd/MM/yyyy";     //APLICAR EN METODOS IMPRIMIR Y TOSTRING
     private int idMatricula;
     private String cursoAcademico;
     private LocalDate fechaMatriculacion;

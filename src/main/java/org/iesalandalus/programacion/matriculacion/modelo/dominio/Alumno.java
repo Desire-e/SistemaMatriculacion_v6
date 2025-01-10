@@ -1,4 +1,4 @@
-package org.iesalandalus.programacion.matriculacion.dominio;
+package org.iesalandalus.programacion.matriculacion.modelo.dominio;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -12,7 +12,7 @@ public class Alumno {
     private static final String ER_TELEFONO = "[0-9]{9}";
     private static  final String ER_CORREO = "[a-zA-Z0-9._%+-]+@[a-z A-Z]{5,}.[a-zA-Z]{2,}";
     private static final String ER_DNI = "[0-9]{8}[A-Z a-z]";
-    public static final String FORMATO_FECHA = "dd/MM/YYYY";
+    public static final String FORMATO_FECHA = "dd/MM/yyyy";
     private static final String ER_NIA = "[a-z]{4}[0-9]{3}";
     private static final int MIN_EDAD_ALUMNADO = 16;
     private String nombre;

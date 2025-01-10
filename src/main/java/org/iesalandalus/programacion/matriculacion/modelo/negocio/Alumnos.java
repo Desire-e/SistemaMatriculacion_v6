@@ -1,7 +1,6 @@
-package org.iesalandalus.programacion.matriculacion.negocio;
+package org.iesalandalus.programacion.matriculacion.modelo.negocio;
 
-import org.iesalandalus.programacion.matriculacion.dominio.Alumno;
-import org.iesalandalus.programacion.matriculacion.dominio.Matricula;
+import org.iesalandalus.programacion.matriculacion.modelo.dominio.Alumno;
 
 import javax.naming.OperationNotSupportedException;
 
@@ -94,7 +93,7 @@ public class Alumnos {
 
 
     // Busca y devuelve el índice de un alummo, devuelve -1 si no existe
-    public int buscarIndice(Alumno alumno) {
+    private int buscarIndice(Alumno alumno) {
 
         /* Variable que se devuelve si no se encuentra */
         int noExisteAlumno = -1;

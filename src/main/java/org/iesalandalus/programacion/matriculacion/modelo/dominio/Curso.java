@@ -1,10 +1,11 @@
-package org.iesalandalus.programacion.matriculacion.dominio;
+package org.iesalandalus.programacion.matriculacion.modelo.dominio;
 
-public enum EspecialidadProfesorado {
-    INFORMATICA("Informática"), SISTEMAS("Sistemas"), FOL("FOL");
+public enum Curso {
+    PRIMERO("Primero"), SEGUNDO("Segundo");
+
     private String cadenaAMostrar;
 
-    private EspecialidadProfesorado (String cadenaAMostrar) {
+    private Curso (String cadenaAMostrar) {
         this.cadenaAMostrar = cadenaAMostrar;
     }
 
@@ -15,7 +16,7 @@ public enum EspecialidadProfesorado {
 
     @Override
     public String toString() {
-        return "EspecialidadProfesorado{" +
+        return "Curso{" +
                 "cadenaAMostrar='" + cadenaAMostrar + '\'' +
                 '}';
     }

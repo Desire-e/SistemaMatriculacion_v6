@@ -1,4 +1,4 @@
-package org.iesalandalus.programacion.matriculacion.dominio;
+package org.iesalandalus.programacion.matriculacion.modelo.dominio;
 
 public enum Grado {
     GDCFGB("Grado D Ciclo Formativo de Grado Básico"),
