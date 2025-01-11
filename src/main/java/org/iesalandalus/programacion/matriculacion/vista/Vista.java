@@ -186,22 +186,12 @@ public class Vista {
         }
     }
 
-    /*private*/ public static void insertarAsignatura(){
+    private static void insertarAsignatura(){
         try {
             // controlador.getCiclosFormativos() devuelve el array que contiene la clase CiclosFormativos.
-
-
             if (controlador.getCiclosFormativos() == null || controlador.getCiclosFormativos().length == 0) {
                 System.out.println("No hay ciclos formativos registrados en el sistema.");
             }
-            /* EN PROCESO
-            //Muestra ciclos disponibles
-            Consola.mostrarCiclosFormativos(controlador.getCiclosFormativos());
-            //Pide código del ciclo a seleccionar
-            int codigoCiclo = Consola.getCicloFormativoPorCodigo().getCodigo();
-            for ()
-              */
-
 
             // Mostrar los ciclos disponibles de la colección
             System.out.println("Ciclo formativo de la asignatura. Elija el número del ciclo a seleccionar:");
@@ -222,7 +212,6 @@ public class Vista {
             if (controlador.buscar(cicloSeleccionado) == null){
                 System.out.println("El ciclo formativo no existe.");
             }
-
 
             // Crear la asignatura asociada al ciclo seleccionado
             Asignatura nuevaAsignatura = Consola.leerAsignatura(cicloSeleccionado);
@@ -342,14 +331,28 @@ public class Vista {
     private static void insertarMatricula(){
         try {
             //Pedir alumno
-            Alumno alumno = Consola.leerAlumno();
-            //**Se registra el alumno en el sistema
-            //**Quizás debo de especificar que busque al alumno y si existe, insertarlo (si da error al insertar un alumno ya registrado)
-            controlador.insertar(alumno);
+            Alumno alumnoNuevo = Consola.leerAlumno();
+            boolean alumnoExiste = false;
+
+            //Si ya existe el alumno nuevo, solo se almacena en alumnoMatricula
+            for (Alumno alumno : controlador.getAlumnos()){
+                if (alumnoNuevo.equals(alumno)){
+                    alumnoExiste = true;
+                    break;
+                }
+            }
+            //Si no existe el alumno nuevo, se inserta en el sistema y se almacena en alumnoMatricula.
+            if (!alumnoExiste){
+                controlador.insertar(alumnoNuevo);
+            }
+            Alumno alumnoMatricula = alumnoNuevo;
+
             //Pedir asignaturas
+            //Pasar array de las asignaturas que hay en el sistema a leerMatricula directamente con
+            //controlador.getAsignaturas(), donde se elegirá la asignatura
             Asignatura[] asignaturas = controlador.getAsignaturas();
-            //Pasar array de las asignaturas que hay en el sistema, directamente con controlador.getAsignaturas()
-            Matricula nuevaMatricula = Consola.leerMatricula(alumno,asignaturas);
+            Matricula nuevaMatricula = Consola.leerMatricula(alumnoMatricula,asignaturas);
+
             controlador.insertar(nuevaMatricula);
         } catch (Exception e) {
             System.out.println("Error al insertar matrícula. " + e.getMessage());
@@ -388,11 +391,16 @@ public class Vista {
             Matricula matricula = Consola.getMatriculaPorIdentificacion();
             Matricula busqueda = controlador.buscar(matricula);
 
+            if(busqueda == null){
+                System.out.println("No existe matrícula con el id proporcionado");
+            }
+
             // Verificar si la matrícula ya está anulada
             if (busqueda.getFechaAnulacion() != null) {
                 System.out.println("La matrícula ya está anulada. No se puede volver a anular.");
                 return;
             }
+
             // Pide la fecha de anulación
             LocalDate fechaAnulacion = Consola.leerFecha("Fecha de anulación de la matrícula(DD/MM/AAAA): ");
             // Inserta fecha de anulación
@@ -457,6 +465,7 @@ public class Vista {
             if (!hayMatriculas) {
                 System.out.println("El alumno no tiene matrículas registradas.");
             }
+
         } catch (Exception e) {
             System.out.println("Error al mostrar las matrículas del alumno. " + e.getMessage());
         }

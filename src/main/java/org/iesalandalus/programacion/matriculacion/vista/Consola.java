@@ -504,7 +504,7 @@ public class Consola {
             Asignatura asignaturaExistente = null;
             for (Asignatura asignatura : asignaturas){
                 if (asignaturaSeleccionada != null && asignaturaSeleccionada.equals(asignatura)){
-                    asignaturaExistente = asignaturaSeleccionada;
+                    asignaturaExistente = asignatura;
                     break;
                 }
             }
@@ -559,7 +559,7 @@ public class Consola {
         int idMatricula = Entrada.entero();
 
         //Creo matrícula con los restantes atributos inventados
-        LocalDate fechaMat = LocalDate.of(2024, 10, 3);
+        LocalDate fechaMat = LocalDate.now().minusDays(2);
         LocalDate fechaNac = LocalDate.of(2000, 10, 3);
         Alumno alumno = new Alumno("Emilio", "53143489B", "emilio@gmail.com", "600793568", fechaNac);
         Asignatura[] coleccionAsignaturas = new Asignatura[10];

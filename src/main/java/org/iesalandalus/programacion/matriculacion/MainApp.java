@@ -26,13 +26,6 @@ public class MainApp {
         Controlador controlador = new Controlador(modelo, vista);
 
         controlador.comenzar();
-
-//        vista.insertarCicloFormativo();
-//        vista.insertarCicloFormativo();
-//
-//        vista.borrarCicloFormativo();
-//
-//        vista.insertarAsignatura();
     }
 
     //CAMBIOS V.1: los métodos se pasan a la clase Vista

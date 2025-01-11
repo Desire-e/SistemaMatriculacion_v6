@@ -106,16 +106,66 @@ public class Controlador {
 
 
     public Matricula[] getMatriculas(Alumno alumno) throws OperationNotSupportedException{
-        Matriculas matriculas = null;
-        return matriculas.get(alumno);
+        //Matriculas registradas en el sistema
+        Matricula[] matriculas = modelo.getMatriculas();
+        //Matriculas del alumno
+        int tamanio = 1;
+        Matricula[] matriculasAlumno = new Matricula[tamanio];
+        int indice = 0;
+
+        //Si en la matricula registrada, su alumno == al alumno obtenido por parámetro, se almacena en el array de
+        //matriculasAlumno
+        for (int i = 0; i < matriculas.length; i++) {
+            if (matriculas[i] != null && matriculas[i].getAlumno().equals(alumno)) {
+                matriculasAlumno[indice] = matriculas[i];
+                indice++;
+                tamanio++;
+            }
+        }
+
+        return matriculasAlumno;
     }
-    public Matricula[] getMatriculas(CicloFormativo cicloFormativo) {
-        Matriculas matriculas = null;
-        return matriculas.get(cicloFormativo);
+
+    public Matricula[] getMatriculas(CicloFormativo cicloFormativo) throws OperationNotSupportedException {
+        //Matriculas registradas en el sistema
+        Matricula[] matriculas = modelo.getMatriculas();
+        //Matriculas del alumno
+        int tamanio = 1;
+        Matricula[] matriculasCiclo = new Matricula[tamanio];
+        int indice = 0;
+
+        //La matricula tiene asignatura y la asignatura tiene ciclo
+        boolean hayMatriculas = false;
+        for (int i = 0; i < matriculas.length; i++) {
+            if (matriculas[i] != null) {
+                // Comprobar si alguna de las asignaturas de la matrícula pertenece al ciclo formativo
+                for (Asignatura asignatura : matriculas[i].getColeccionAsignaturas()) {
+                    if (asignatura != null && asignatura.getCicloFormativo().equals(cicloFormativo)) {
+                        matriculasCiclo[indice] = matriculas[i];
+                        indice++;
+                        tamanio++;
+                    }
+                }
+            }
+        }
+
+        return matriculasCiclo;
     }
-    public Matricula[] getMatriculas(String cursoAcademico) {
-        Matriculas matriculas = null;
-        return matriculas.get(cursoAcademico);
+    public Matricula[] getMatriculas(String cursoAcademico) throws OperationNotSupportedException {
+        Matricula[] matriculas = modelo.getMatriculas();
+        int tamanio = 1;
+        Matricula[] matriculasCursoAca = new Matricula[tamanio];
+        int indice = 0;
+
+        for (int i = 0; i < matriculas.length; i++) {
+            if (matriculas[i] != null && matriculas[i].getCursoAcademico().equals(cursoAcademico)) {
+                matriculasCursoAca[indice] = matriculas[i];
+                indice++;
+                tamanio++;
+            }
+        }
+
+        return matriculasCursoAca;
     }
 
 }
