@@ -26,6 +26,7 @@ public class MainApp {
         Controlador controlador = new Controlador(modelo, vista);
 
         controlador.comenzar();
+
     }
 
     //CAMBIOS V.1: los métodos se pasan a la clase Vista
