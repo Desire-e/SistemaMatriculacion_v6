@@ -56,20 +56,20 @@ public class Modelo {
     /*Crea los diferentes métodos buscar, cada uno de los cuales devolverá una nueva instancia del elemento
     encontrado si éste existe.*/
     public Alumno buscar(Alumno alumno){
-        alumnos.buscar(alumno);
-        return alumno;
+        Alumno busqueda = alumnos.buscar(alumno);
+        return busqueda;
     }
     public Asignatura buscar(Asignatura asignatura){
-        asignaturas.buscar(asignatura);
-        return asignatura;
+        Asignatura busqueda = asignaturas.buscar(asignatura);
+        return busqueda;
     }
     public CicloFormativo buscar(CicloFormativo cicloFormativo){
-        ciclosFormativos.buscar(cicloFormativo);
-        return cicloFormativo;
+        CicloFormativo busqueda = ciclosFormativos.buscar(cicloFormativo);
+        return busqueda;
     }
     public Matricula buscar(Matricula matricula) throws OperationNotSupportedException {
-        matriculas.buscar(matricula);
-        return matricula;
+        Matricula busqueda = matriculas.buscar(matricula);
+        return busqueda;
     }
 
 
