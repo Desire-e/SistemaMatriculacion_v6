@@ -10,13 +10,16 @@ import org.iesalandalus.programacion.matriculacion.modelo.dominio.CicloFormativo
 import org.iesalandalus.programacion.matriculacion.modelo.dominio.Matricula;
 
 import javax.naming.OperationNotSupportedException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /*Esta clase gestionará el modelo de datos de nuestra aplicación. Será la encargada de comunicarse
 con las tres clases que hacen referencia a las colecciones de datos (alumnos, asignaturas, ciclos
 formativos y matrículas).*/
 
 public class Modelo {
-    public int CAPACIDAD=1000;
+    //public int CAPACIDAD=1000;
     private Alumnos alumnos;
     private Matriculas matriculas;
     private Asignaturas asignaturas;
@@ -25,10 +28,10 @@ public class Modelo {
 
     /*método  que creará la instancia de las clases de negocio.*/
     public void comenzar(){
-        alumnos = new Alumnos(CAPACIDAD);
-        asignaturas = new Asignaturas(CAPACIDAD);
-        ciclosFormativos = new CiclosFormativos(CAPACIDAD);
-        matriculas = new Matriculas(CAPACIDAD);
+        alumnos = new Alumnos(/*CAPACIDAD*/);
+        asignaturas = new Asignaturas(/*CAPACIDAD*/);
+        ciclosFormativos = new CiclosFormativos(/*CAPACIDAD*/);
+        matriculas = new Matriculas(/*CAPACIDAD*/);
     }
 
 
@@ -56,20 +59,16 @@ public class Modelo {
     /*Crea los diferentes métodos buscar, cada uno de los cuales devolverá una nueva instancia del elemento
     encontrado si éste existe.*/
     public Alumno buscar(Alumno alumno){
-        Alumno busqueda = alumnos.buscar(alumno);
-        return busqueda;
+        return alumnos.buscar(alumno);
     }
     public Asignatura buscar(Asignatura asignatura){
-        Asignatura busqueda = asignaturas.buscar(asignatura);
-        return busqueda;
+        return asignaturas.buscar(asignatura);
     }
     public CicloFormativo buscar(CicloFormativo cicloFormativo){
-        CicloFormativo busqueda = ciclosFormativos.buscar(cicloFormativo);
-        return busqueda;
+        return ciclosFormativos.buscar(cicloFormativo);
     }
     public Matricula buscar(Matricula matricula) throws OperationNotSupportedException {
-        Matricula busqueda = matriculas.buscar(matricula);
-        return busqueda;
+        return matriculas.buscar(matricula);
     }
 
 
@@ -90,15 +89,88 @@ public class Modelo {
 
     /*Crea los diferentes métodos get, que deben devolver una lista de los diferentes elementos de la aplicación
     (Alumnos, Asignaturas, Ciclos Formativos y Matrículas).*/
-    public Alumno[] getAlumnos() { return alumnos.get(); }
-    public Asignatura[] getAsignaturas(){
+    public List<Alumno> getAlumnos() { return alumnos.get(); }
+    public List<Asignatura> getAsignaturas(){
         return asignaturas.get();
     }
-    public CicloFormativo[] getCiclosFormativos(){
+    public List<CicloFormativo> getCiclosFormativos(){
         return ciclosFormativos.get();
     }
-    public Matricula[] getMatriculas() throws OperationNotSupportedException {
+    public List<Matricula> getMatriculas() throws OperationNotSupportedException {
         return matriculas.get();
+    }
+
+
+
+    public List<Matricula> getMatriculas(Alumno alumno) throws OperationNotSupportedException{
+        //Matriculas registradas en el sistema
+        List<Matricula> matriculas = getMatriculas();
+
+        /*
+        //Matriculas del alumno
+        List<Matricula> matriculasAlumno = new ArrayList<>();
+
+        //Si en la matricula registrada, su alumno == al alumno obtenido por parámetro, se almacena en el array de
+        //matriculasAlumno
+        for(Matricula matricula : matriculas){
+            if (matricula != null && matricula.getAlumno().equals(alumno)){
+                matriculasAlumno.add(matricula);
+            }
+        }
+        */
+        List<Matricula> matriculasAlumno = matriculas.stream()
+                .filter(matricula -> matricula != null  && matricula.getAlumno().equals(alumno))
+                .collect(Collectors.toList());
+
+        return matriculasAlumno;
+    }
+
+
+    public List<Matricula> getMatriculas(CicloFormativo cicloFormativo) throws OperationNotSupportedException {
+        //Matriculas registradas en el sistema
+        List<Matricula> matriculas = getMatriculas();
+
+        /*
+        //Matriculas del ciclo
+        List<Matricula> matriculasCiclo = new ArrayList<>();
+
+        //La matricula tiene asignatura y la asignatura tiene ciclo
+        for (Matricula matricula : matriculas){
+            if (matricula != null){
+                for (Asignatura asignatura : matricula.getColeccionAsignaturas()){
+                    if (asignatura != null && asignatura.getCicloFormativo().equals(cicloFormativo)){
+                        matriculasCiclo.add(matricula);
+                    }
+                }
+            }
+        }
+        */
+
+        List<Matricula> matriculasCiclo = matriculas.stream()
+                .filter(matricula -> matricula != null && matricula.getColeccionAsignaturas().stream()
+                                    .anyMatch(asignatura -> asignatura.getCicloFormativo().equals(cicloFormativo)))
+                .collect(Collectors.toList());
+
+        return matriculasCiclo;
+    }
+
+
+    public List<Matricula> getMatriculas(String cursoAcademico) throws OperationNotSupportedException {
+        List<Matricula> matriculas = getMatriculas();
+        /*
+        List<Matricula> matriculasCurso = new ArrayList<>();
+
+        for(Matricula matricula : matriculas){
+            if (matricula != null && matricula.getCursoAcademico().equals(cursoAcademico)){
+                matriculasCurso.add(matricula);
+            }
+        }
+        */
+        List<Matricula> matriculasCurso = matriculas.stream()
+                .filter(matricula -> matricula != null  && matricula.getCursoAcademico().equals(cursoAcademico))
+                .collect(Collectors.toList());
+
+        return matriculasCurso;
     }
  }
 
