@@ -6,40 +6,31 @@ import org.iesalandalus.programacion.matriculacion.modelo.dominio.CicloFormativo
 import org.iesalandalus.programacion.matriculacion.modelo.dominio.Matricula;
 
 import javax.naming.OperationNotSupportedException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class Matriculas {
-    private int capacidad;  // cantidad maxima que puede contener
-    private int tamano = 0;     // cantidad actual que contiene
-    private Matricula[] coleccionMatriculas;
+    private List<Matricula> coleccionMatriculas;
 
 
 
-    public Matriculas(int capacidad){
-        if (capacidad <= 0){
-            throw new IllegalArgumentException("ERROR: La capacidad debe ser mayor que cero.");
-        }
-
-        this.capacidad=capacidad;
-        this.coleccionMatriculas = new Matricula[capacidad];
-
+    public Matriculas(){
+        this.coleccionMatriculas = new ArrayList<>();
     }
 
-    public int getCapacidad() { return capacidad; }
-    public int getTamano() { return tamano; }
-    public Matricula[] get() throws OperationNotSupportedException { return copiaProfundaMatriculas(); }
+    public List<Matricula> get() throws OperationNotSupportedException { return copiaProfundaMatriculas(); }
 
 
-    private Matricula[] copiaProfundaMatriculas() throws OperationNotSupportedException {
+    private List<Matricula> copiaProfundaMatriculas() throws OperationNotSupportedException {
+        List<Matricula> copiaProfunda = new ArrayList<>();
 
-        Matricula[] copiaProfunda = new Matricula[coleccionMatriculas.length];
-
-        for (int i = 0; i < coleccionMatriculas.length; i++) {
-
-            if (coleccionMatriculas[i] != null) {
-                copiaProfunda[i] = new Matricula(coleccionMatriculas[i]);
+        for (Matricula matricula : coleccionMatriculas) {
+            if (matricula != null) {
+                copiaProfunda.add(new Matricula(matricula));
             }
         }
-
         return  copiaProfunda;
     }
 
@@ -49,56 +40,13 @@ public class Matriculas {
             throw new NullPointerException("ERROR: No se puede insertar una matrícula nula.");
         }
 
-        int indice = buscarIndice(matricula);
-
-        if (indice != -1){
+        if (coleccionMatriculas.contains(matricula)) {
             throw new OperationNotSupportedException("ERROR: Ya existe una matrícula con ese código.");
         }
 
-        if (capacidadSuperado(indice)) {
-            throw new OperationNotSupportedException("ERROR: No se aceptan más matrículas.");
-        }
-        else {
-            for (int i = 0; i < coleccionMatriculas.length; i++) {
-                if (coleccionMatriculas[i] == null && !capacidadSuperado(i)) {
-
-                    coleccionMatriculas[i] = matricula;
-                    copiaProfundaMatriculas();
-                    break;
-                }
-            }
-            tamano++;
-        }
+        coleccionMatriculas.add(matricula);
     }
 
-
-    private int buscarIndice(Matricula matricula) {
-
-        int noExisteMatricula = -1;
-
-        for (int i = 0; i < coleccionMatriculas.length; i++) {
-            if (coleccionMatriculas[i] != null && coleccionMatriculas[i].equals(matricula)) {
-                return i;
-            }
-        }
-
-        return noExisteMatricula;
-    }
-
-
-    private boolean tamanoSuperado(int indice){
-        if (indice >= getTamano()) {
-            return true;
-        } else return false;
-    }
-
-
-    private boolean capacidadSuperado(int indice){
-        if (tamano >= capacidad || indice>=capacidad) {
-            return true;
-        } else
-            return false;
-    }
 
 
     public Matricula buscar(Matricula matricula) throws OperationNotSupportedException{
@@ -106,18 +54,13 @@ public class Matriculas {
             throw new NullPointerException("Matrícula nula no puede buscarse.");
         }
 
-        int indice = buscarIndice(matricula);
-
-        if (indice != -1 && coleccionMatriculas[indice] != null){
-            for (Matricula matriculaCopia : copiaProfundaMatriculas()){
-                if (matriculaCopia.equals(matricula)){
-                    return matriculaCopia;
-
-                }
-            }
-
+        int indice;
+        if (coleccionMatriculas.contains(matricula)) {
+            indice=coleccionMatriculas.indexOf(matricula);
+            matricula = coleccionMatriculas.get(indice);
+            return new Matricula(matricula);
         }
-        return null;
+        else return null;
     }
 
 
@@ -126,28 +69,12 @@ public class Matriculas {
             throw new NullPointerException("ERROR: No se puede borrar una matrícula nula.");
         }
 
-        int indice = buscarIndice(matricula);
-        if(indice == -1){
+        if (!coleccionMatriculas.contains(matricula)) {
             throw new OperationNotSupportedException("ERROR: No existe ninguna matrícula como la indicada.");
-        } else{
-            coleccionMatriculas[indice] = null;
-            desplazarUnaPosicionHaciaIzquierda(indice);
-            tamano--;
-
         }
+        else coleccionMatriculas.remove(matricula);
     }
 
-
-    private void desplazarUnaPosicionHaciaIzquierda(int indice){
-
-        int i;
-
-        for ( i = indice; i < coleccionMatriculas.length - 1; i++){
-            coleccionMatriculas[i]=coleccionMatriculas[i+1];
-        }
-
-        coleccionMatriculas[i]=null;
-    }
 
 
     // El método get que está sobrecargado y devolverá una colección de las matrículas realizadas por el
@@ -155,10 +82,8 @@ public class Matriculas {
     // indicado como parámetro o una colección de las matrículas realizadas para el ciclo formativo
     // indicado como parámetro.
 
-    public Matricula[] get(Alumno alumno){
-
-        int contador = 0;
-
+    public List<Matricula> get(Alumno alumno){
+        /*int contador = 0;
         //Para contar cuántas coincidencias del alumno hay en matrículas:
         //Recorre las matrículas
         for (Matricula matricula : coleccionMatriculas) {
@@ -167,11 +92,11 @@ public class Matriculas {
                 contador++;
             }
         }
-
         //Crear array con el número de coincidencias del alumno en las matrículas:
         Matricula[] coleccionMatriculasAlumn = new Matricula[contador];
+        */
 
-        int i = 0;
+        /*int i = 0;
         //Para asignar las matrículas con coincidencias al nuevo array:
         for (Matricula matriculaAlumno : coleccionMatriculas){
             if (matriculaAlumno.getAlumno().equals(alumno)){
@@ -180,68 +105,80 @@ public class Matriculas {
             }
         }
         return coleccionMatriculasAlumn;
+        */
+
+        /* USANDO BUCLE
+        // Crear lista
+        List<Matricula> matriculasAlumno = new ArrayList<>();
+
+        // Recorrer colección, si en la matrícula su alumno es el indicado,  se añade la matrícula a la
+        // lista de matrículas del Alumno
+        for (Matricula matricula : coleccionMatriculas) {
+            if (matricula.getAlumno().equals(alumno)) {
+                matriculasAlumno.add(matricula);
+            }
+        }
+        return matriculasAlumno;
+        */
+
+        /* USANDO STREAM
+           Diferencia .toList() y collect(Collectors.toList()):
+
+           > Usa .toList() si no necesitas modificar la lista después.
+           > Usa .collect(Collectors.toList()) si necesitas una lista mutable (puede añadir/borrar datos).
+           > Si necesitas una lista específica como LinkedList, usa .collect(Collectors.toCollection(LinkedList::new)).
+        */
+
+        List<Matricula> matriculasAlumno = coleccionMatriculas.stream()
+                .filter(matricula -> matricula.getAlumno().equals(alumno))
+                .collect(Collectors.toList());
+        return matriculasAlumno;
     }
 
 
-    public Matricula[] get(String cursoAcademico){
 
-        int contador = 0;
+    public List<Matricula> get(String cursoAcademico){
+        /*
+        List<Matricula> matriculasCurso = new ArrayList<>();
 
         for (Matricula matricula : coleccionMatriculas) {
             if (matricula.getCursoAcademico().equals(cursoAcademico)) {
-                contador++;
+                matriculasCurso.add(matricula);
             }
         }
+        return matriculasCurso;
+        */
 
-        Matricula[] coleccionMatriculasCurso = new Matricula[contador];
-
-        int i = 0;
-
-        for (Matricula matriculaCurso : coleccionMatriculas) {
-
-            if (matriculaCurso.getCursoAcademico().equals(cursoAcademico)){
-                coleccionMatriculasCurso[i] = matriculaCurso;
-                i++;
-            }
-        }
-        return coleccionMatriculasCurso;
+        List<Matricula> matriculasCurso = coleccionMatriculas.stream()
+                .filter(matricula -> matricula.getCursoAcademico().equals(cursoAcademico))
+                .collect(Collectors.toList());
+        return matriculasCurso;
     }
 
 
-    public Matricula[] get(CicloFormativo cicloFormativo) {
-        int contador = 0;
+    public List<Matricula> get(CicloFormativo cicloFormativo) {
+        /*
+        List<Matricula> matriculasCiclo = new ArrayList<>();
 
         for (Matricula matricula : coleccionMatriculas) {
-            for (Asignatura asignatura : matricula.getColeccionAsignaturas()) {
-
+            for (Asignatura asignatura : matricula.getColeccionAsignaturas()){
                 if (asignatura.getCicloFormativo().equals(cicloFormativo)) {
-                    contador++;
-                    break;
-                }
-            }
-        }
-
-        Matricula[] coleccionMatriculasCiclo = new Matricula[contador];
-
-        int i = 0;
-
-        // Recorre las matrículas
-        for (Matricula matricula : coleccionMatriculas) {
-            //Dentro de una matrícula, recorre sus asignaturas
-            for (Asignatura asignatura : matricula.getColeccionAsignaturas()) {
-
-                // Si una asignatura específica de las recorridas tiene ciclo = al ciclo pasado...
-                if (asignatura.getCicloFormativo().equals(cicloFormativo)) {
-                    coleccionMatriculasCiclo[i] = matricula;
-                    i++;
-
+                    matriculasCiclo.add(matricula);
                     // break para evitar procesar más asignaturas una vez que se encuentra una
                     // coincidencia dentro de la matrícula
                     break;
                 }
             }
         }
-        return coleccionMatriculasCiclo;
+        return matriculasCiclo;
+        */
+
+        List<Matricula> matriculasCiclo = coleccionMatriculas.stream()              // listado de matrículas.
+                .filter(matricula -> matricula.getColeccionAsignaturas().stream()   // listado de asignaturas de cada matricula.
+                        .anyMatch(asignatura -> asignatura.getCicloFormativo().equals(cicloFormativo)))
+                        // anyMatch da true si alguna asignatura pertenece al ciclo formativo
+                .collect(Collectors.toList());
+        return matriculasCiclo;
     }
 
 }
