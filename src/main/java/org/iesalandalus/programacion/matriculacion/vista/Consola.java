@@ -4,6 +4,9 @@ import org.iesalandalus.programacion.matriculacion.modelo.dominio.*;
 import org.iesalandalus.programacion.matriculacion.modelo.negocio.Alumnos;
 import org.iesalandalus.programacion.matriculacion.modelo.negocio.CiclosFormativos;
 import org.iesalandalus.programacion.matriculacion.modelo.negocio.Asignaturas;
+import org.iesalandalus.programacion.matriculacion.controlador.Controlador;
+
+
 
 import org.iesalandalus.programacion.utilidades.Entrada;
 
@@ -11,6 +14,10 @@ import javax.naming.OperationNotSupportedException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class Consola {
 
@@ -22,29 +29,23 @@ public class Consola {
         System.out.println("-----------------------------------------------------------------------------------------");
         System.out.println("SISTEMA DE MATRICULACIÓN.");
         System.out.println("-----------------------------------------------------------------------------------------");
-        System.out.println(Opcion.SALIR);
-        System.out.println(Opcion.INSERTAR_ALUMNO);
-        System.out.println(Opcion.BUSCAR_ALUMNO);
-        System.out.println(Opcion.BORRAR_ALUMNO);
-        System.out.println(Opcion.MOSTRAR_ALUMNOS);
-        System.out.println(Opcion.INSERTAR_CICLO_FORMATIVO);
-        System.out.println(Opcion.BUSCAR_CICLO_FORMATIVO);
-        System.out.println(Opcion.BORRAR_CICLO_FORMATIVO);
-        System.out.println(Opcion.MOSTRAR_CICLOS_FORMATIVOS);
-        System.out.println(Opcion.INSERTAR_ASIGNATURA);
-        System.out.println(Opcion.BUSCAR_ASIGNATURA);
-        System.out.println(Opcion.BORRAR_ASIGNATURA);
-        System.out.println(Opcion.MOSTRAR_ASIGNATURAS);
-        System.out.println(Opcion.INSERTAR_MATRICULA);
-        System.out.println(Opcion.BUSCAR_MATRICULA);
-        System.out.println(Opcion.ANULAR_MATRICULA);
-        System.out.println(Opcion.MOSTRAR_MATRICULAS);
-        System.out.println(Opcion.MOSTRAR_MATRICULAS_ALUMNO);
-        System.out.println(Opcion.MOSTRAR_MATRICULAS_CICLO_FORMATIVO);
-        System.out.println(Opcion.MOSTRAR_MATRICULAS_CURSO_ACADEMICO);
+        // Imprime todos los objetos del array Opcion.values(), dando todos los objetos dentro de la clase enum Opcion
+        for (Opcion opcion : Opcion.values()) {
+            System.out.println(opcion);
+        }
     }
 
 
+
+    /* SOBRE EL USO DE STREAM:
+       En este caso no es recomendable usar Stream porque el método depende de una entrada del usuario y de una
+       estructura de control iterativa (do-while).
+       Los Streams están diseñados para operar sobre colecciones de datos de manera funcional, pero no para manejar
+       bucles controlados por entrada de usuario.
+
+       Aquí no estamos transformando ni filtrando una colección, sino esperando una entrada y validándola hasta que
+       sea correcta.
+    */
     public static Opcion elegirOpcion(){
 
         Opcion opcionSeleccionada = null;
@@ -61,7 +62,7 @@ public class Consola {
                 System.out.println("Opción fuera de rango");
 
             // Otras entradas inválidas (cadenas):
-            } catch (Exception e) {
+            } catch (NullPointerException | IllegalArgumentException e) {
                 System.out.println("Entrada inválida. Introduzca un número entre 0 y 19.");
             }
         } while (opcionSeleccionada == null);
@@ -70,7 +71,7 @@ public class Consola {
     }
 
 
-    public static Alumno leerAlumno() throws IllegalArgumentException, NullPointerException {
+    public static Alumno leerAlumno() {
         System.out.println("-----------------------------------------------------------------------------------------");
         System.out.println("Introduzca los datos del alumno.");
 
@@ -98,7 +99,7 @@ public class Consola {
     }
 
 
-    public static Alumno getAlumnoPorDni() throws NullPointerException, IllegalArgumentException {
+    public static Alumno getAlumnoPorDni() {
 
         System.out.println("Introduzca el DNI del alumno.");
         String dni = Entrada.cadena();
@@ -151,7 +152,7 @@ public class Consola {
                 grado = Grado.values()[opcion];
             } catch (ArrayIndexOutOfBoundsException e) {
                 System.out.println("Opción fuera de rango");
-            } catch (Exception e) {
+            } catch (NullPointerException | IllegalArgumentException e) {
                 System.out.println("Entrada inválida. Introduzca un número entre 0 y 2.");
             }
         } while (grado == null);
@@ -160,7 +161,7 @@ public class Consola {
     }
 
 
-    public static CicloFormativo leerCicloFormativo() throws IllegalArgumentException, NullPointerException{
+    public static CicloFormativo leerCicloFormativo() {
         System.out.println("-----------------------------------------------------------------------------------------");
         System.out.println("Introduzca los datos del ciclo formativo.");
 
@@ -183,28 +184,14 @@ public class Consola {
     }
 
 
-    public static void mostrarCiclosFormativos(CicloFormativo[] ciclosFormativos) {
+    public static void mostrarCiclosFormativos(List<CicloFormativo> ciclosFormativos) {
         System.out.println("-----------------------------------------------------------------------------------------");
         System.out.println("Ciclos formativos existentes:");
 
-        // CAMBIOS V.1: De parámetros obtiene CicloFormativo[] ciclosFormativos. Si obtenemos el array directamente,
-        // ya no hay que validar la variable clase CiclosFormativos ni obtener de ella el array
-        /*
-        // Si está vacía
-        if (ciclosFormativos == null) {
-            System.out.println("La colección de ciclos formativos no se inició.");
-        }
-
-        // Obtener el array de ciclos formativos
-        CicloFormativo[] arrayCiclos = ciclosFormativos.get();
-        */
-
         // Si no contiene nada:
-        if (ciclosFormativos == null || ciclosFormativos.length == 0) {
+        if (ciclosFormativos == null || ciclosFormativos.isEmpty()) {
             System.out.println("No hay ciclos formativos registrados.");
         }
-
-        // Si sí contiene, recorrer y mostrar cada ciclo formativo:
         boolean hayCiclosValidos = false;
         for (CicloFormativo ciclo : ciclosFormativos) {
             if (ciclo != null) {
@@ -213,17 +200,16 @@ public class Consola {
             }
         }
 
-        // Si sí contiene, pero no son válidos:
         if (!hayCiclosValidos) {
             System.out.println("No hay ciclos formativos válidos.");
         }
+
         System.out.println("-----------------------------------------------------------------------------------------");
     }
 
-    public static CicloFormativo getCicloFormativoPorCodigo() throws IllegalArgumentException{
-        ;
+    public static CicloFormativo getCicloFormativoPorCodigo() {
         System.out.println("Introduzca el código del ciclo formativo: ");
-            int codigoCiclo = Entrada.entero();
+        int codigoCiclo = Entrada.entero();
 
         return new CicloFormativo(codigoCiclo, "Informática", Grado.GDCFGB, "Base de Datos", 100);
     }
@@ -245,7 +231,7 @@ public class Consola {
                 curso = Curso.values()[opcion];
             } catch (ArrayIndexOutOfBoundsException e) {
                 System.out.println("Opción fuera de rango");
-            } catch (Exception e) {
+            } catch (NullPointerException | IllegalArgumentException e) {
                 System.out.println("Entrada inválida. Introduzca un número entre 0 y 19.");
             }
         } while (curso == null);
@@ -271,7 +257,7 @@ public class Consola {
                 especialidad = EspecialidadProfesorado.values()[opcion];
             } catch (ArrayIndexOutOfBoundsException e) {
                 System.out.println("Opción fuera de rango");
-            } catch (Exception e) {
+            } catch (NullPointerException | IllegalArgumentException e) {
                 System.out.println("Entrada inválida. Introduzca un número entre 0 y 19.");
             }
         } while (especialidad == null);
@@ -280,7 +266,7 @@ public class Consola {
     }
 
 
-    public static Asignatura leerAsignatura(CicloFormativo cicloFormativo) throws NullPointerException, IllegalArgumentException {
+    public static Asignatura leerAsignatura(CicloFormativo cicloFormativo) {
 
         // Validar que la colección de ciclos formativos no sea nula ni esté vacía
         if (cicloFormativo == null) {
@@ -311,52 +297,28 @@ public class Consola {
         // Llamar al método para seleccionar entre los grados disponibles
         EspecialidadProfesorado especialidadAsignatura = leerEspecialidadProfesorado();
 
-        //CAMBIOS V.1: De parámetros recibe CicloFormativo cicloFormativo. Por lo que nos podemos ahorrar el pedir
-        // seleccionar el ciclo si ya nos viene dado como parámetro
-        /*
-        System.out.println("Ciclo formativo:");
-        // Muestra los ciclos formativos actuales existentes. Imprime cada ciclo.
-        mostrarCiclosFormativos(cicloFormativo);
-        // Pide que busque un ciclo según su código. Devuelve el ciclo que se seleccionó.
-        CicloFormativo cicloAsignatura = getCicloFormativoPorCodigo();
-        */
-
         return new Asignatura(codAsignatura, nombreAsignatura, horasAnualAsignatura, cursoAsignatura, horasDesdoAsignatura, especialidadAsignatura, cicloFormativo);
     }
 
 
-    public static Asignatura getAsignaturaPorCodigo() throws NullPointerException, IllegalArgumentException{
+    public static Asignatura getAsignaturaPorCodigo() {
         System.out.println("Introduzca el código de la asignatura.");
-
         String codigoAsignatura = Entrada.cadena();
-
         CicloFormativo ciclo = new CicloFormativo(5000, "Informática", Grado.GDCFGB, "DAM", 10);
 
         return new Asignatura(codigoAsignatura, "Programación", 200, Curso.PRIMERO, 3, EspecialidadProfesorado.INFORMATICA, ciclo);
     }
 
 
-    private static void mostrarAsignaturas(Asignatura[] asignaturas){
+    private static void mostrarAsignaturas(List<Asignatura> asignaturas){
         System.out.println("-----------------------------------------------------------------------------------------");
         System.out.println("Asignaturas existentes:");
 
-        // Si obtenemos el array directamente, ya no hay que validar la variable clase CiclosFormativos ni obtener de
-        // ella el array
-        /*
-        // Si parámetro está vacío:
-        if (asignaturas == null) {
-            System.out.println("La colección de asignaturas no se inició.");
-        }
-
-        // Obtener array del parámetro
-        Asignatura[] arrayAsignaturas = asignaturas.get();
-        */
-
         // Si no contiene nada:
-        if (asignaturas == null || asignaturas.length == 0) {
+        if (asignaturas.isEmpty()) {
             System.out.println("No hay asignaturas registradas.");
         }
-
+        /*
         // Si sí contiene, recorrer y mostrar cada asignatura:
         boolean hayAsignaturasValidas = false;
         for (Asignatura asignatura : asignaturas) {
@@ -365,8 +327,23 @@ public class Consola {
                 System.out.println(asignatura.imprimir());
             }
         }
+        */
 
-        // Si sí contiene, pero no son válidas:
+        /* USANDO STREAM
+           Diferencia forEach() y peek():
+
+           > .peek() no es terminal (puedes llamar a más métodos tras este); se usa para efectos secundarios durante
+           las operaciones intermedias de un Stream, como inspeccionar los elementos o realizar alguna acción
+           (en este caso, imprimir).
+           > .forEach() es terminal; se usa para realizar una operación sobre cada elemento.
+        */
+        // Filtramos las asignaturas nulas y las mostramos
+        boolean hayAsignaturasValidas = asignaturas.stream()
+                .filter(asignatura -> asignatura != null)
+                .peek(asignatura -> System.out.println(asignatura.imprimir())) // Imprime las asignaturas válidas
+                .count() > 0;              // Verifica si hay asignaturas válidas. Devuelve true o false.
+
+        // Si no hay asignaturas válidas
         if (!hayAsignaturasValidas) {
             System.out.println("No hay asignaturas válidas.");
         }
@@ -374,37 +351,25 @@ public class Consola {
     }
 
 
-    static boolean asignaturaYaMatriculada(Asignatura[] asignaturasMatricula, Asignatura asignatura){
-        //CAMBIOS V.1: modificador predenterminado, llamado "modificador visible del paquete". No está indicado por una
-        //palabra clave, ya que Java lo aplica por defecto a todos los campos y métodos.
-        //Los campos y métodos marcados por el modificador de acceso protegido serán visibles:
-        //  > dentro de todas las clases incluidas en el mismo paquete que el nuestro.
-        //  > dentro de todas las clases que heredan nuestra clase.
-
+    static boolean asignaturaYaMatriculada(List<Asignatura> asignaturasMatricula, Asignatura asignatura){
         if (asignaturasMatricula == null){
-            throw new NullPointerException("La lista pasada no ha sido iniciada aún.");
+            throw new NullPointerException("La lista de asignaturas de la matrícula pasada no ha sido iniciada aún.");
         }
         if (asignatura == null) {
             throw new IllegalArgumentException("La asignatura a buscar en la lista no puede ser nula");
         }
 
-        for (Asignatura asignat : asignaturasMatricula) {
-            if (asignat != null && asignat.equals(asignatura)) {
-                return true;
-            }
-        }
-
-        return false;
+        return asignaturasMatricula.contains(asignatura);//devuelve boolean
     }
 
 
-    public static Matricula leerMatricula(Alumno alumno, Asignatura[] asignaturas) throws OperationNotSupportedException, NullPointerException, IllegalArgumentException{
+    public static Matricula leerMatricula(Alumno alumno, List<Asignatura> asignaturas) throws OperationNotSupportedException{
 
         // Si parámetros están vacíos:
         if (alumno == null) {
             throw new NullPointerException("El alumno es nulo.");
         }
-        if (asignaturas == null || asignaturas.length == 0) {
+        if (asignaturas == null || asignaturas.isEmpty()) {
             throw new IllegalArgumentException("No hay asignaturas registradas en el sistema .");
         }
 
@@ -421,53 +386,13 @@ public class Consola {
 
         ///////////////////////////////////////////////////////////////////////////////////
 
-        //CAMBIOS V.1: Ahora como parámetro recibe Alumno alumno. Por lo que ya no hay que pedir que seleccione un
-        //alumno pues nos viene ya dado.
         System.out.println("Alumno seleccionado:");
         System.out.println(alumno);
-        /*
-        // ELEGIR ALUMNO DE LA LISTA DEL OBJETO ALUMNOS
-        System.out.println("-----------------------------------------------------------------------------------------");
-        System.out.println("Alumnos registrados:");
-        Alumno alumnoSeleccionado;
-        Alumno alumnoExistente;
-        do{
-            // Mostrar todos los alumnos no nulos de la colección Alumnos pasada...
-            for (Alumno alumno : alumnos.get()) {
-                if (alumno != null) {
-                    System.out.println(alumno);
-                }
-            }
 
-            // Si no contiene nada:
-            if (alumnos.get() == null || alumnos.get().length == 0) {
-                System.out.println("No hay asignaturas registradas.");
-            }
-            System.out.println("-----------------------------------------------------------------------------------------");
-
-                //... Y pedir un alumno según DNI
-            alumnoSeleccionado = getAlumnoPorDni();
-
-            // Comprobar si el alumno seleccionado con getAlumnoPorDni() es nulo. Innecesario¿?
-            if (alumnoSeleccionado == null) {
-                System.out.println("Alumno no encontrado. Intente de nuevo.");
-            }
-
-            // Comprobar si el alumno seleccionado existe en la coleccion de Alumnos pasada
-            alumnoExistente = alumnos.buscar(alumnoSeleccionado);
-
-            // Si no existe en la colección de alumnos pasada:
-            if (alumnoExistente == null){
-                System.out.println("El alumno seleccionado por dni no está registrado.");
-            }
-        } while (alumnoExistente == null);
-        */
         ///////////////////////////////////////////////////////////////////////////////////
 
-        //CAMBIOS V.1: Se migra la implementación de esta parte a otro método, donde de ese array puede seleccionar el
-        //usuario las asignaturas para la matrícula
         // ELEGIR ASIGNATURA DE LA LISTA DE ASIGNATURAS REGISTRADAS EN EL SISTEMA.
-        Asignatura[] asignaturasMatricula = elegirAsignaturasMatricula(asignaturas);
+        List<Asignatura> asignaturasMatricula = elegirAsignaturasMatricula(asignaturas);
 
         ///////////////////////////////////////////////////////////////////////////////////
 
@@ -475,66 +400,81 @@ public class Consola {
     }
 
 
-    //CAMBIOS V.1: Crea el método elegirAsignaturasMatricula para obtener el array de asignaturas que se asignarán
-    //en una matrícula.
-    public static Asignatura[] elegirAsignaturasMatricula(Asignatura[] asignaturas){
+
+    public static List<Asignatura> elegirAsignaturasMatricula(List<Asignatura> asignaturas){
         //Nos dan por parámetro el array de asignaturas registradas en el sistema.
-        if (asignaturas == null || asignaturas.length == 0){
+        if (asignaturas.isEmpty()){
             throw new IllegalArgumentException("No hay asignaturas registradas para poder seleccionar.");
         }
 
-        final int CAPACIDAD_MAXIMA = 10;
-        Asignatura[] asignaturasMatriculadas = new Asignatura[CAPACIDAD_MAXIMA];
-        int contador = 0;
+        List<Asignatura> asignaturasMatriculadas = new ArrayList<>();
         boolean agregarMasAsignaturas = false;
         do {
-
-            // Mostrar todas las asignaturas no nulas de la coleccion pasada...
+            // Mostrar todas las asignaturas de la coleccion pasada...
             mostrarAsignaturas(asignaturas);
 
-            // ...y pedir una asignatura según código.
-            Asignatura asignaturaSeleccionada = getAsignaturaPorCodigo();
+            // ...y pedir una asignatura según código. Tomar solo el código para tomar la asignatura real de la lista
+            String codigoAsignatura = getAsignaturaPorCodigo().getCodigo();
 
-            //CAMBIOS V.1: Hacer que en iteraciones del array de asignaturas comprobar si la asignaturaSeleccionada
-            //==asignaturaRecorrida, para comprobar si está en el array obtenido. Si lo está, rompe bucle.
             /*
-            // Comprobar si la asignatura seleccionada existe en la coleccion de Asignaturas pasada
-            Asignatura asignaturaExistente = asignaturas.buscar(asignaturaSeleccionada);
-            */
-            Asignatura asignaturaExistente = null;
+            Asignatura asignaturaSeleccionada = null;
             for (Asignatura asignatura : asignaturas){
-                if (asignaturaSeleccionada != null && asignaturaSeleccionada.equals(asignatura)){
-                    asignaturaExistente = asignatura;
+                if (asignatura != null && asignatura.getCodigo().equals(codigoAsignatura)){
+                    asignaturaSeleccionada = asignatura;
                     break;
                 }
             }
+            */
 
-            // Si no existe en la colección de Asignaturas pasada:
-            if (asignaturaExistente == null) {
+            Asignatura asignaturaSeleccionada = asignaturas.stream()
+                    .filter(asignatura -> asignatura != null && asignatura.getCodigo().equals(codigoAsignatura))
+                    .findFirst()            // Obtiene la primera coincidencia (se asimila al uso de break).
+                                            // Devuelve obj Optional<Asignatura>
+                    .orElse(null);    // Extrae el valor del optional si existe, si no devuelve null.
+                                            // Esto convierte el Optional<Asignatura> en un Asignatura directamente
+            /*
+            Alternativas sin null para maenajar objetos Optional:
+            > Usando ifPresent(): Evita el uso de null.
+                Optional<Asignatura> optionalAsignatura = asignaturas.stream()
+                            .filter(asignatura -> asignatura.getCodigo().equals(codigoAsignatura))
+                            .findFirst();
+                optionalAsignatura.ifPresent(asignatura -> {
+                            System.out.println("Asignatura encontrada: " + asignatura);
+                            });
+            > Usando orElseThrow(): Si quieres lanzar una excepción en lugar de usar null.
+                Asignatura asignaturaSeleccionada = asignaturas.stream()
+                            .filter(asignatura -> asignatura.getCodigo().equals(codigoAsignatura))
+                            .findFirst()
+                            .orElseThrow(() -> new IllegalArgumentException("Asignatura no encontrada."));
+            > Usando orElseGet(): Si necesitas un valor por defecto
+                Asignatura asignaturaSeleccionada = asignaturas.stream()
+                            .filter(asignatura -> asignatura.getCodigo().equals(codigoAsignatura))
+                            .findFirst()
+                            .orElseGet(() -> new Asignatura("Código por defecto", "Nombre por defecto"));
+            > Usando map(): Si solo necesitas extraer un dato de la asignatura y manejar la ausencia del valor
+            con orElse() o orElseThrow().
+                String nombreAsignatura = asignaturas.stream()
+                            .filter(asignatura -> asignatura.getCodigo().equals(codigoAsignatura))
+                            .findFirst()
+                            .map(Asignatura::getNombre)
+                            .orElse("Nombre desconocido");
+            */
+
+
+            // Comprobar si la lista obtenida contiene la asignaturaSeleccionada
+            if (!asignaturas.contains(asignaturaSeleccionada) || asignaturaSeleccionada==null) {
                 System.out.println("La asignatura seleccionada por código no está registrada en el sistema.");
                 continue;
-                // continue hace que el resto del código en esa iteración se omita por completo.
-                // La ejecución vuelve al inicio del bucle do-while, donde se repetirá el proceso para pedir
-                // otra asignatura hasta que se seleccione una válida (cuando asignatura != null).
             }
 
-            // Comprobar si la asignatura ya está en la matrícula
-            boolean yaEnMatricula = asignaturaYaMatriculada(asignaturasMatriculadas, asignaturaSeleccionada);
-
-            // Si ya existe en la matrícula:
-            if (yaEnMatricula) {
+            // Comprobar que no se añade una asignatura ya añadida antes
+            if (asignaturaYaMatriculada(asignaturasMatriculadas, asignaturaSeleccionada)) {
                 System.out.println("La asignatura ya está en la matrícula. No se puede repetir.");
                 continue;
             }
 
-            // Comprobar si hay espacio en el array
-            if (contador >= CAPACIDAD_MAXIMA) {
-                System.out.println("No se pueden añadir más asignaturas. Se ha alcanzado el límite de " + CAPACIDAD_MAXIMA + " asignaturas.");
-                break; // Salir del bucle ya que no se puede añadir más asignaturas
-            }
-
             // Añadir la asignatura al array
-            asignaturasMatriculadas[contador++] = asignaturaExistente;
+            asignaturasMatriculadas.add(asignaturaSeleccionada);
 
             // Preguntar si se quieren añadir más asignaturas
             int respuesta;
@@ -554,7 +494,8 @@ public class Consola {
     }
 
 
-    public static Matricula getMatriculaPorIdentificacion() throws OperationNotSupportedException, IllegalArgumentException {
+
+    public static Matricula getMatriculaPorIdentificacion() throws OperationNotSupportedException {
         System.out.println("Introduzca el ID de la matrícula.");
         int idMatricula = Entrada.entero();
 
@@ -562,7 +503,7 @@ public class Consola {
         LocalDate fechaMat = LocalDate.now().minusDays(2);
         LocalDate fechaNac = LocalDate.of(2000, 10, 3);
         Alumno alumno = new Alumno("Emilio", "53143489B", "emilio@gmail.com", "600793568", fechaNac);
-        Asignatura[] coleccionAsignaturas = new Asignatura[10];
+        List<Asignatura> coleccionAsignaturas = new ArrayList<>();
 
         return new Matricula(idMatricula, "24-25", fechaMat, alumno, coleccionAsignaturas);
     }
