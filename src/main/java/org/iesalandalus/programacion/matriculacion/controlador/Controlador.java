@@ -8,6 +8,7 @@ import org.iesalandalus.programacion.matriculacion.vista.Consola;
 import org.iesalandalus.programacion.matriculacion.vista.Vista;
 
 import javax.naming.OperationNotSupportedException;
+import java.util.List;
 
 public class Controlador {
     private Modelo modelo;
@@ -60,20 +61,16 @@ public class Controlador {
 
 
     public Alumno buscar(Alumno alumno) {
-        modelo.buscar(alumno);
-        return alumno;
+        return modelo.buscar(alumno);
     }
     public Asignatura buscar(Asignatura asignatura) {
-        modelo.buscar(asignatura);
-        return asignatura;
+        return modelo.buscar(asignatura);
     }
     public CicloFormativo buscar(CicloFormativo cicloFormativo) {
-        modelo.buscar(cicloFormativo);
-        return cicloFormativo;
+        return modelo.buscar(cicloFormativo);
     }
     public Matricula buscar(Matricula matricula) throws OperationNotSupportedException {
-        modelo.buscar(matricula);
-        return matricula;
+        return modelo.buscar(matricula);
     }
 
 
@@ -91,28 +88,31 @@ public class Controlador {
     }
 
 
-    public Alumno[] getAlumnos() {
+    public List<Alumno> getAlumnos() {
         return modelo.getAlumnos();
     }
-    public Asignatura[] getAsignaturas() {
+    public List<Asignatura> getAsignaturas() {
         return modelo.getAsignaturas();
     }
-    public CicloFormativo[] getCiclosFormativos() {
+    public List<CicloFormativo> getCiclosFormativos() {
         return modelo.getCiclosFormativos();
     }
-    public Matricula[] getMatriculas() throws OperationNotSupportedException {
+    public List<Matricula> getMatriculas() throws OperationNotSupportedException {
         return modelo.getMatriculas();
     }
 
 
-    public Matricula[] getMatriculas(Alumno alumno) throws OperationNotSupportedException{
+    public List<Matricula> getMatriculas(Alumno alumno) throws OperationNotSupportedException{
+        return modelo.getMatriculas(alumno);
+
+        /* PASADO AL MODELO
+
         //Matriculas registradas en el sistema
         Matricula[] matriculas = modelo.getMatriculas();
         //Matriculas del alumno
         int tamanio = 1;
         Matricula[] matriculasAlumno = new Matricula[tamanio];
         int indice = 0;
-
         //Si en la matricula registrada, su alumno == al alumno obtenido por parámetro, se almacena en el array de
         //matriculasAlumno
         for (int i = 0; i < matriculas.length; i++) {
@@ -122,18 +122,19 @@ public class Controlador {
                 tamanio++;
             }
         }
-
-        return matriculasAlumno;
+        return matriculasAlumno;*/
     }
+    public List<Matricula> getMatriculas(CicloFormativo cicloFormativo) throws OperationNotSupportedException {
+        return modelo.getMatriculas(cicloFormativo);
 
-    public Matricula[] getMatriculas(CicloFormativo cicloFormativo) throws OperationNotSupportedException {
+        /* PASADO AL MODELO
+
         //Matriculas registradas en el sistema
         Matricula[] matriculas = modelo.getMatriculas();
-        //Matriculas del alumno
+        //Matriculas del ciclo
         int tamanio = 1;
         Matricula[] matriculasCiclo = new Matricula[tamanio];
         int indice = 0;
-
         //La matricula tiene asignatura y la asignatura tiene ciclo
         boolean hayMatriculas = false;
         for (int i = 0; i < matriculas.length; i++) {
@@ -148,15 +149,17 @@ public class Controlador {
                 }
             }
         }
-
-        return matriculasCiclo;
+        return matriculasCiclo;*/
     }
-    public Matricula[] getMatriculas(String cursoAcademico) throws OperationNotSupportedException {
+    public List<Matricula> getMatriculas(String cursoAcademico) throws OperationNotSupportedException {
+        return modelo.getMatriculas(cursoAcademico);
+
+        /* PASADO AL MODELO
+
         Matricula[] matriculas = modelo.getMatriculas();
         int tamanio = 1;
         Matricula[] matriculasCursoAca = new Matricula[tamanio];
         int indice = 0;
-
         for (int i = 0; i < matriculas.length; i++) {
             if (matriculas[i] != null && matriculas[i].getCursoAcademico().equals(cursoAcademico)) {
                 matriculasCursoAca[indice] = matriculas[i];
@@ -164,8 +167,7 @@ public class Controlador {
                 tamanio++;
             }
         }
-
-        return matriculasCursoAca;
+        return matriculasCursoAca;*/
     }
 
 }
