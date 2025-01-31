@@ -3,9 +3,13 @@ package org.iesalandalus.programacion.matriculacion.modelo.dominio;
 import javax.naming.OperationNotSupportedException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Matricula {
     public static final int MAXIMO_MESES_ANTERIOR_ANULACION = 6;
@@ -18,12 +22,13 @@ public class Matricula {
     private String cursoAcademico;
     private LocalDate fechaMatriculacion;
     private LocalDate fechaAnulacion;
-    private Asignatura [] coleccionAsignaturas = new Asignatura[MAXIMO_NUMERO_ASIGNATURAS_POR_MATRICULA];
+    private List<Asignatura> coleccionAsignaturas = new ArrayList<>();
+    //private Asignatura [] coleccionAsignaturas = new Asignatura[MAXIMO_NUMERO_ASIGNATURAS_POR_MATRICULA];
     private Alumno alumno;
 
 
     public Matricula(int idMatricula, String cursoAcademico, LocalDate fechaMatriculacion, Alumno alumno,
-                     Asignatura[] coleccionAsignaturas) throws OperationNotSupportedException{
+                     List<Asignatura> coleccionAsignaturas) throws OperationNotSupportedException{
 
         setIdMatricula(idMatricula);
         setCursoAcademico(cursoAcademico);
@@ -47,6 +52,7 @@ public class Matricula {
         this.fechaAnulacion = matricula.getFechaAnulacion(); // Copiar fecha de anulación, puede ser nula
         setAlumno(matricula.getAlumno());
         setColeccionAsignaturas(matricula.getColeccionAsignaturas());
+        /*setColeccionAsignaturas(new ArrayList<>(matricula.getColeccionAsignaturas()));*/
     }
 
 
@@ -142,21 +148,22 @@ public class Matricula {
         this.alumno = alumno;
     }
 
-    public Asignatura[] getColeccionAsignaturas(){
+    public List<Asignatura> getColeccionAsignaturas(){
         return coleccionAsignaturas;
     }
-    public void setColeccionAsignaturas (Asignatura[] coleccionAsignaturas) throws OperationNotSupportedException {
+    public void setColeccionAsignaturas (List<Asignatura> coleccionAsignaturas) throws OperationNotSupportedException {
 
         // Validar que no sea null
         if (coleccionAsignaturas == null) {
             throw new NullPointerException("ERROR: La lista de asignaturas de una matrícula no puede ser nula.");
         }
-    /* Se crea con el máximo número de asignaturas, no se comprueba.
+        /*
+        Se crea con el máximo número de asignaturas, no se comprueba.
         // Validar tamaño mínimo y máximo
         if (coleccionAsignaturas.length < 1 || coleccionAsignaturas.length > MAXIMO_NUMERO_ASIGNATURAS_POR_MATRICULA) {
             throw new IllegalArgumentException("La colección debe tener 1 asignatura al menos y máximo 10.");
         }
-    */
+        */
         //Validar que nº horas totales de todas las asignaturas de la colección no sea > 1000
         if (superaMaximoNumeroHorasMatricula(coleccionAsignaturas)){
             throw new OperationNotSupportedException("ERROR: No se puede realizar la matrícula ya que supera el máximo de horas permitidas (" + Matricula.MAXIMO_NUMERO_HORAS_MATRICULA + " horas).");
@@ -167,16 +174,40 @@ public class Matricula {
 
 
 
-    private boolean superaMaximoNumeroHorasMatricula(Asignatura[] asignaturasMatricula ){
+    private boolean superaMaximoNumeroHorasMatricula(List<Asignatura> asignaturasMatricula ){
+        /*
         int totalHoras = 0;
 
-        /* Bucle sobre el array (en parámetros) de asignaturas en la matrícula, se asigna cada posición en cada bucle
-           a la variable asignatura */
+        //Bucle sobre el array (en parámetros) de asignaturas en la matrícula, se asigna cada posición en cada bucle
+        a la variable asignatura
         for (Asignatura asignatura : asignaturasMatricula) {
             if (asignatura!=null){
                 totalHoras += asignatura.getHorasAnuales();
             }
         }
+        */
+
+
+        /* USANDO STREAM
+           > .stream() Convierte la lista como parametro asignaturasMatricula en un flujo (Stream) de elementos.
+           > .filter(asign -> asign != null) Filtra cada elemento para obtener los no nulos solo.
+           > .map(Asignatura::getHorasAnuales) A cada objeto Asignatura (de la lista asignaturasMatricula) lo transforma
+              en su número de horas anuales. Después de esta operación, ya no trabajamos con objetos Asignatura,
+              sino con un Stream<Integer> que contiene solo las horas de todos los objetos Asignatura.
+           > .reduce(0, Integer::sum) Reduce el contenido de un Stream a un valor. Se usa para operaciones de
+              agregación (sumar, concatenar, encontrar el valor máximo o mínimo, multiplicar,...).
+              Toma uno o dos parámetros de entrada:
+              1er param. valor inicial.
+              2o param. operador binario a aplicar que define cómo se deben combinar los elementos del stream.
+              ** Si recibe 1 parámetro sería el operador binario a aplicar sobra cada elemento del stream.
+
+              Aquí lo que hace es sumar al 0 (valor inicial) los valores de ese Stream<Integer> con las horas, hasta dar
+              un solo valor entero.
+         */
+        int totalHoras = asignaturasMatricula.stream()
+                .filter(asign -> asign != null)
+                .map(Asignatura::getHorasAnuales) // Mapea cada Asignatura a un Integer con sus horas.
+                .reduce(0, Integer::sum);
 
         if (totalHoras > MAXIMO_NUMERO_HORAS_MATRICULA){
             return true;
@@ -185,10 +216,10 @@ public class Matricula {
     }
 
 
-
     //Para imprimir los nombres de las asignaturas que figuran en la colección de asignaturas
     private String asignaturasMatricula(){
 
+        /*
         //Tomar array coleccionAsignaturas e imprimir nombres de esas asignaturas
         StringBuilder asignaturas = new StringBuilder();
         for (Asignatura asignatura : coleccionAsignaturas) {
@@ -196,13 +227,20 @@ public class Matricula {
                 asignaturas.append(asignatura.getNombre()).append(", ");
             }
         }
-        /* Si el StringBuilder no está vacío (hay asignaturas), elimina los últimos dos caracteres (coma y espacio
-        de la última asignatura insertada)*/
+        // Si el StringBuilder no está vacío (hay asignaturas), elimina los últimos dos caracteres (coma y espacio
+        //de la última asignatura insertada)
         if (!asignaturas.isEmpty()) {
             asignaturas.setLength(asignaturas.length() - 2);
         }
         return asignaturas.toString();
+        */
 
+
+        String asignaturasMatricula = coleccionAsignaturas.stream()
+                .map(Asignatura::getNombre) // Mapea cada Asignatura a su nombre (String)
+                .collect(Collectors.joining(", ")); // Concatena los nombres  separados con ", "
+
+        return asignaturasMatricula;
     }
 
 
