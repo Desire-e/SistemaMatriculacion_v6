@@ -18,6 +18,11 @@ import java.util.*;
 public class Vista {
     private static Controlador controlador;
 
+    //CAMBIO V.3:
+    public Vista(){
+        // Se asigna la vista a todas las opciones del enum
+        Opcion.setVista(this);
+    }
 
     public void setControlador(Controlador controlador){
         if (controlador == null){
@@ -45,7 +50,7 @@ public class Vista {
     }
 
 
-    private static void ejecutarOpcion(Opcion opcion){
+    public void ejecutarOpcion(Opcion opcion){
         switch (opcion) {
             case INSERTAR_ALUMNO:
                 insertarAlumno();
@@ -115,7 +120,7 @@ public class Vista {
     }
 
 
-    private static void insertarAlumno(){
+    public static void insertarAlumno(){
         try {
             Alumno nuevoAlumno = Consola.leerAlumno();
             controlador.insertar(nuevoAlumno);
@@ -126,7 +131,7 @@ public class Vista {
     }
 
 
-    private static void buscarAlumno(){
+    public static void buscarAlumno(){
         try {
             String dniAlumno = Consola.getAlumnoPorDni().getDni();
 
@@ -163,7 +168,7 @@ public class Vista {
     }
 
 
-    private static void borrarAlumno(){
+    public static void borrarAlumno(){
         try {
             Alumno alumno = Consola.getAlumnoPorDni();
             controlador.borrar(alumno);
@@ -174,7 +179,7 @@ public class Vista {
     }
 
 
-    private static void mostrarAlumnos(){
+    public static void mostrarAlumnos(){
         List<Alumno> alumnos = controlador.getAlumnos();
         if (alumnos.isEmpty()) {
             System.out.println("No hay alumnos registrados.");
@@ -201,7 +206,7 @@ public class Vista {
 
 
 
-    private static void insertarAsignatura(){
+    public static void insertarAsignatura(){
         try {
 
             /*Usar size() puede ser costoso. isEmpty() optimiza*/
@@ -264,7 +269,7 @@ public class Vista {
     }
 
 
-    private static void buscarAsignatura(){
+    public static void buscarAsignatura(){
         try {
             String codigoAsignatura = Consola.getAsignaturaPorCodigo().getCodigo();
 
@@ -282,7 +287,7 @@ public class Vista {
     }
 
 
-    private static void borrarAsignatura(){
+    public static void borrarAsignatura(){
         try {
             // Introducen por código la asignatura
             Asignatura asignatura = Consola.getAsignaturaPorCodigo();
@@ -295,7 +300,7 @@ public class Vista {
     }
 
 
-    private static void mostrarAsignaturas(){
+    public static void mostrarAsignaturas(){
         List<Asignatura> asignaturas = controlador.getAsignaturas();
         if (asignaturas.isEmpty()) {
             System.out.println("No hay asignaturas registradas.");
@@ -309,7 +314,7 @@ public class Vista {
     }
 
 
-    private static void insertarCicloFormativo(){
+    public static void insertarCicloFormativo(){
         try {
             CicloFormativo nuevoCiclo = Consola.leerCicloFormativo();
             controlador.insertar(nuevoCiclo);
@@ -320,7 +325,7 @@ public class Vista {
     }
 
 
-    private static void buscarCicloFormativo(){
+    public static void buscarCicloFormativo(){
         try {
             int codigoCiclo = Consola.getCicloFormativoPorCodigo().getCodigo();
 
@@ -338,7 +343,7 @@ public class Vista {
     }
 
 
-    private static void borrarCicloFormativo(){
+    public static void borrarCicloFormativo(){
         try {
             CicloFormativo ciclo = Consola.getCicloFormativoPorCodigo();
             controlador.borrar(ciclo);
@@ -349,7 +354,7 @@ public class Vista {
     }
 
 
-    private static void mostrarCiclosFormativos(){
+    public static void mostrarCiclosFormativos(){
         List<CicloFormativo> ciclosFormativos = controlador.getCiclosFormativos();
 
         if (ciclosFormativos.isEmpty()) {
@@ -366,7 +371,7 @@ public class Vista {
 
     /*Modifica el método insertarMatricula para que utilice los métodos leerAlumno, elegirAsignaturasMatricula y
     leerMatricula de la clase Consola.*/
-    private static void insertarMatricula(){
+    public static void insertarMatricula(){
         try {
             //Pedir alumno
             Alumno alumnoNuevo = Consola.leerAlumno();
@@ -411,7 +416,7 @@ public class Vista {
     }
 
 
-    private static void buscarMatricula(){
+    public static void buscarMatricula(){
         try {
             int idMatricula = Consola.getMatriculaPorIdentificacion().getIdMatricula();
 
@@ -429,7 +434,7 @@ public class Vista {
     }
 
 
-    private static void anularMatricula(){
+    public static void anularMatricula(){
         try {
             // Muestra las matrículas
             mostrarMatriculas();
@@ -473,7 +478,7 @@ public class Vista {
     }
 
 
-    private static void mostrarMatriculas() {
+    public static void mostrarMatriculas() {
         try {
             /*
             // Verificar si no hay matrículas registradas
@@ -530,7 +535,7 @@ public class Vista {
     }
 
 
-    private static void mostrarMatriculasPorAlumno(){
+    public static void mostrarMatriculasPorAlumno(){
         try {
             // Muestra los alumnos disponibles
             mostrarAlumnos();
@@ -586,7 +591,7 @@ public class Vista {
     }
 
 
-    private static void mostrarMatriculasPorCicloFormativo(){
+    public static void mostrarMatriculasPorCicloFormativo(){
         try {
             mostrarCiclosFormativos();
             CicloFormativo ciclo = Consola.getCicloFormativoPorCodigo();
@@ -623,7 +628,7 @@ public class Vista {
     }
 
 
-    private static void mostrarMatriculasPorCursoAcademico(){
+    public static void mostrarMatriculasPorCursoAcademico(){
         try {
             System.out.println("Introduzca el curso académico (AA-AA): ");
             String cursoAca = Entrada.cadena();
@@ -645,4 +650,5 @@ public class Vista {
         }
 
     }
+
 }
