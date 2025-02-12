@@ -71,6 +71,7 @@ public class Consola {
     }
 
 
+
     public static Alumno leerAlumno() {
         System.out.println("-----------------------------------------------------------------------------------------");
         System.out.println("Introduzca los datos del alumno.");
@@ -137,7 +138,73 @@ public class Consola {
     }
 
 
+    //CAMBIO V.3:
+    public static TiposGrado leerTiposGrado(){
+        TiposGrado tipoGradoSeleccionado = null;
+
+        do {
+
+            try {
+
+                System.out.println("Elija un grado (0-1):");
+                for (TiposGrado tipoGrado : TiposGrado.values()) {
+                    System.out.println(tipoGrado.imprimir());
+                }
+
+                int opcion = Entrada.entero();
+                tipoGradoSeleccionado = TiposGrado.values()[opcion];
+
+                // Opcion.values() devuelve un array con los valores del enumerado, y cualquier número que
+                // no corresponda a un índice de ese array genera esta excepción:
+            } catch (ArrayIndexOutOfBoundsException e) {
+                System.out.println("Opción fuera de rango");
+                // Otras entradas inválidas (cadenas):
+            } catch (NullPointerException | IllegalArgumentException e) {
+                System.out.println("Entrada inválida. Introduzca un número entre 0 y 19.");
+            }
+
+        } while (tipoGradoSeleccionado == null);
+
+        return tipoGradoSeleccionado;
+    }
+
+
+    //CAMBIO V.3:
+    public static Modalidad leerModalidad(){
+        Modalidad modalidadSeleccionada = null;
+
+        do {
+
+            try {
+
+                System.out.println("Elija una modalidad (0-1)");
+                for (Modalidad tipoGrado : Modalidad.values()) {
+                    System.out.println(tipoGrado.imprimir());
+                }
+
+                int opcion = Entrada.entero();
+                modalidadSeleccionada = Modalidad.values()[opcion];
+
+                // Opcion.values() devuelve un array con los valores del enumerado, y cualquier número que
+                // no corresponda a un índice de ese array genera esta excepción:
+            } catch (ArrayIndexOutOfBoundsException e) {
+                System.out.println("Opción fuera de rango");
+                // Otras entradas inválidas (cadenas):
+            } catch (NullPointerException | IllegalArgumentException e) {
+                System.out.println("Entrada inválida. Introduzca un número entre 0 y 19.");
+            }
+
+        } while (modalidadSeleccionada == null);
+
+        return modalidadSeleccionada;
+    }
+
+
+    //CAMBIO V.3:
+    //Modifica el método leerGrado para que en función del tipo de grado del Ciclo Formativo elegido
+    // por el usuario, cree el objeto correspondiente (Grado D o Grado E) con los atributos necesarios.
     public static Grado leerGrado(){
+        /*
         System.out.println("Grados existentes.");
         System.out.println(Grado.GDCFGB.imprimir());
         System.out.println(Grado.GDCFGM.imprimir());
@@ -158,27 +225,62 @@ public class Consola {
         } while (grado == null);
 
         return grado;
+        */
+
+
+        //CAMBIOS V.3:
+        Grado grado = null;
+
+        TiposGrado tipo = leerTiposGrado();
+//        if (tipo == null) {
+//            throw new NullPointerException("El tipo de grado no puede ser nulo");
+//        }
+
+        if (tipo == TiposGrado.GRADOD){
+            System.out.println("Introduzca el nombre del grado:");
+            String nombre = Entrada.cadena();
+            System.out.println("Introduzca el número de años del grado (2 o 3):");
+            int numAnios = Entrada.entero();
+            Modalidad modalidad = leerModalidad();
+            grado = new GradoD(nombre, numAnios, modalidad);
+        }
+
+        if (tipo == TiposGrado.GRADOE){
+            System.out.println("Introduzca el nombre del grado:");
+            String nombre = Entrada.cadena();
+            System.out.println("Introduzca el número de años del grado (debe ser 1):");
+            int numAnios = Entrada.entero();
+            System.out.println("Introduzca el número de ediciones del grado (mayor a 0):");
+            int numEdiciones = Entrada.entero();
+            grado = new GradoE(nombre, numAnios, numEdiciones);
+
+        }
+
+        return grado;
     }
+
 
 
     public static CicloFormativo leerCicloFormativo() {
         System.out.println("-----------------------------------------------------------------------------------------");
         System.out.println("Introduzca los datos del ciclo formativo.");
 
-        System.out.println("Código:");
+        System.out.println("Código del ciclo:");
         int codigoCiclo = Entrada.entero();
 
-        System.out.println("Familia profesional:");
+        System.out.println("Familia profesional del ciclo:");
         String familiaProfCiclo = Entrada.cadena();
 
-        // Llamar al método para seleccionar entre los grados disponibles
-        Grado gradoCiclo = leerGrado();
-
-        System.out.println("Nombre:");
+        System.out.println("Nombre del ciclo:");
         String nombreCiclo = Entrada.cadena();
 
-        System.out.println("Horas:");
+        System.out.println("Horas del ciclo:");
         int horasCiclo = Entrada.entero();
+
+        //CAMBIO V.3:
+        // Llamar al método para seleccionar el tipo de grado e introducir los datos de este.
+        System.out.println("Datos del grado:");
+        Grado gradoCiclo = leerGrado();
 
         return new CicloFormativo(codigoCiclo, familiaProfCiclo, gradoCiclo, nombreCiclo, horasCiclo);
     }
@@ -210,8 +312,10 @@ public class Consola {
     public static CicloFormativo getCicloFormativoPorCodigo() {
         System.out.println("Introduzca el código del ciclo formativo: ");
         int codigoCiclo = Entrada.entero();
+        //CAMBIO V.3:
+        Grado grado = new GradoD("grado básico", 2, Modalidad.PRESENCIAL);
 
-        return new CicloFormativo(codigoCiclo, "Informática", Grado.GDCFGB, "Base de Datos", 100);
+        return new CicloFormativo(codigoCiclo, "Informática", grado, "Base de Datos", 100);
     }
 
 
@@ -304,7 +408,10 @@ public class Consola {
     public static Asignatura getAsignaturaPorCodigo() {
         System.out.println("Introduzca el código de la asignatura.");
         String codigoAsignatura = Entrada.cadena();
-        CicloFormativo ciclo = new CicloFormativo(5000, "Informática", Grado.GDCFGB, "DAM", 10);
+
+        //CAMBIO V.3:
+        Grado grado = new GradoD("grado básico", 2, Modalidad.PRESENCIAL);
+        CicloFormativo ciclo = new CicloFormativo(5000, "Informática", grado, "DAM", 10);
 
         return new Asignatura(codigoAsignatura, "Programación", 200, Curso.PRIMERO, 3, EspecialidadProfesorado.INFORMATICA, ciclo);
     }
