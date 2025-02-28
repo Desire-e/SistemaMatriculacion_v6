@@ -5,6 +5,7 @@ package org.iesalandalus.programacion.matriculacion.modelo.dominio;
 public class GradoD extends Grado{
     private Modalidad modalidad;
 
+
     public GradoD(String nombre, int numAnios, Modalidad modalidad){
         //Constructor de la clase padre (Grado)
         super(nombre);
@@ -34,13 +35,14 @@ public class GradoD extends Grado{
         this.numAnios = numAnios;
     }
 
+
+    // RETROALIMENTACIÓN:
+    // El método toString debe llamar al toString del super y añadir su propios atributos.
     @Override
     public String toString() {
-        return "GradoD{" +
-                "modalidad=" + modalidad +
-                ", nombre='" + nombre + '\'' +
-                ", iniciales='" + iniciales + '\'' +
-                ", numAnios=" + numAnios +
-                '}';
+        return super.toString() +
+                " - Años: " + numAnios +
+                " - Modalidad: " + modalidad;
     }
+
 }

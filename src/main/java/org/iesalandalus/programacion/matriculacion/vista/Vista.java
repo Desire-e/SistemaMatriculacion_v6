@@ -369,38 +369,33 @@ public class Vista {
     }
 
 
+
+
     /*Modifica el método insertarMatricula para que utilice los métodos leerAlumno, elegirAsignaturasMatricula y
     leerMatricula de la clase Consola.*/
     public static void insertarMatricula(){
         try {
-            //Pedir alumno
-            Alumno alumnoNuevo = Consola.leerAlumno();
-            /*
-            boolean alumnoExiste = false;
+            // LISTADO DE ALUMNOS
+            mostrarAlumnos();
 
-            //Si ya existe el alumno nuevo, solo se almacena en alumnoMatricula
-            for (Alumno alumno : controlador.getAlumnos()){
-                if (alumnoNuevo.equals(alumno)){
-                    alumnoExiste = true;
-                    break;
-                }
-            }
-            */
+            // BUSCAR ALUMNO
+            String dniAlumno = Consola.getAlumnoPorDni().getDni();
 
-            //Si ya existe un alumno = alumnoNuevo, anyMatch da true
-            /*
-            anyMatch() es más adecuado cuando solo necesitamos saber si existe un elemento
-            en la lista que cumpla con una condición. anyMatch() devuelve un valor booleano.
-            */
-            boolean alumnoExiste = controlador.getAlumnos().stream()
-                    .anyMatch(alumno -> alumnoNuevo.equals(alumno));
+            // BUSCAR ALUMNO POR DNI
+            Alumno alumnoMatricula = controlador.getAlumnos().stream()
+                    // Aplica un filtro para seleccionar solo aquellos alumnos que cumplan condiciones
+                    .filter(alumno -> alumno != null && alumno.getDni().equals(dniAlumno))
+                    // alumnoMatricula almecena el primer alumno que cumpla con la condición del filtro.
+                    .findFirst()
+                    // Si no encuentra ninguno, almacena null.
+                    .orElse(null);
 
-            // Si el alumno no existe, insertarlo en el sistema
-            if (!alumnoExiste) {
-                controlador.insertar(alumnoNuevo);
+            // Si el alumno no existe:
+            if (alumnoMatricula == null) {
+                System.out.println("Alumno inexistente.");
             }
 
-            Alumno alumnoMatricula = alumnoNuevo;
+
 
             //Pedir asignaturas
             //Pasar array de las asignaturas que hay en el sistema a leerMatricula directamente con
@@ -544,7 +539,7 @@ public class Vista {
             Alumno alumno = Consola.getAlumnoPorDni();
 
             // Buscar el alumno por DNI
-            Alumno alumnoExistente = controlador.buscar(alumno);
+            Alumno alumnoExistente = controlador.buscar(alumno);  // Si existe el alumno, devuelve copia de este, sino null
             if (alumnoExistente == null) {
                 System.out.println("No se ha encontrado ningún alumno con el DNI proporcionado.");
             }

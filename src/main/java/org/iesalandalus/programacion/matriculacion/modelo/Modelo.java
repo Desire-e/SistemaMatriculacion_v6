@@ -102,10 +102,7 @@ public class Modelo {
 
 
 
-    public List<Matricula> getMatriculas(Alumno alumno) throws OperationNotSupportedException{
-        //Matriculas registradas en el sistema
-        List<Matricula> matriculas = getMatriculas();
-
+    public List<Matricula> getMatriculas(Alumno alumno) {
         /*
         //Matriculas del alumno
         List<Matricula> matriculasAlumno = new ArrayList<>();
@@ -118,18 +115,13 @@ public class Modelo {
             }
         }
         */
-        List<Matricula> matriculasAlumno = matriculas.stream()
-                .filter(matricula -> matricula != null  && matricula.getAlumno().equals(alumno))
-                .collect(Collectors.toList());
 
-        return matriculasAlumno;
+        //obtiene alumno y se lo pasa a clase Matriculas get(), que devuelve una List<Matricula>
+        return matriculas.get(alumno);
     }
 
 
-    public List<Matricula> getMatriculas(CicloFormativo cicloFormativo) throws OperationNotSupportedException {
-        //Matriculas registradas en el sistema
-        List<Matricula> matriculas = getMatriculas();
-
+    public List<Matricula> getMatriculas(CicloFormativo cicloFormativo) {
         /*
         //Matriculas del ciclo
         List<Matricula> matriculasCiclo = new ArrayList<>();
@@ -146,17 +138,11 @@ public class Modelo {
         }
         */
 
-        List<Matricula> matriculasCiclo = matriculas.stream()
-                .filter(matricula -> matricula != null && matricula.getColeccionAsignaturas().stream()
-                                    .anyMatch(asignatura -> asignatura.getCicloFormativo().equals(cicloFormativo)))
-                .collect(Collectors.toList());
-
-        return matriculasCiclo;
+        return matriculas.get(cicloFormativo);
     }
 
 
-    public List<Matricula> getMatriculas(String cursoAcademico) throws OperationNotSupportedException {
-        List<Matricula> matriculas = getMatriculas();
+    public List<Matricula> getMatriculas(String cursoAcademico) {
         /*
         List<Matricula> matriculasCurso = new ArrayList<>();
 
@@ -166,11 +152,8 @@ public class Modelo {
             }
         }
         */
-        List<Matricula> matriculasCurso = matriculas.stream()
-                .filter(matricula -> matricula != null  && matricula.getCursoAcademico().equals(cursoAcademico))
-                .collect(Collectors.toList());
 
-        return matriculasCurso;
+        return matriculas.get(cursoAcademico);
     }
  }
 

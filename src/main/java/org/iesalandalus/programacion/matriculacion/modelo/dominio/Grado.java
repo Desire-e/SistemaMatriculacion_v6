@@ -30,6 +30,7 @@ public abstract class Grado {
     }
 */
 
+
     //CAMBIOS V.3:
     protected String nombre;
     protected String iniciales;
@@ -44,8 +45,11 @@ public abstract class Grado {
     }
 
     protected void setNombre(String nombre){
-        if (nombre == null || nombre.isBlank() || nombre.isEmpty()){
+        if (nombre.isBlank() || nombre.isEmpty()){
             throw new IllegalArgumentException ("El nombre del grado no puede estar vacío.");
+        }
+        if (nombre == null){
+            throw new NullPointerException ("El nombre del grado no puede ser nulo.");
         }
         this.nombre=nombre;
         setIniciales(); // Actualiza las iniciales al modificar el nombre

@@ -29,4 +29,13 @@ public class GradoE extends Grado {
         this.numAnios = numAnios;
     }
 
+
+    // RETROALIMENTACIÓN:
+    // El método toString debe llamar al toString del super y añadir su propios atributos.
+    @Override
+    public String toString() {
+        return super.toString() +
+                " - Años: " + numAnios +
+                " - Número de ediciones: " + numEdiciones;
+    }
 }

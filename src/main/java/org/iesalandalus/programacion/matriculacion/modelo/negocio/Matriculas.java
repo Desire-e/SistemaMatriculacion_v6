@@ -129,6 +129,7 @@ public class Matriculas {
            > Si necesitas una lista específica como LinkedList, usa .collect(Collectors.toCollection(LinkedList::new)).
         */
 
+        // obtiene alumno de clase Modelo getMatriculas()
         List<Matricula> matriculasAlumno = coleccionMatriculas.stream()
                 .filter(matricula -> matricula.getAlumno().equals(alumno))
                 .collect(Collectors.toList());
