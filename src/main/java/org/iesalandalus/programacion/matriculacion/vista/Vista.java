@@ -133,9 +133,10 @@ public class Vista {
 
     public static void buscarAlumno(){
         try {
+            /* HACER QUE NO APAREZCA DATOS INVENTADOS DE getAlumnoPorDni() */
             String dniAlumno = Consola.getAlumnoPorDni().getDni();
 
-            /*
+            /* SIN STREAM (1)
             boolean alumnoEncontrado = false;
             for (Alumno alumno : controlador.getAlumnos()){
                 if (alumno != null && alumno.getDni().equals(dniAlumno)){
@@ -155,7 +156,7 @@ public class Vista {
                             () -> System.out.println("Alumno no encontrado.")       //si no obtiene parametros
                     );
 
-            /*
+            /* SIN STREAM (2)
             if (!alumnoEncontrado){
                 System.out.println("Alumno no encontrado.");
             }
