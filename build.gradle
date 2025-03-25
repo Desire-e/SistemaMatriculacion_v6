@@ -16,6 +16,8 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
     // Entrada para que el repositorio jitpack.io sepa acceder a la localización de librería entrada
     implementation 'com.github.JRJimenezReyes:entrada:1.0.3'
+    // Driver MySQL
+    implementation 'mysql:mysql-connector-java:8.0.28'
 }
 
 test {
