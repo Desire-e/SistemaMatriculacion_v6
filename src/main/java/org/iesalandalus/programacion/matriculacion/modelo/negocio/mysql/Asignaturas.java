@@ -1,20 +1,38 @@
-package org.iesalandalus.programacion.matriculacion.modelo.negocio;
+package org.iesalandalus.programacion.matriculacion.modelo.negocio.mysql;
 
 import org.iesalandalus.programacion.matriculacion.modelo.dominio.Alumno;
 import org.iesalandalus.programacion.matriculacion.modelo.dominio.Asignatura;
+import org.iesalandalus.programacion.matriculacion.modelo.negocio.IAsignaturas;
 
 import javax.naming.OperationNotSupportedException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Asignaturas {
+public class Asignaturas implements IAsignaturas {
     private List<Asignatura> coleccionAsignaturas;
 
     public Asignaturas() {
         this.coleccionAsignaturas = new ArrayList<>();
     }
 
+
+    @Override
+    public void comenzar() {
+        //establecerConexion()
+    }
+    @Override
+    public void terminar() {
+        //cerrarConexion()
+    }
+
+    @Override
+    public int getTamano() {
+        // size() devuelve el tamaño de la lista
+        return coleccionAsignaturas.size();
+    }
+
+    @Override
     public List<Asignatura> get(){ return copiaProfundaAsignaturas(); }
 
 
@@ -27,6 +45,7 @@ public class Asignaturas {
     }
 
 
+    @Override
     public void insertar (Asignatura asignatura) throws OperationNotSupportedException {                                                                //RELANZAR ?
         if (asignatura == null){
             throw new NullPointerException("ERROR: No se puede insertar una asignatura nula.");
@@ -41,6 +60,7 @@ public class Asignaturas {
 
 
 
+    @Override
     public Asignatura buscar(Asignatura asignatura) {
         if (asignatura == null){
             throw new NullPointerException("Asignatura nula no puede buscarse.");
@@ -56,6 +76,7 @@ public class Asignaturas {
     }
 
 
+    @Override
     public void borrar(Asignatura asignatura) throws OperationNotSupportedException {
         if (asignatura == null) {
             throw new NullPointerException("ERROR: No se puede borrar una asignatura nula.");

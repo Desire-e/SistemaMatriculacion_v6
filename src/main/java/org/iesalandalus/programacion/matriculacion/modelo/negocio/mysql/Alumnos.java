@@ -1,29 +1,47 @@
-package org.iesalandalus.programacion.matriculacion.modelo.negocio;
+package org.iesalandalus.programacion.matriculacion.modelo.negocio.mysql;
 
 import org.iesalandalus.programacion.matriculacion.modelo.dominio.Alumno;
-import org.iesalandalus.programacion.utilidades.Entrada;
+import org.iesalandalus.programacion.matriculacion.modelo.dominio.CicloFormativo;
+import org.iesalandalus.programacion.matriculacion.modelo.negocio.IAlumnos;
 
 import javax.naming.OperationNotSupportedException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Alumnos {
+public class Alumnos implements IAlumnos {
     private List<Alumno> coleccionAlumnos;
-
-
 
     public Alumnos(/*int capacidad*/){
         this.coleccionAlumnos = new ArrayList<>();
     }
 
+
+
+    // Los cuerpos de comenzar() y terminar() en las cuatro clases deberán llamar respectivamente
+    // a los métodos establecerConexion y cerrarConexion de la clase MySQL.
+    @Override
+    public void comenzar() {
+        //establecerConexion()
+    }
+
+    @Override
+    public void terminar() {
+        //cerrarConexion()
+    }
+
+
     /*public int getCapacidad() { return capacidad; }*/
-    /*public int getTamano() {
+    @Override
+    public int getTamano() {
         // size() devuelve el tamaño de la lista
         return coleccionAlumnos.size();
     }
-    */
-    public List<Alumno> get() { return copiaProfundaAlumnos(); }
+
+    @Override
+    public List<Alumno> get() {
+        return copiaProfundaAlumnos();
+    }
 
 
 
@@ -54,7 +72,7 @@ public class Alumnos {
     }
 
 
-
+    @Override
     // Insertar alumno no nulo al final de colecciónAlumnos, sin repetidos, si hay espacio.
     public void insertar (Alumno alumno) throws OperationNotSupportedException {                                                                //RELANZAR ?
         if (alumno == null){
@@ -114,6 +132,7 @@ public class Alumnos {
 */
 
 
+    @Override
     //Busca un alumno. Si existe devuelve el alumno, si no existe devuelve null
     public Alumno buscar(Alumno alumno) {
         if (alumno == null){
@@ -135,7 +154,7 @@ public class Alumnos {
     }
 
 
-
+    @Override
     public void borrar(Alumno alumno) throws OperationNotSupportedException {
         if (alumno == null){
             throw new NullPointerException("ERROR: No se puede borrar un alumno nulo.");
@@ -148,6 +167,8 @@ public class Alumnos {
         //Si existe, lo borra
         else coleccionAlumnos.remove(alumno);
     }
+
+
 
 
 /*

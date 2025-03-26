@@ -1,14 +1,14 @@
-package org.iesalandalus.programacion.matriculacion.modelo.negocio;
+package org.iesalandalus.programacion.matriculacion.modelo.negocio.mysql;
 
-import org.iesalandalus.programacion.matriculacion.modelo.dominio.Asignatura;
 import org.iesalandalus.programacion.matriculacion.modelo.dominio.CicloFormativo;
+import org.iesalandalus.programacion.matriculacion.modelo.negocio.ICiclosFormativos;
 
 import javax.naming.OperationNotSupportedException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CiclosFormativos {
+public class CiclosFormativos implements ICiclosFormativos {
     private List<CicloFormativo> coleccionCiclosFormativos;
 
 
@@ -16,7 +16,27 @@ public class CiclosFormativos {
         this.coleccionCiclosFormativos = new ArrayList<>();
     }
 
-    public List<CicloFormativo> get(){ return copiaProfundaCiclosFormativos(); }
+
+    @Override
+    public void comenzar() {
+        //establecerConexion()
+    }
+    @Override
+    public void terminar() {
+        //cerrarConexion()
+    }
+
+    @Override
+    public int getTamano() {
+        // size() devuelve el tamaño de la lista
+        return coleccionCiclosFormativos.size();
+    }
+
+
+    @Override
+    public List<CicloFormativo> get(){
+        return copiaProfundaCiclosFormativos();
+    }
 
 
     private List<CicloFormativo> copiaProfundaCiclosFormativos(){
@@ -28,6 +48,7 @@ public class CiclosFormativos {
     }
 
 
+    @Override
     public void insertar (CicloFormativo cicloFormativo) throws OperationNotSupportedException {                                                                //RELANZAR ?
         if (cicloFormativo == null){
             throw new NullPointerException("ERROR: No se puede insertar un ciclo formativo nulo.");
@@ -41,6 +62,7 @@ public class CiclosFormativos {
     }
 
 
+    @Override
     public CicloFormativo buscar(CicloFormativo cicloFormativo) {
         if (cicloFormativo == null){
             throw new NullPointerException("Ciclo nulo no puede buscarse.");
@@ -56,6 +78,7 @@ public class CiclosFormativos {
     }
 
 
+    @Override
     public void borrar(CicloFormativo cicloFormativo) throws OperationNotSupportedException {
         if (cicloFormativo == null){
             throw new NullPointerException("ERROR: No se puede borrar un ciclo formativo nulo.");

@@ -1,26 +1,44 @@
-package org.iesalandalus.programacion.matriculacion.modelo.negocio;
+package org.iesalandalus.programacion.matriculacion.modelo.negocio.mysql;
 
 import org.iesalandalus.programacion.matriculacion.modelo.dominio.Alumno;
-import org.iesalandalus.programacion.matriculacion.modelo.dominio.Asignatura;
 import org.iesalandalus.programacion.matriculacion.modelo.dominio.CicloFormativo;
 import org.iesalandalus.programacion.matriculacion.modelo.dominio.Matricula;
+import org.iesalandalus.programacion.matriculacion.modelo.negocio.IMatriculas;
 
 import javax.naming.OperationNotSupportedException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-public class Matriculas {
+public class Matriculas implements IMatriculas {
     private List<Matricula> coleccionMatriculas;
-
-
 
     public Matriculas(){
         this.coleccionMatriculas = new ArrayList<>();
     }
 
-    public List<Matricula> get() throws OperationNotSupportedException { return copiaProfundaMatriculas(); }
+
+    @Override
+    public void comenzar() {
+        //establecerConexion()
+    }
+    @Override
+    public void terminar() {
+        //cerrarConexion()
+    }
+
+
+    @Override
+    public int getTamano() {
+        // size() devuelve el tamaño de la lista
+        return coleccionMatriculas.size();
+    }
+
+
+    @Override
+    public List<Matricula> get() throws OperationNotSupportedException {
+        return copiaProfundaMatriculas();
+    }
 
 
     private List<Matricula> copiaProfundaMatriculas() throws OperationNotSupportedException {
@@ -35,6 +53,7 @@ public class Matriculas {
     }
 
 
+    @Override
     public void insertar (Matricula matricula) throws OperationNotSupportedException {                                                                //RELANZAR ?
         if (matricula == null){
             throw new NullPointerException("ERROR: No se puede insertar una matrícula nula.");
@@ -49,6 +68,7 @@ public class Matriculas {
 
 
 
+    @Override
     public Matricula buscar(Matricula matricula) throws OperationNotSupportedException{
         if (matricula == null){
             throw new NullPointerException("Matrícula nula no puede buscarse.");
@@ -64,6 +84,7 @@ public class Matriculas {
     }
 
 
+    @Override
     public void borrar(Matricula matricula) throws OperationNotSupportedException {
         if (matricula == null){
             throw new NullPointerException("ERROR: No se puede borrar una matrícula nula.");
@@ -82,6 +103,8 @@ public class Matriculas {
     // indicado como parámetro o una colección de las matrículas realizadas para el ciclo formativo
     // indicado como parámetro.
 
+
+    @Override
     public List<Matricula> get(Alumno alumno){
         /*int contador = 0;
         //Para contar cuántas coincidencias del alumno hay en matrículas:
@@ -137,7 +160,7 @@ public class Matriculas {
     }
 
 
-
+    @Override
     public List<Matricula> get(String cursoAcademico){
         /*
         List<Matricula> matriculasCurso = new ArrayList<>();
@@ -157,6 +180,7 @@ public class Matriculas {
     }
 
 
+    @Override
     public List<Matricula> get(CicloFormativo cicloFormativo) {
         /*
         List<Matricula> matriculasCiclo = new ArrayList<>();
