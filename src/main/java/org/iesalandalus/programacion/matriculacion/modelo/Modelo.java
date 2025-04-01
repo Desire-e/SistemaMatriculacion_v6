@@ -1,6 +1,7 @@
 package org.iesalandalus.programacion.matriculacion.modelo;
 
 import org.iesalandalus.programacion.matriculacion.modelo.dominio.Asignatura;
+import org.iesalandalus.programacion.matriculacion.modelo.negocio.*;
 import org.iesalandalus.programacion.matriculacion.modelo.negocio.mysql.Alumnos;
 import org.iesalandalus.programacion.matriculacion.modelo.negocio.mysql.Asignaturas;
 import org.iesalandalus.programacion.matriculacion.modelo.negocio.mysql.CiclosFormativos;
@@ -17,6 +18,7 @@ con las tres clases que hacen referencia a las colecciones de datos (alumnos, as
 formativos y matrículas).*/
 
 public class Modelo {
+
     //public int CAPACIDAD=1000;
     private Alumnos alumnos;
     private Matriculas matriculas;
@@ -24,12 +26,29 @@ public class Modelo {
     private CiclosFormativos ciclosFormativos;
 
 
+    /* TO10:
+    private IAlumnos alumnos;
+    private IMatriculas matriculas;
+    private IAsignaturas asignaturas;
+    private ICiclosFormativos ciclosFormativos;
+    private IFuenteDatos fuenteDatos;
+
+    public Modelo(FactoriaFuenteDatos factoriaFuenteDatos){
+        alumnos = fuenteDatos.crearAlumnos();
+    }
+
+    private void setFuenteDatos(IFuenteDatos fuenteDatos){
+
+    }
+    */
+
+
     /*método  que creará la instancia de las clases de negocio.*/
     public void comenzar(){
-        alumnos = new Alumnos(/*CAPACIDAD*/);
-        asignaturas = new Asignaturas(/*CAPACIDAD*/);
-        ciclosFormativos = new CiclosFormativos(/*CAPACIDAD*/);
-        matriculas = new Matriculas(/*CAPACIDAD*/);
+        alumnos = new Alumnos();
+        asignaturas = new Asignaturas();
+        ciclosFormativos = new CiclosFormativos();
+        matriculas = new Matriculas();
     }
 
 
@@ -100,7 +119,7 @@ public class Modelo {
 
 
 
-    public List<Matricula> getMatriculas(Alumno alumno) {
+    public List<Matricula> getMatriculas(Alumno alumno) throws OperationNotSupportedException {
         /*
         //Matriculas del alumno
         List<Matricula> matriculasAlumno = new ArrayList<>();
@@ -119,7 +138,7 @@ public class Modelo {
     }
 
 
-    public List<Matricula> getMatriculas(CicloFormativo cicloFormativo) {
+    public List<Matricula> getMatriculas(CicloFormativo cicloFormativo) throws OperationNotSupportedException {
         /*
         //Matriculas del ciclo
         List<Matricula> matriculasCiclo = new ArrayList<>();
@@ -140,7 +159,7 @@ public class Modelo {
     }
 
 
-    public List<Matricula> getMatriculas(String cursoAcademico) {
+    public List<Matricula> getMatriculas(String cursoAcademico) throws OperationNotSupportedException {
         /*
         List<Matricula> matriculasCurso = new ArrayList<>();
 

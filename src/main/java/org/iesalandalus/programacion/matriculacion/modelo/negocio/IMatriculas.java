@@ -18,8 +18,8 @@ public interface IMatriculas {
     Matricula buscar(Matricula matricula) throws OperationNotSupportedException;
     void borrar(Matricula matricula) throws OperationNotSupportedException;
 
-    List<Matricula> get(Alumno alumno);
-    List<Matricula> get(String cursoAcademico);
-    List<Matricula> get(CicloFormativo cicloFormativo);
+    List<Matricula> get(Alumno alumno) throws OperationNotSupportedException;
+    List<Matricula> get(String cursoAcademico) throws OperationNotSupportedException;
+    List<Matricula> get(CicloFormativo cicloFormativo) throws OperationNotSupportedException;
 
 }

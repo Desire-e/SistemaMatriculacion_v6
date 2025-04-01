@@ -83,4 +83,8 @@ public abstract class Grado {
     // Método abstracto para establecer el número de años (cada grado tiene su forma de establecer sus años)
     public abstract void setNumAnios(int numAnios);
 
+    public int getNumAnios(){
+        return numAnios;
+    }
+
 }
