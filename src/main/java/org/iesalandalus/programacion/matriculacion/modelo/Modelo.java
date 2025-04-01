@@ -20,40 +20,50 @@ formativos y matrículas).*/
 public class Modelo {
 
     //public int CAPACIDAD=1000;
-    private Alumnos alumnos;
-    private Matriculas matriculas;
-    private Asignaturas asignaturas;
-    private CiclosFormativos ciclosFormativos;
-
-
-    /* TO10:
     private IAlumnos alumnos;
     private IMatriculas matriculas;
     private IAsignaturas asignaturas;
     private ICiclosFormativos ciclosFormativos;
     private IFuenteDatos fuenteDatos;
 
+
     public Modelo(FactoriaFuenteDatos factoriaFuenteDatos){
-        alumnos = fuenteDatos.crearAlumnos();
+        // DUDA: se hace así?
+
+        // Si yo le paso a new Modelo(FactoriaFuenteDatos.MEMORIA), factoriaFuenteDatos.crear()
+        // ejecuta y devuelve new FuenteDatosMemoria(), la cual es una instancia de IFuenteDatos.
+
+        // Le pasamos la instancia de IFuenteDatos (solo puede ser FuenteDatosMemoria o FuenteDatosMySQL)
+        // al setter del atr fuenteDatos, para establecer la fuente de datos a usar
+        setFuenteDatos(factoriaFuenteDatos.crear());
     }
+
 
     private void setFuenteDatos(IFuenteDatos fuenteDatos){
-
+        // DUDA: validar si es null?
+        this.fuenteDatos=fuenteDatos;
     }
-    */
 
-
+    // Ahora, si tenemos instancia IFuenteDatos, por ejemplo una instancia FuenteDatosMemoria, se ejecutan sus métodos:
     /*método  que creará la instancia de las clases de negocio.*/
+    // (en base a la instancia de IFuenteDatos, que solo podría ser FuenteDatosMemoria o FuenteDatosMySQL)
     public void comenzar(){
-        alumnos = new Alumnos();
-        asignaturas = new Asignaturas();
-        ciclosFormativos = new CiclosFormativos();
-        matriculas = new Matriculas();
+        // (polimorfismo) si la clase IFuenteDatos es clase FuenteDatosMemoria, ejecuta su crearAlumnos(),
+        // que creará new Alumnos() del paquete memoria
+        alumnos = fuenteDatos.crearAlumnos();
+        asignaturas = fuenteDatos.crearAsignaturas();
+        ciclosFormativos = fuenteDatos.crearCiclosFormativos();
+        matriculas = fuenteDatos.crearMatriculas();
     }
 
 
     /*método que simplemente mostrará un mensaje informativo indicando que el modelo ha terminado.*/
     public void terminar(){
+        alumnos.terminar();
+        asignaturas.terminar();
+        ciclosFormativos.terminar();
+        matriculas.terminar();
+
         System.out.println("Modelo terminado.");
     }
 
