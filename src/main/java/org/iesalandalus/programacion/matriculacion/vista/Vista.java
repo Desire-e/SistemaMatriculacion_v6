@@ -433,28 +433,15 @@ public class Vista {
 
             // Pide una matrícula por código y la busca
             //CAMBIOS V.1: Obtiene la matricula con datos inventados menos el id
-            int idMatriculaAnular = Consola.getMatriculaPorIdentificacion().getIdMatricula();
-            /*
-            Matricula matriculaAnular = null;
-            for (Matricula matricula : controlador.getMatriculas()){
-                if (matricula!=null && matricula.getIdMatricula() == idMatriculaAnular){
-                    matriculaAnular = matricula;
-                    break;
-                }
-            }
-            */
+            Matricula matFicticia = Consola.getMatriculaPorIdentificacion();
+            Matricula matAnular= controlador.buscar(matFicticia);
 
-            Matricula matriculaAnular = controlador.getMatriculas().stream()
-                    .filter(m -> m != null && m.getIdMatricula() == idMatriculaAnular)
-                    .findFirst()
-                    .orElse(null);
-
-            if(matriculaAnular == null){
+            if(matAnular == null){
                 System.out.println("No existe matrícula con el id proporcionado");
             }
 
             // Verificar si la matrícula ya está anulada
-            if (matriculaAnular.getFechaAnulacion() != null) {
+            if (matAnular.getFechaAnulacion() != null) {
                 System.out.println("La matrícula ya está anulada. No se puede volver a anular.");
                 return;
             }
@@ -462,7 +449,7 @@ public class Vista {
             // Pide la fecha de anulación
             LocalDate fechaAnulacion = Consola.leerFecha("Fecha de anulación de la matrícula(DD/MM/AAAA): ");
             // Inserta fecha de anulación
-            matriculaAnular.setFechaAnulacion(fechaAnulacion);
+            matAnular.setFechaAnulacion(fechaAnulacion);
 
         } catch (NullPointerException | IllegalArgumentException | OperationNotSupportedException e) {
             System.out.println("Error al anular la matrícula. " + e.getMessage());

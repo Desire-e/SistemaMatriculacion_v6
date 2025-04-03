@@ -17,18 +17,17 @@ import static org.iesalandalus.programacion.matriculacion.modelo.negocio.mysql.u
 import static org.iesalandalus.programacion.matriculacion.modelo.negocio.mysql.utilidades.MySQL.establecerConexion;
 
 public class Matriculas implements IMatriculas {
-    private List<Matricula> coleccionMatriculas;
+    //private List<Matricula> coleccionMatriculas;
     private Connection conexion = null;
 
 
     public Matriculas(){
-        this.coleccionMatriculas = new ArrayList<>();
+        //this.coleccionMatriculas = new ArrayList<>();
         comenzar();
     }
 
     private static Matriculas instancia;
-    // DUDA: en el diagrama pone que debe ser privado
-    public static Matriculas getInstancia(){
+    static Matriculas getInstancia(){
         if (instancia == null){
             instancia = new Matriculas();
         }
@@ -39,6 +38,7 @@ public class Matriculas implements IMatriculas {
     @Override
     public void comenzar() {
         conexion = MySQL.establecerConexion();
+
     }
     @Override
     public void terminar() {
@@ -145,8 +145,6 @@ public class Matriculas implements IMatriculas {
                 // Manejo de cicloAsig
                 Grado gradoInventadoCiclo = new GradoE("grado inventado", 1, 1);
                 CicloFormativo cicloInventado = new CicloFormativo(codigoCicloFormativo, "familia", gradoInventadoCiclo, "ciclo inventado", 3);
-                // DUDA: si getInstancia() no debe ser público, entonces debería llamar quizás a un método del controlador
-                // para buscar este ciclo por código?
                 CicloFormativo cicloAsig = CiclosFormativos.getInstancia().buscar(cicloInventado);
 
 
@@ -217,7 +215,6 @@ public class Matriculas implements IMatriculas {
     segundo criterio de ordenación el nombre del alumno correspondiente a la matrícula. */
     @Override
     public List<Matricula> get() throws OperationNotSupportedException {
-
         List<Matricula> listadoMatriculas = new ArrayList<>();
 
         Statement sentencia = null;
@@ -250,8 +247,6 @@ public class Matriculas implements IMatriculas {
 
                 LocalDate fechaNacInventada = LocalDate.of(2004, 3, 29);
                 Alumno alumnoInventado = new Alumno("alumnoInventado", dni, "correoInventado@gmail.com", "989890989", fechaNacInventada);
-                // DUDA: si getInstancia() no debe ser público, entonces debería llamar quizás a un método del controlador
-                // para buscar este alumno por dni?
                 Alumno alumno = Alumnos.getInstancia().buscar(alumnoInventado);
 
 
@@ -291,29 +286,18 @@ public class Matriculas implements IMatriculas {
         if (matricula == null){
             throw new NullPointerException("ERROR: No se puede insertar una matrícula nula.");
         }
-
-
-        // 1. INSERTAR EN LA MEMORIA:
-        if (coleccionMatriculas.contains(matricula)) {
-            throw new OperationNotSupportedException("ERROR: Ya existe una matrícula con ese código.");
-        }
-        coleccionMatriculas.add(matricula);
-
-
-        // 2. INSERTAR EN LA BD:
         // Verificar si la asignatura ya existe en la base de datos
         if (buscar(matricula) != null) {
             throw new OperationNotSupportedException("ERROR: Ya existe una matrícula con ese código.");
         }
+
 
         int idMat = matricula.getIdMatricula();
         String cursoAcademicoMat = matricula.getCursoAcademico();
         LocalDate fechaMat = matricula.getFechaMatriculacion();
         String alumnoDniMat = matricula.getAlumno().getDni();
         LocalDate fechaAnulacionMat = matricula.getFechaAnulacion();
-
         List<Asignatura> asignaturasMat = matricula.getColeccionAsignaturas();
-
 
         PreparedStatement psentencia = null;
 
@@ -341,7 +325,6 @@ public class Matriculas implements IMatriculas {
             if (filasInsertadas == 0){
                 System.out.println("No se pudo insertar la matrícula en la base de datos.");
             }
-            System.out.println("Inserción de matrícula con éxito.");
 
             // Si se inserta la matrícula, hacer INSERT en la tabla asignaturasMatricula
             insertarAsignaturasMatricula(idMat, asignaturasMat);
@@ -365,13 +348,7 @@ public class Matriculas implements IMatriculas {
     /* El método insertarAsignaturasMatricula que a partir de un identificador de matrícula y una lista de
     asignaturas pertenecientes a la matrícula, deberá realizar las inserciones correspondientes en la tabla
     asignaturasMatricula de la base de datos. */
-    /* Tabla asignaturasMatricula(
-    idMatricula  int unsigned,
-    codigo char(4) not null,
-    primary key(idMatricula,codigo),
-    */
     private void insertarAsignaturasMatricula(int idMatricula, List<Asignatura> coleccionAsignaturas){
-
         PreparedStatement psentencia = null;
 
         try {
@@ -394,7 +371,7 @@ public class Matriculas implements IMatriculas {
 
             if (filasInsertadas == 0){
                 System.out.println("No se pudo insertar la colección de asignaturas de la matrícula en la base de datos.");
-            } else System.out.println("Inserción de colección de asignaturas de la matrícula con éxito.");
+            } //else System.out.println("Inserción de colección de asignaturas de la matrícula con éxito.");
 
         } catch(SQLException e) {
             System.out.println("Error al insertar colección de asignaturas de la matrícula en la base de datos." + e.getMessage());
@@ -418,6 +395,7 @@ public class Matriculas implements IMatriculas {
         if (matricula == null){
             throw new NullPointerException("Matrícula nula no puede buscarse.");
         }
+
 
         int idBusqueda = matricula.getIdMatricula();
         PreparedStatement psentencia = null;
@@ -455,8 +433,6 @@ public class Matriculas implements IMatriculas {
                 // el obj real almacenado en la BD:
                 LocalDate fechaNacInventada= LocalDate.of(2004, 11, 22);
                 Alumno alumnoInventado = new Alumno("alumno inventado", dni, "correoinventado@gmail.com", "909890978", fechaNacInventada);
-                // DUDA: si getInstancia() no debe ser público, entonces debería llamar quizás a un método del controlador
-                // para buscar este alumno por código?
                 Alumno alumno = Alumnos.getInstancia().buscar(alumnoInventado);
 
 
@@ -464,7 +440,7 @@ public class Matriculas implements IMatriculas {
                                                     coleccionAsignaturas);
                 // Manejar fechaAnulacion, que puede ser null
                 if(fechaAnulacionMatr != null){
-                    matricula.setFechaAnulacion(fechaAnulacionMatr);
+                    matriculaEncontrada.setFechaAnulacion(fechaAnulacionMatr);
                 }
             }
         } catch (SQLException e) {
@@ -493,24 +469,16 @@ public class Matriculas implements IMatriculas {
         if (matricula == null){
             throw new NullPointerException("ERROR: No se puede borrar una matrícula nula.");
         }
-
-        // 1. BORRAR EN LA MEMORIA:
-        if (!coleccionMatriculas.contains(matricula)) {
-            throw new OperationNotSupportedException("ERROR: No existe ninguna matrícula como la indicada.");
+        // Verificar si la matricula existe en la base de datos
+        if (buscar(matricula) == null) {
+            throw new OperationNotSupportedException("ERROR: No existe una matrícula con ese código.");
         }
-        else coleccionMatriculas.remove(matricula);
 
 
-        // 2. BORRAR EN LA BD:
         int idMat = matricula.getIdMatricula();
         PreparedStatement psentencia = null;
 
         try {
-            // Verificar si la matricula existe en la base de datos
-            if (buscar(matricula) == null) {
-                throw new OperationNotSupportedException("ERROR: No existe una matrícula con ese código.");
-            }
-
             // Consulta para sentencia preparada
             String consulta = "DELETE FROM matricula WHERE idMatricula = ?";
             // Crear sentencia preparada (datos introducidos por usuario), a partir de conexion, con consulta
@@ -635,8 +603,6 @@ public class Matriculas implements IMatriculas {
                 List<Asignatura> coleccionAsignaturas = getAsignaturasMatricula(idMatricula);
                 LocalDate fechaNacInventada = LocalDate.of(2004, 3, 29);
                 Alumno alumnoInventado = new Alumno("alumnoInventado", dni, "correoInventado@gmail.com", "989890989", fechaNacInventada);
-                // DUDA: si getInstancia() no debe ser público, entonces debería llamar quizás a un método del controlador
-                // para buscar este alumno por dni?
                 Alumno alumno = Alumnos.getInstancia().buscar(alumnoInventado);
 
                 Matricula matricula = new Matricula(idMatricula, cursoAcademico, fechaMatriculacion,
@@ -703,8 +669,6 @@ public class Matriculas implements IMatriculas {
                 List<Asignatura> coleccionAsignaturas = getAsignaturasMatricula(idMatricula);
                 LocalDate fechaNacInventada = LocalDate.of(2004, 3, 29);
                 Alumno alumnoInventado = new Alumno("alumnoInventado", dni, "correoInventado@gmail.com", "989890989", fechaNacInventada);
-                // DUDA: si getInstancia() no debe ser público, entonces debería llamar quizás a un método del controlador
-                // para buscar este alumno por dni?
                 Alumno alumno = Alumnos.getInstancia().buscar(alumnoInventado);
 
                 Matricula matricula = new Matricula(idMatricula, cursoAcademico, fechaMatriculacion,
@@ -734,56 +698,4 @@ public class Matriculas implements IMatriculas {
 
         return listadoMatriculasCiclo;
     }
-
-
-
-
-
-/*
-    // El método get que está sobrecargado y devolverá una colección de las matrículas realizadas por el
-    // alumno pasado por parámetro o unca colección de las matrículas realizadas para el curso académico
-    // indicado como parámetro o una colección de las matrículas realizadas para el ciclo formativo
-    // indicado como parámetro.
-    @Override
-    public List<Matricula> get(Alumno alumno){
-
-        /* USANDO STREAM
-           Diferencia .toList() y collect(Collectors.toList()):
-
-           > Usa .toList() si no necesitas modificar la lista después.
-           > Usa .collect(Collectors.toList()) si necesitas una lista mutable (puede añadir/borrar datos).
-           > Si necesitas una lista específica como LinkedList, usa .collect(Collectors.toCollection(LinkedList::new)).
-
-
-        // obtiene alumno de clase Modelo getMatriculas()
-        List<Matricula> matriculasAlumno = coleccionMatriculas.stream()
-                .filter(matricula -> matricula.getAlumno().equals(alumno))
-                .collect(Collectors.toList());
-        return matriculasAlumno;
-    }
-*/
-
-
-/*
-    @Override
-    public List<Matricula> get(String cursoAcademico){
-        List<Matricula> matriculasCurso = coleccionMatriculas.stream()
-                .filter(matricula -> matricula.getCursoAcademico().equals(cursoAcademico))
-                .collect(Collectors.toList());
-        return matriculasCurso;
-    }
-*/
-
-
-/*
-    @Override
-    public List<Matricula> get(CicloFormativo cicloFormativo) {
-        List<Matricula> matriculasCiclo = coleccionMatriculas.stream()              // listado de matrículas.
-                .filter(matricula -> matricula.getColeccionAsignaturas().stream()   // listado de asignaturas de cada matricula.
-                        .anyMatch(asignatura -> asignatura.getCicloFormativo().equals(cicloFormativo)))
-                        // anyMatch da true si alguna asignatura pertenece al ciclo formativo
-                .collect(Collectors.toList());
-        return matriculasCiclo;
-    }
-*/
 }

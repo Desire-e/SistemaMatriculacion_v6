@@ -16,18 +16,17 @@ import static org.iesalandalus.programacion.matriculacion.modelo.negocio.mysql.u
 import static org.iesalandalus.programacion.matriculacion.modelo.negocio.mysql.utilidades.MySQL.establecerConexion;
 
 public class Asignaturas implements IAsignaturas {
-    private List<Asignatura> coleccionAsignaturas;
+    //private List<Asignatura> coleccionAsignaturas;
     private Connection conexion = null;
 
 
     public Asignaturas() {
-        this.coleccionAsignaturas = new ArrayList<>();
+        //this.coleccionAsignaturas = new ArrayList<>();
         comenzar();
     }
 
     private static Asignaturas instancia;
-    // DUDA: en el diagrama pone que debe ser privado
-    public static Asignaturas getInstancia(){
+    static Asignaturas getInstancia(){
         if (instancia == null){
             instancia = new Asignaturas();
         }
@@ -142,7 +141,6 @@ public class Asignaturas implements IAsignaturas {
             resultados = sentencia.executeQuery(consulta);
 
             // 3º Obtener resultados a partir de ResultSet:
-            System.out.println("Lista de asignaturas existentes:");
             while (resultados.next()) {
                 // atributos para el obj Asignatura
                 String codigoAsig = resultados.getString("codigo");
@@ -162,8 +160,6 @@ public class Asignaturas implements IAsignaturas {
                 // el obj real almacenado en la BD:
                 Grado gradoInventadoCiclo = new GradoE("grado inventado", 1, 1);
                 CicloFormativo cicloInventado = new CicloFormativo(codigoCicloAsig, "familia", gradoInventadoCiclo, "ciclo inventado", 3);
-                // DUDA: si getInstancia() no debe ser público, entonces debería llamar quizás a un método del controlador
-                // para buscar este ciclo por código?
                 CicloFormativo cicloAsig = CiclosFormativos.getInstancia().buscar(cicloInventado);
 
 
@@ -192,26 +188,16 @@ public class Asignaturas implements IAsignaturas {
     }
 
 
-
     @Override
     public void insertar (Asignatura asignatura) throws OperationNotSupportedException {
         if (asignatura == null){
             throw new NullPointerException("ERROR: No se puede insertar una asignatura nula.");
         }
-
-
-        // 1. INSERTAR EN LA MEMORIA:
-        if (coleccionAsignaturas.contains(asignatura)) {
-            throw new OperationNotSupportedException("ERROR: Ya existe una asignatura con ese código.");
-        }
-        coleccionAsignaturas.add(asignatura);
-
-
-        // 2. INSERTAR EN LA BD:
         // Verificar si la asignatura ya existe en la base de datos
         if (buscar(asignatura) != null) {
             throw new OperationNotSupportedException("ERROR: Ya existe una asignatura con ese código.");
         }
+
 
         String codigoAsig = asignatura.getCodigo();
         String nombreAsig = asignatura.getNombre();
@@ -269,7 +255,6 @@ public class Asignaturas implements IAsignaturas {
             if (filasInsertadas == 0){
                 System.out.println("No se pudo insertar la asignatura en la base de datos.");
             }
-            System.out.println("Inserción de asignatura con éxito.");
 
         } catch (SQLException e) {
             System.out.println("Error al insertar asignatura en la base de datos." + e.getMessage());
@@ -293,6 +278,7 @@ public class Asignaturas implements IAsignaturas {
         if (asignatura == null){
             throw new NullPointerException("Asignatura nula no puede buscarse.");
         }
+
 
         String codigoBusqueda = asignatura.getCodigo();
         PreparedStatement psentencia = null;
@@ -331,8 +317,6 @@ public class Asignaturas implements IAsignaturas {
                 // el obj real almacenado en la BD:
                 Grado gradoInventadoCiclo = new GradoE("grado inventado", 1, 1);
                 CicloFormativo cicloInventado = new CicloFormativo(codigoCicloFormativo, "familia", gradoInventadoCiclo, "ciclo inventado", 3);
-                // DUDA: si getInstancia() no debe ser público, entonces debería llamar quizás a un método del controlador
-                // para buscar este ciclo por código?
                 CicloFormativo cicloAsig = CiclosFormativos.getInstancia().buscar(cicloInventado);
 
 
@@ -358,7 +342,6 @@ public class Asignaturas implements IAsignaturas {
         }
 
         return asignaturaEncontrada;
-
     }
 
 
@@ -367,18 +350,10 @@ public class Asignaturas implements IAsignaturas {
         if (asignatura == null) {
             throw new NullPointerException("ERROR: No se puede borrar una asignatura nula.");
         }
-
-
-        // Verificar si la asignatura existe en LA MEMORIA
-        if (!coleccionAsignaturas.contains(asignatura)) {
-            throw new OperationNotSupportedException("ERROR: No existe ninguna asignatura como la indicada.");
-        }
-
         // Verificar si la asignatura existe en LA BD
         if (buscar(asignatura) == null) {
             throw new OperationNotSupportedException("ERROR: No existe una asignatura con ese código.");
         }
-
         // Verificar que la asignatura no está matriculada
         ResultSet resultadoVerif = null;
         PreparedStatement psVerif = null;
@@ -398,13 +373,6 @@ public class Asignaturas implements IAsignaturas {
         }
 
 
-
-
-        // 1. BORRAR EN LA MEMORIA:
-        coleccionAsignaturas.remove(asignatura);
-
-
-        // 2. BORRAR EN LA BD:
         String codigo = asignatura.getCodigo();
         PreparedStatement psentencia = null;
 
@@ -422,7 +390,6 @@ public class Asignaturas implements IAsignaturas {
             if (filaBorrada == 0){
                 System.out.println("No se pudo borrar la asignatura en la base de datos.");
             }
-            System.out.println("Borrado de asignatura con éxito.");
 
         } catch (SQLException e) {
             System.out.println("Error al borrar asignatura en la base de datos." + e.getMessage());

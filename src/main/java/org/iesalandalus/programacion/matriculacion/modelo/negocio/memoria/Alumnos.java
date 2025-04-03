@@ -24,30 +24,29 @@ public class Alumnos implements IAlumnos {
     - Mover a paquete memoria
     */
     private List<Alumno> coleccionAlumnos;
-    private Connection conexion = null;
+    /*private Connection conexion = null;*/
 
     public Alumnos(){
         this.coleccionAlumnos = new ArrayList<>();
-        /* TO10. DUDA: Se llama a comenzar()??
         comenzar();
-        */
     }
 
-    /* TO10. DUDA: qué sentido tienen comenzar() y terminar() en el paquete memoria??
-    es solo porque dará error al implementar la IAlumnos?
+    /* TO10. qué sentido tienen comenzar() y terminar() en el paquete memoria?:
+    solo es por la IAlumnos, para paquete memoria realmente no necesitas ponerles implementación porque
+    aquí no hacen nada .*/
 
-    Los cuerpos de comenzar() y terminar() en las cuatro clases deberán llamar respectivamente
+    /*Los cuerpos de comenzar() y terminar() en las cuatro clases deberán llamar respectivamente
     a los métodos establecerConexion y cerrarConexion de la clase MySQL. */
     @Override
     public void comenzar() {
-        conexion = establecerConexion();
+        /*conexion = establecerConexion();*/
     }
     @Override
     public void terminar() {
-        if (conexion != null) {
+        /*if (conexion != null) {
             cerrarConexion();  // Cerramos la conexión con la base de datos
             conexion = null;  // Restablece la referencia a la conexión
-        }
+        }*/
     }
 
 

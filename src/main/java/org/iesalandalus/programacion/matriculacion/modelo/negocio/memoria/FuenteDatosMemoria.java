@@ -1,10 +1,6 @@
 package org.iesalandalus.programacion.matriculacion.modelo.negocio.memoria;
 
 import org.iesalandalus.programacion.matriculacion.modelo.negocio.*;
-import org.iesalandalus.programacion.matriculacion.modelo.negocio.mysql.Alumnos;
-import org.iesalandalus.programacion.matriculacion.modelo.negocio.mysql.Asignaturas;
-import org.iesalandalus.programacion.matriculacion.modelo.negocio.mysql.CiclosFormativos;
-import org.iesalandalus.programacion.matriculacion.modelo.negocio.mysql.Matriculas;
 
 public class FuenteDatosMemoria implements IFuenteDatos {
 

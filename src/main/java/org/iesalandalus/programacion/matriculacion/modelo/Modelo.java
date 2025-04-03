@@ -40,7 +40,6 @@ public class Modelo {
 
 
     private void setFuenteDatos(IFuenteDatos fuenteDatos){
-        // DUDA: validar si es null?
         this.fuenteDatos=fuenteDatos;
     }
 

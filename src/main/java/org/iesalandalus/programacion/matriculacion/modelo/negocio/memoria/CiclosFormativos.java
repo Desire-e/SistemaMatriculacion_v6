@@ -14,23 +14,23 @@ import static org.iesalandalus.programacion.matriculacion.modelo.negocio.mysql.u
 
 public class CiclosFormativos implements ICiclosFormativos {
     private List<CicloFormativo> coleccionCiclosFormativos;
-    private Connection conexion = null;
+    /*private Connection conexion = null;*/
 
     public CiclosFormativos() {
         this.coleccionCiclosFormativos = new ArrayList<>();
-        //comenzar();
+        comenzar();
     }
 
     @Override
     public void comenzar() {
-        conexion = establecerConexion();
+        /*conexion = establecerConexion();*/
     }
     @Override
     public void terminar() {
-        if (conexion != null) {
+        /*if (conexion != null) {
             cerrarConexion();  // Cerramos la conexión con la base de datos
             conexion = null;  // Restablece la referencia a la conexión
-        }
+        }*/
     }
 
 

@@ -20,23 +20,23 @@ import static org.iesalandalus.programacion.matriculacion.modelo.negocio.mysql.u
 
 public class Matriculas implements IMatriculas {
     private List<Matricula> coleccionMatriculas;
-    private Connection conexion = null;
+    /*private Connection conexion = null;*/
 
     public Matriculas(){
         this.coleccionMatriculas = new ArrayList<>();
-        //comenzar();
+        comenzar();
     }
 
     @Override
     public void comenzar() {
-        conexion = establecerConexion();
+        /*conexion = establecerConexion();*/
     }
     @Override
     public void terminar() {
-        if (conexion != null) {
+        /*if (conexion != null) {
             cerrarConexion();  // Cerramos la conexión con la base de datos
             conexion = null;  // Restablece la referencia a la conexión
-        }
+        }*/
     }
 
 
@@ -50,7 +50,9 @@ public class Matriculas implements IMatriculas {
 
     @Override
     public List<Matricula> get() throws OperationNotSupportedException {
+
         return copiaProfundaMatriculas();
+
     }
 
 

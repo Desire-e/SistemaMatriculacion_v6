@@ -15,23 +15,21 @@ import static org.iesalandalus.programacion.matriculacion.modelo.negocio.mysql.u
 import static org.iesalandalus.programacion.matriculacion.modelo.negocio.mysql.utilidades.MySQL.establecerConexion;
 
 public class CiclosFormativos implements ICiclosFormativos {
-    private List<CicloFormativo> coleccionCiclosFormativos;
+    //private List<CicloFormativo> coleccionCiclosFormativos;
     private Connection conexion = null;
 
 
     public CiclosFormativos() {
-        this.coleccionCiclosFormativos = new ArrayList<>();
+        //this.coleccionCiclosFormativos = new ArrayList<>();
         comenzar();
     }
 
 
     private static CiclosFormativos instancia;
-    // DUDA: en el diagrama pone que debe ser privado
-    public static CiclosFormativos getInstancia(){
+    static CiclosFormativos getInstancia(){
         if (instancia == null){
             instancia = new CiclosFormativos();
         }
-
         return instancia;
     }
 
@@ -39,6 +37,7 @@ public class CiclosFormativos implements ICiclosFormativos {
     @Override
     public void comenzar() {
         conexion = MySQL.establecerConexion();
+
     }
     @Override
     public void terminar() {
@@ -49,19 +48,6 @@ public class CiclosFormativos implements ICiclosFormativos {
     }
 
 
-    /*   Tabla en el script:
-    codigo  int unsigned,
-    familiaProfesional varchar(20) not null,
-    grado enum('gradod','gradoe') not null,
-    nombre varchar(30) not null,
-    horas  int unsigned not null,
-    nombreGrado varchar(30) not null,
-    numAniosGrado int unsigned not null,
-    modalidad enum ('presencial',"semipresencial"),
-    numEdiciones int unsigned,
-    */
-
-
     /* El método getGrado que, dependiendo del parámetro de tipo String tipoGrado, deberá devolver un
     objeto de tipo GradoD o GradoE. que serán creados a partir del resto de parámetros pasados al método. */
     public Grado getGrado(String tipoGrado, String nombreGrado, int numAniosGrado, String modalidad, int numEdiciones){
@@ -70,39 +56,27 @@ public class CiclosFormativos implements ICiclosFormativos {
 
 
         // CONVERSIONES DE LOS VALORES OPCIONALES (NO SON NOT NULL) Y ENUM, A OBJETOS:
-
-        // 1º Manejo de modalidad, que puede ser null y es enum
         Modalidad modalidadCicloGD = null;
-        if (modalidad != null){
-            if (modalidad.equals("presencial")){
-                modalidadCicloGD = Modalidad.PRESENCIAL;
-            } else
-                modalidadCicloGD = Modalidad.SEMIPRESENCIAL;
-        }
-        // Manejo de numEdiciones, que puede ser null y es int unsigned.
-        // El resultado.getInt(), del método del que obtendremos el valor que se asignará
-        // a este param numEdiciones, da 0 cuando el valor es NULL en la BD. Por ello no
-        // hay que comprobar si es null y pasarlo a 0, viene ya dado.
-
-
-        // 2º Crear un objeto Grado (D o E) según el valor obtenido por la consulta y
-        // la existencia o no de los atributos concretos de esos grados concretos
         Grado gradoCiclo = null;
 
         if (tipoGrado.equals("gradod") && modalidad != null){
-            // asigna atributo opcional
+            // Manejo de modalidad, que puede ser null y es enum
             if (modalidad.equals("presencial")){
                 modalidadCicloGD = Modalidad.PRESENCIAL;
             } else
                 modalidadCicloGD = Modalidad.SEMIPRESENCIAL;
-            // asigna tipo de grado
+            // Asigna tipo de grado
             gradoCiclo = new GradoD(nombreGrado, numAniosGrado, modalidadCicloGD);
 
         } else if (tipoGrado.equals("gradoe") && numEdiciones > 0 ){
-            // asigna tipo de grado
+            // Manejo de numEdiciones, que puede ser null y es int unsigned:
+            // El resultado.getInt(), del método del que obtendremos el valor que se asignará
+            // a este param numEdiciones, da 0 cuando el valor es NULL en la BD. Por ello no
+            // hay que comprobar si es null y pasarlo a 0, viene ya dado.
+
+            // Asigna tipo de grado
             gradoCiclo = new GradoE(nombreGrado, numAniosGrado, numEdiciones);
         }
-
 
         return gradoCiclo;
     }
@@ -161,7 +135,6 @@ public class CiclosFormativos implements ICiclosFormativos {
             resultados = sentencia.executeQuery(consulta);
 
             // 3º Obtener resultados a partir de ResultSet:
-            System.out.println("Lista de ciclos existentes:");
             while (resultados.next()) {
                 // atributos para el obj CicloFormativo
                 int codigoCiclo = resultados.getInt("codigo");
@@ -210,20 +183,11 @@ public class CiclosFormativos implements ICiclosFormativos {
         if (cicloFormativo == null){
             throw new NullPointerException("ERROR: No se puede insertar un ciclo formativo nulo.");
         }
-
-
-        // 1. INSERTAR EN LA MEMORIA:
-        if (coleccionCiclosFormativos.contains(cicloFormativo)) {
-            throw new OperationNotSupportedException("ERROR: Ya existe un ciclo formativo con ese código.");
-        }
-        coleccionCiclosFormativos.add(cicloFormativo);
-
-
-        // 2. INSERTAR EN LA BD:
         // Verificar si el ciclo ya existe en la base de datos
         if (buscar(cicloFormativo) != null) {
             throw new OperationNotSupportedException("ERROR: Ya existe un ciclo formativo con ese código.");
         }
+
 
         // Obtener valores del cicloFormativo a insertar...
         int codigo = cicloFormativo.getCodigo();
@@ -233,23 +197,18 @@ public class CiclosFormativos implements ICiclosFormativos {
         int horas = cicloFormativo.getHoras();
         String nombreGrado = gradoCiclo.getNombre();
         int numAniosGrado = gradoCiclo.getNumAnios();
-        // atr opcionales, pueden ser nulos
-        Modalidad modalidadCicloGD = ((GradoD) gradoCiclo).getModalidad();
-        int numEdicionesCicloGE = ((GradoE) gradoCiclo).getNumEdiciones();
 
-        //----------------------------------------------------------------------------------------
-        // CONVERSIONES DE LOS OBJETOS, A VALORES OPCIONALES (NO SON NOT NULL) Y ENUM
-        // Asignar a gradoCiclo valores del enum de la bd, según sea gradoCiclo instancia GradoD o E,
-        // y la existencia o no de los atributos concretos de esos grados concretos
-        // (modalidad, numEdiciones)
+        // CONVERSIONES DE LOS OBJETOS, A VALORES OPCIONALES (NO SON NOT NULL) Y ENUM --- inverso a getGradp()
+        // Asignar a gradoCiclo valores del enum de la BD, según sea gradoCiclo instancia GradoD o E,
+        // y la existencia o no de los atributos concretos de esos grados concretos (modalidad, numEdiciones)
         String grado = null;
         String modalidad = null;
         int  numEdiciones = 0;
-
         if (gradoCiclo instanceof GradoD){
-            // asigna valor al atr gradp
             grado = "gradod";
 
+            // atr opcional, puede ser null si no es gradod
+            Modalidad modalidadCicloGD = ((GradoD) gradoCiclo).getModalidad();
             // asigna valor al atr modalidad
             if (modalidadCicloGD.equals(Modalidad.PRESENCIAL)){
                 modalidad = "presencial";
@@ -257,13 +216,14 @@ public class CiclosFormativos implements ICiclosFormativos {
                 modalidad = "semipresencial";
 
         } else if (gradoCiclo instanceof GradoE){
-            // asigna valor al atr grado
             grado = "gradoe";
 
+            // atr opcional, puede ser null si no es gradoe
+            int numEdicionesCicloGE = ((GradoE) gradoCiclo).getNumEdiciones();
             // asigna valor al atr numEdiciones
             numEdiciones = numEdicionesCicloGE;
         }
-        //----------------------------------------------------------------------------------------
+
 
         PreparedStatement psentencia = null;
 
@@ -283,6 +243,7 @@ public class CiclosFormativos implements ICiclosFormativos {
             psentencia.setInt(5, horas);
             psentencia.setString(6, nombreGrado);
             psentencia.setInt(7, numAniosGrado);
+
             // Manejar modalidad que puede ser NULL
             if (modalidad != null){
                 psentencia.setString(8, modalidad);
@@ -297,7 +258,7 @@ public class CiclosFormativos implements ICiclosFormativos {
             int filasInsertadas = psentencia.executeUpdate();
             if (filasInsertadas == 0){
                 System.out.println("No se pudo insertar el ciclo formativo en la base de datos.");
-            } else System.out.println("Inserción de ciclo formativo con éxito.");
+            }
 
         } catch (SQLException e) {
             System.out.println("Error al insertar ciclo formativo en la base de datos." + e.getMessage());
@@ -312,7 +273,6 @@ public class CiclosFormativos implements ICiclosFormativos {
                 System.out.println("Error al cerrar los recursos.");
             }
         }
-
     }
 
 
@@ -321,6 +281,7 @@ public class CiclosFormativos implements ICiclosFormativos {
         if (cicloFormativo == null){
             throw new NullPointerException("Ciclo nulo no puede buscarse.");
         }
+
 
         int cicloBusqueda = cicloFormativo.getCodigo();
         CicloFormativo cicloEncontrado = null;
@@ -390,18 +351,10 @@ public class CiclosFormativos implements ICiclosFormativos {
         if (cicloFormativo == null){
             throw new NullPointerException("ERROR: No se puede borrar un ciclo formativo nulo.");
         }
-
-
-        // Verificar que existe EN MEMORIA
-        if (!coleccionCiclosFormativos.contains(cicloFormativo)) {
-            throw new OperationNotSupportedException("ERROR:No existe ningún ciclo formativo como el indicado.");
-        }
-
         // Verificar si el ciclo existe EN LA BD
         if (buscar(cicloFormativo) == null) {
             throw new OperationNotSupportedException("ERROR: No existe un ciclo con ese código.");
         }
-
         // Verificar si el ciclo está matriculado en una matrícula EN BD
         List<Matricula> matriculasVerif = Matriculas.getInstancia().get(cicloFormativo);
         if (!matriculasVerif.isEmpty()){
@@ -409,11 +362,6 @@ public class CiclosFormativos implements ICiclosFormativos {
         }
 
 
-        // 1. BORRAR EN LA MEMORIA:
-        coleccionCiclosFormativos.remove(cicloFormativo);
-
-
-        // 2. BORRAR EN LA BD:
         int codigo = cicloFormativo.getCodigo();
         PreparedStatement psentencia = null;
 
@@ -431,7 +379,6 @@ public class CiclosFormativos implements ICiclosFormativos {
             if (filaBorrada == 0){
                 System.out.println("No se pudo borrar el ciclo formativo en la base de datos.");
             }
-            System.out.println("Borrado de ciclo formativo con éxito.");
 
         } catch (SQLException e) {
             System.out.println("Error al borrar ciclo formativo en la base de datos." + e.getMessage());
