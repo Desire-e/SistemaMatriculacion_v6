@@ -431,25 +431,46 @@ public class Vista {
             // Muestra las matrículas
             mostrarMatriculas();
 
-            // Pide una matrícula por código y la busca
-            //CAMBIOS V.1: Obtiene la matricula con datos inventados menos el id
-            Matricula matFicticia = Consola.getMatriculaPorIdentificacion();
-            Matricula matAnular= controlador.buscar(matFicticia);
 
-            if(matAnular == null){
+            // Pide una matrícula por código y la busca (no con buscar() porque este devuelve copias de obj Matricula
+            // en paquete memoria)
+            System.out.println("Introduzca el id de la matrícula a anular:");
+            int idMatAnular = Entrada.entero();
+            Matricula matriculaAnular = null;
+
+            for(Matricula matr : controlador.getMatriculas()){
+                if (matr.getIdMatricula() == idMatAnular){
+                    matriculaAnular = matr;
+                    break;
+                }
+            }
+
+
+            if(matriculaAnular == null){
                 System.out.println("No existe matrícula con el id proporcionado");
             }
 
             // Verificar si la matrícula ya está anulada
-            if (matAnular.getFechaAnulacion() != null) {
+            if (matriculaAnular.getFechaAnulacion() != null) {
                 System.out.println("La matrícula ya está anulada. No se puede volver a anular.");
                 return;
             }
 
+
+            /* TO10. PARA QUE LOS CAMBIOS TAMBIEN SE REFLEJEN EN LA BASE DE DATOS */
+            // 1º Crear copia de Matricula original
+            Matricula matriculaAnulada = new Matricula(matriculaAnular);
+            // 2º Eliminar Matricula original
+            controlador.borrar(matriculaAnular);
+
+            // 3º Dar fecha de anulación a la copia:
             // Pide la fecha de anulación
             LocalDate fechaAnulacion = Consola.leerFecha("Fecha de anulación de la matrícula(DD/MM/AAAA): ");
             // Inserta fecha de anulación
-            matAnular.setFechaAnulacion(fechaAnulacion);
+            matriculaAnulada.setFechaAnulacion(fechaAnulacion);
+
+            // 4º Insertar la copia en coleccion/BD, ya anulada
+            controlador.insertar(matriculaAnulada);
 
         } catch (NullPointerException | IllegalArgumentException | OperationNotSupportedException e) {
             System.out.println("Error al anular la matrícula. " + e.getMessage());

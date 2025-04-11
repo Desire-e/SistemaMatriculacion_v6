@@ -28,8 +28,6 @@ public class Modelo {
 
 
     public Modelo(FactoriaFuenteDatos factoriaFuenteDatos){
-        // DUDA: se hace así?
-
         // Si yo le paso a new Modelo(FactoriaFuenteDatos.MEMORIA), factoriaFuenteDatos.crear()
         // ejecuta y devuelve new FuenteDatosMemoria(), la cual es una instancia de IFuenteDatos.
 

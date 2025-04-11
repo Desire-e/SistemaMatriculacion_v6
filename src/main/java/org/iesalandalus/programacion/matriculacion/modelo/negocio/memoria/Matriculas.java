@@ -50,9 +50,7 @@ public class Matriculas implements IMatriculas {
 
     @Override
     public List<Matricula> get() throws OperationNotSupportedException {
-
-        return copiaProfundaMatriculas();
-
+        return this.coleccionMatriculas;
     }
 
 
@@ -94,6 +92,7 @@ public class Matriculas implements IMatriculas {
             indice=coleccionMatriculas.indexOf(matricula);
             matricula = coleccionMatriculas.get(indice);
             return new Matricula(matricula);
+            //return matricula;
         }
         else return null;
     }

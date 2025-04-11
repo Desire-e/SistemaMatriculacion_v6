@@ -231,7 +231,6 @@ public class Matriculas implements IMatriculas {
             resultados = sentencia.executeQuery(consulta);
 
             // 3º Obtener resultados a partir de ResultSet:
-            System.out.println("Lista de matriculas existentes:");
             while (resultados.next()) {
                 // atributos para el obj Matricula
                 int idMatricula = resultados.getInt("idMatricula");
