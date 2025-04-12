@@ -3109,7 +3109,7 @@
   <Codegen:External xmi:id="_mHSxgJqPEe-D0ueWFzOeUg" name="org.iesalandalus.programacion.matriculacion.negocio.CiclosFormativos" base_Classifier="_mHOgEJqPEe-D0ueWFzOeUg"/>
   <Codegen:External xmi:id="_mHe-wJqPEe-D0ueWFzOeUg" name="org.iesalandalus.programacion.matriculacion.negocio.Matriculas" base_Classifier="_mHatUJqPEe-D0ueWFzOeUg"/>
   <Codegen:External xmi:id="_mHxSoJqPEe-D0ueWFzOeUg" name="java.lang.String" base_Classifier="_mHsaIJqPEe-D0ueWFzOeUg"/>
-  <Codegen:External xmi:id="_mIH38JqPEe-D0ueWFzOeUg" name="org.iesalandalus.programacion.matriculacion.vista.Opcion" base_Classifier="_mIENkJqPEe-D0ueWFzOeUg"/>
+  <Codegen:External xmi:id="_mIH38JqPEe-D0ueWFzOeUg" name="org.iesalandalus.programacion.matriculacion.vista.texto.Opcion" base_Classifier="_mIENkJqPEe-D0ueWFzOeUg"/>
   <Codegen:External xmi:id="_6GTdoJqPEe-D0ueWFzOeUg" name="java.time.LocalDate" base_Classifier="_6GMv8JqPEe-D0ueWFzOeUg"/>
   <standard:Create xmi:id="_6GlKcJqPEe-D0ueWFzOeUg" base_BehavioralFeature="_6Gfq4JqPEe-D0ueWFzOeUg"/>
   <standard:Create xmi:id="_6G56kJqPEe-D0ueWFzOeUg" base_BehavioralFeature="_6G2QMJqPEe-D0ueWFzOeUg"/>

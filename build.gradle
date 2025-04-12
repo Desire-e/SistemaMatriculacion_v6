@@ -1,6 +1,13 @@
-plugins {
+/*plugins {
     id 'java'
+}*/
+
+// para javafx:
+plugins {
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
 }
+
 
 group = 'org.example'
 version = '1.0-SNAPSHOT'
@@ -16,10 +23,52 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
     // Entrada para que el repositorio jitpack.io sepa acceder a la localización de librería entrada
     implementation 'com.github.JRJimenezReyes:entrada:1.0.3'
+
     // Driver MySQL
     implementation 'mysql:mysql-connector-java:8.0.28'
+
+    // Para javafx:
+    /*implementation 'org.openjfx:javafx-controls:21.0.4'
+    implementation 'org.openjfx:javafx-fxml:21.0.4'
+    implementation 'org.openjfx:javafx-base:21.0.4'
+    implementation 'org.openjfx:javafx-graphics:21.0.4'
+    implementation 'org.openjfx:javafx-web:21.0.4'
+    implementation 'org.openjfx:javafx-swing:21.0.4'
+    implementation 'org.openjfx:javafx-media:21.0.4'
+    implementation 'org.openjfx:javafx-mxgraph:21.0.4'
+    implementation 'org.openjfx:javafx-scenebuilder:21.0.4'
+    implementation 'org.openjfx:javafx-jlink:21.0.4'
+    implementation 'org.openjfx:javafx-jpackager:21.0.4'
+    implementation 'org.openjfx:javafx-webview:21.0.4'
+    implementation 'org.openjfx:javafx-swt:21.0.4'
+
+    El bloque javafx { version = ... modules = [...] } ya se encarga de eso automáticamente.
+    */
 }
 
 test {
     useJUnitPlatform()
 }
+
+// para javafx:
+javafx {
+    version = "21.0.6"
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
+}
+// para javafx:
+application {
+    mainClass = 'org.iesalandalus.programacion.matriculacion.MainApp' // Cambia esto por tu clase principal
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

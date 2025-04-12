@@ -4,23 +4,14 @@ package org.iesalandalus.programacion.matriculacion;
 import org.iesalandalus.programacion.matriculacion.controlador.Controlador;
 import org.iesalandalus.programacion.matriculacion.modelo.FactoriaFuenteDatos;
 import org.iesalandalus.programacion.matriculacion.modelo.Modelo;
-import org.iesalandalus.programacion.matriculacion.vista.Consola;
-import org.iesalandalus.programacion.matriculacion.vista.Opcion;
-import org.iesalandalus.programacion.matriculacion.vista.Vista;
-import org.iesalandalus.programacion.utilidades.Entrada;
-
-import javax.naming.OperationNotSupportedException;
-
-import java.time.LocalDate;
-
-import static org.iesalandalus.programacion.matriculacion.vista.Consola.elegirOpcion;
-import static org.iesalandalus.programacion.matriculacion.vista.Consola.mostrarMenu;
+import org.iesalandalus.programacion.matriculacion.vista.texto.VistaTexto;
 
 public class MainApp {
     public static void main(String[] args) {
 
         Modelo modelo = procesarArgumentosFuenteDatos(args);
-        Vista vista = new Vista();
+        // MODIFICAR LUEGO!!!!
+        VistaTexto vista = new VistaTexto();
         Controlador controlador = new Controlador(modelo, vista);
 
         controlador.comenzar();

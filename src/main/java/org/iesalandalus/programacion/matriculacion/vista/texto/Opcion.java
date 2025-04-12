@@ -1,4 +1,4 @@
-package org.iesalandalus.programacion.matriculacion.vista;
+package org.iesalandalus.programacion.matriculacion.vista.texto;
 
 public enum Opcion {
 
@@ -155,9 +155,9 @@ public enum Opcion {
 
 
     // CAMBIOS V.3:
-    private static Vista vista;
+    private static VistaTexto vista;
 
-    public static void setVista(Vista vista){
+    public static void setVista(VistaTexto vista){
         if (vista == null) {
             throw new NullPointerException("La vista no puede ser nula.");
         }
