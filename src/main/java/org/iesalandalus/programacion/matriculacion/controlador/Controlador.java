@@ -8,8 +8,8 @@ import javax.naming.OperationNotSupportedException;
 import java.util.List;
 
 public class Controlador {
-    private Modelo modelo;
-    private Vista vista;
+    private static Modelo modelo;
+    private static Vista vista;
 
 
     /*Crea el constructor con parámetros que comprobará que no son nulos y los asignará a los atributos.
@@ -35,7 +35,8 @@ public class Controlador {
         modelo.comenzar();
         vista.comenzar();
     }
-    public void terminar(){
+    //TO09. static para ser llamado por VistaGrafica
+    public static void terminar(){
         modelo.terminar();
         vista.terminar();
     }
