@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.VBox?>
+
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.iesalandalus.programacion.matriculacion.vista.grafica.controladores.ControladorMatriculasCiclo">
+   <children>
+      <TableView fx:id="tvMatriculasCiclo" prefHeight="250.0" prefWidth="360.0">
+         <columns>
+            <TableColumn fx:id="tcCicloMatr" prefWidth="140.79999387264252" text="Ciclo Formativo" />
+            <TableColumn fx:id="tcIdMatr" prefWidth="57.60003662109375" text="ID" />
+            <TableColumn fx:id="tcCursoMatr" prefWidth="104.0" text="Curso académico" />
+            <TableColumn fx:id="tcFechaMatr" prefWidth="123.20001220703125" text="Fecha matriculación" />
+            <TableColumn fx:id="tcAsignaturasMatr" minWidth="0.0" prefWidth="321.5998840332031" text="Asignaturas" />
+         </columns>
+      </TableView>
+   </children>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
+   <padding>
+      <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+   </padding>
+</VBox>
