@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" spacing="30.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.iesalandalus.programacion.matriculacion.vista.grafica.controladores.ControladorAniadirAsig">
+   <padding>
+      <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+   </padding>
+   <children>
+      <HBox alignment="TOP_CENTER" prefHeight="30.0" prefWidth="539.0">
+         <children>
+            <Label prefHeight="27.0" prefWidth="230.0" text="Datos de la nueva asignatura">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <VBox prefHeight="197.0" prefWidth="539.0" spacing="20.0">
+         <children>
+            <HBox prefHeight="30.0" prefWidth="539.0" spacing="20.0">
+               <children>
+                  <Label text="Código">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="tfCodigoAsig" />
+               </children>
+            </HBox>
+            <HBox prefHeight="30.0" prefWidth="539.0" spacing="20.0">
+               <children>
+                  <Label text="Nombre">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="tfNombreAsig" />
+               </children>
+            </HBox>
+            <HBox prefHeight="30.0" prefWidth="539.0" spacing="20.0">
+               <children>
+                  <Label text="Horas anuales">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="tfHorasAnualAsig" />
+               </children>
+            </HBox>
+            <HBox prefHeight="30.0" prefWidth="539.0" spacing="20.0">
+               <children>
+                  <Label text="Curso">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <ToggleButton fx:id="tbtnCursoPrimero" mnemonicParsing="false" text="Primero" />
+                  <ToggleButton fx:id="tbtnCursoSegundo" mnemonicParsing="false" text="Segundo" />
+               </children>
+            </HBox>
+            <HBox prefHeight="30.0" prefWidth="539.0" spacing="20.0">
+               <children>
+                  <Label text="Horas desdoble">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="tfHorasDesdobleAsig" />
+               </children>
+            </HBox>
+            <HBox prefHeight="30.0" prefWidth="539.0" spacing="20.0">
+               <children>
+                  <Label text="Especialidad profesorado">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <ToggleButton fx:id="tbtnEspecialidadInformatica" mnemonicParsing="false" text="Informática" />
+                  <ToggleButton fx:id="tbtnEspecialidadSistemas" mnemonicParsing="false" text="Sistemas" />
+                  <ToggleButton fx:id="tbtnEspecialidadFol" mnemonicParsing="false" text="FOL" />
+               </children>
+            </HBox>
+            <HBox prefHeight="30.0" prefWidth="539.0" spacing="20.0">
+               <children>
+                  <Label text="Ciclo formativo">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <ComboBox fx:id="cbCicloFormativo" prefHeight="150.0" prefWidth="150.0" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <HBox alignment="TOP_CENTER" prefHeight="39.0" prefWidth="539.0">
+         <children>
+            <Button fx:id="btnAniadir" mnemonicParsing="false" onAction="#aniadir" prefHeight="36.0" prefWidth="72.0" text="Añadir">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+         </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </HBox>
+   </children>
+</VBox>
