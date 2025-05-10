@@ -9,6 +9,9 @@ import java.util.Optional;
 
 public class Dialogos {
 
+    // Evita que se puedan instanciar objetos
+    private Dialogos() {}
+
     public static boolean mostrarDialogoConfirmacion(String titulo, String contenido, Stage propietario) {
         Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
         /* si quisiera aplicar estilos CSS:
@@ -51,6 +54,58 @@ public class Dialogos {
     // Tiene sobrecarga del método para poder usarlo con o sin Stage propietario.
     public static boolean mostrarDialogoConfirmacion(String titulo, String contenido) {
         return mostrarDialogoConfirmacion(titulo, contenido, null);
+    }
+
+
+    public static void mostrarDialogoError(String titulo, String contenido, Stage propietario) {
+        Alert alertaErr = new Alert(Alert.AlertType.ERROR);
+        alertaErr.setTitle(titulo);
+        alertaErr.setHeaderText(contenido);
+
+        // si tiene ventana propietaria (padre)...
+        if (propietario != null) {
+            // hacer alertaErr ventana modal
+            alertaErr.initModality(Modality.APPLICATION_MODAL);
+            // indicar cuál es la ventana propietaria de alertaErr, para bloquearla
+            alertaErr.initOwner(propietario);
+        }
+
+        // muestra el diálogo alertaErr, bloquea y espera hasta que el usuario haga clic en algún botón
+        // ** en este caso, el diálogo no tiene botones, así que no se usa Optional<ButtonType>
+        //    para evitar NullPointerEx., pues solo podrá pulsar 'x'.
+        alertaErr.showAndWait();
+
+        // ** opcional: si tiene ventana propietaria, cerrarla tras mostrar error.
+        //    solo tiene sentido si el error requiere que se cierre la ventana original.
+        if (propietario != null){
+            propietario.close();
+        }
+    }
+
+    public static void mostrarDialogoError(String titulo, String contenido) {
+        Dialogos.mostrarDialogoError(titulo, contenido, null);
+    }
+
+
+
+    public static void mostrarDialogoInformacion(String titulo, String contenido, Stage propietario) {
+        Alert alertaInfo = new Alert(Alert.AlertType.INFORMATION);
+        alertaInfo.setTitle(titulo);
+        alertaInfo.setHeaderText(contenido);
+
+        if (propietario != null) {
+            alertaInfo.initModality(Modality.APPLICATION_MODAL);
+            alertaInfo.initOwner(propietario);
+        }
+
+        alertaInfo.showAndWait();
+        if (propietario != null) {
+            propietario.close();
+        }
+    }
+
+    public static void mostrarDialogoInformacion(String titulo, String contenido) {
+        Dialogos.mostrarDialogoInformacion(titulo, contenido, null);
     }
 
 }
