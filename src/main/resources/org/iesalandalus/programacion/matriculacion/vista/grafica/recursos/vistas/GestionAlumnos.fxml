@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.iesalandalus.programacion.matriculacion.vista.grafica.controladores.ControladorGestionAlumnos">
+   <children>
+      <MenuBar>
+        <menus>
+          <Menu mnemonicParsing="false" text="Alumnos">
+            <items>
+              <MenuItem fx:id="miGestionAlumnos" mnemonicParsing="false" text="Gestión de alumnos" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Ciclos formativos">
+            <items>
+              <MenuItem fx:id="miGestionCiclos" mnemonicParsing="false" onAction="#abrirVentanaGestionCiclos" text="Gestión de ciclos formativos" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Asignaturas">
+            <items>
+              <MenuItem fx:id="miGestionAsignaturas" mnemonicParsing="false" onAction="#abrirVentanaGestionAsignaturas" text="Gestión de asignaturas" />
+            </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="Matrículas">
+               <items>
+                  <MenuItem fx:id="miGestionMatriculas" mnemonicParsing="false" onAction="#abrirVentanaGestionMatriculas" text="Gestión de matrículas" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" onAction="#salir" text="Sistema">
+               <items>
+                  <MenuItem fx:id="miSalir" mnemonicParsing="false" onAction="#salir" text="Salir" />
+               </items></Menu>
+        </menus>
+      </MenuBar>
+      <VBox alignment="TOP_CENTER" prefHeight="449.0" prefWidth="639.0" spacing="10.0">
+         <VBox.margin>
+            <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+         </VBox.margin>
+         <children>
+            <HBox alignment="CENTER" prefHeight="44.0" prefWidth="739.0" spacing="150.0">
+               <children>
+                  <Button fx:id="btnAniadirAlumno" mnemonicParsing="false" onAction="#abrirVentanaAniadirAlum" prefHeight="38.0" prefWidth="114.0" text="Añadir alumno">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Button>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="44.0" prefWidth="439.0" spacing="10.0">
+                     <children>
+                        <Label prefHeight="20.0" prefWidth="151.0" text="Búsqueda por nombre: ">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="tfBusquedaNombre" prefHeight="26.0" prefWidth="208.0" />
+                        <Button fx:id="btnBusquedaNombre" mnemonicParsing="false" onAction="#busquedaNombre" style="-fx-background-color: #c6c2f0; -fx-border-color: #928ebf; -fx-border-radius: 3px;" text="Buscar" />
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+            <HBox alignment="TOP_CENTER" prefHeight="28.0" prefWidth="739.0" spacing="20.0">
+               <children>
+                  <ToggleButton fx:id="tbtnAscendente" mnemonicParsing="false" onAction="#ordenNombres" text="Ascendente" />
+                  <ToggleButton fx:id="tbtnDescendente" mnemonicParsing="false" onAction="#ordenNombres" text="Descendente" />
+               </children>
+            </HBox>
+            <TableView fx:id="tvAlumnos" prefHeight="226.0" prefWidth="639.0">
+              <columns>
+                <TableColumn fx:id="tcNombreAlum" prefWidth="160.0" text="Nombre" />
+                <TableColumn fx:id="tcDniAlum" prefWidth="160.0" text="Dni" />
+                  <TableColumn fx:id="tcCorreoAlum" prefWidth="160.0" text="Correo" />
+                  <TableColumn fx:id="tcTelefonoAlum" prefWidth="130.0" text="Teléfono de contacto" />
+                  <TableColumn fx:id="tcNacimientoAlum" prefWidth="130.0" text="Fecha de nacimiento" />
+              </columns>
+               <contextMenu>
+                  <ContextMenu>
+                    <items>
+                        <MenuItem fx:id="miMatriculasAlumno" mnemonicParsing="false" onAction="#abrirVentanaMatriculasAlum" text="Matrículas del alumno" />
+                        <MenuItem fx:id="miBorrarAlumno" mnemonicParsing="false" onAction="#borrarAlumno" text="Borrar alumno" />
+                    </items>
+                  </ContextMenu>
+               </contextMenu>
+            </TableView>
+         </children>
+      </VBox>
+   </children>
+</VBox>

@@ -6,15 +6,17 @@ import org.iesalandalus.programacion.matriculacion.vista.Vista;
 
 public class VistaGrafica extends Vista {
     // atributo llamado mediante el cual implementaremos el patrón Singleton.
-    private VistaGrafica instancia;
+    private static VistaGrafica instancia;
 
     public VistaGrafica(){
-        comenzar();
+        // V.5: realmente MainApp ejecuta ya mediante Controlador.comenzar() > vista.comenzar()
+        //comenzar();
+
     }
 
     // Patrón Singleton: getter del atributo instancia, que asignará al atributo instancia una nueva
     // VistaGrafica si su valor es null.
-    public VistaGrafica getInstancia(){
+    public static VistaGrafica getInstancia(){
         if (instancia == null){
             instancia = new VistaGrafica();
         }
@@ -33,22 +35,5 @@ public class VistaGrafica extends Vista {
     public void terminar(){
         Controlador.terminar();
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }

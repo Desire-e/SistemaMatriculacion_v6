@@ -8,6 +8,8 @@ public abstract class Vista {
 
 
     // método que heredan las hijas, y podrían sobreescribir
+    // el controlador en su constructor obtiene la vista y modelo (desde MainApp), y se pasa a si mismo
+    // a la Vista mediante vista.setSontrolador(this)
     public void setControlador(Controlador controlador){
         if (controlador == null){
             throw new NullPointerException("El controlador es nulo.");

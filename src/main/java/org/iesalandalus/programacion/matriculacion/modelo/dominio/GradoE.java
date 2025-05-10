@@ -24,7 +24,7 @@ public class GradoE extends Grado {
 
     public void setNumAnios(int numAnios){
         if (numAnios != 1){
-            throw new IllegalArgumentException("El Grado D solo puede tener 1 año.");
+            throw new IllegalArgumentException("El Grado E solo puede tener 1 año.");
         }
         this.numAnios = numAnios;
     }

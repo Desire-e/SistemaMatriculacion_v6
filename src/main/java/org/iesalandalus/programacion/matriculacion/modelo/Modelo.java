@@ -33,7 +33,8 @@ public class Modelo {
 
         // Le pasamos la instancia de IFuenteDatos (solo puede ser FuenteDatosMemoria o FuenteDatosMySQL)
         // al setter del atr fuenteDatos, para establecer la fuente de datos a usar
-        setFuenteDatos(factoriaFuenteDatos.crear());
+        IFuenteDatos fuenteDatos = factoriaFuenteDatos.crear();
+        setFuenteDatos(fuenteDatos);
     }
 
 

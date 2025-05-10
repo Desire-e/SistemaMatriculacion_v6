@@ -25,11 +25,11 @@ public class LanzadorVentanaPrincipal extends Application {
     usuario si realmente desea salir de la aplicación. En caso afirmativo, la aplicación deberá terminar
     correctamente, cerrando la escena e indicando al controlador de la aplicación que finalice.
     En caso negativo, la aplicación deberá seguir mostrando la ventana principal. */
-    private void confirmarSalida(Stage escenarioPrincipal, WindowEvent e){
+    void confirmarSalida(Stage escenarioPrincipal, WindowEvent e){
 
         // si mostrarDialogoConfirmacion() es true...
-        if (Dialogos.mostrarDialogoConfirmacion("Sistema de matriculación",
-                "¿Realmente quieres salir de la aplicación?", escenarioPrincipal)) {
+        if (Dialogos.mostrarDialogoConfirmacion("Sistema de matriculacion",
+                "¿Realmente quieres salir de la aplicacion?", escenarioPrincipal)) {
             // cierra escenario (ventana)
             escenarioPrincipal.close();
         }
@@ -48,16 +48,15 @@ public class LanzadorVentanaPrincipal extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         try {
-            // COPYPASTE DE PROYECTO: HolaDAW
-
-
             // Cargar fichero fxml del directorio vistas/VentanaX.fxml
-            // LocalizadorRecursos es una interfaz sin implementación, solo sirve para dar el path absoluto,
-            // sin tener que escribirlo explícitamente (por eso directorio vistas está dentro de carpeta con
-            // nombre = al nombre de la estructura de paquetes)
+            // LocalizadorRecursos es una interfaz sin implementación, solo sirve para
+            // dar el path absoluto, sin tener que escribirlo explícitamente (por eso
+            // directorio vistas está dentro de una estructura de directorios con nombres
+            // = a los nombres de la estructura de paquetes en la que se encuentra la interfaz)
             FXMLLoader fxmlLoader = new FXMLLoader(LocalizadorRecursos.class
                     .getResource("vistas/VentanaPrincipal.fxml"));
-                                            // CREAR FXML CON ESE NOMBRE
+
+
 
             // Cargar jerarquia de árbol:
             //  - 'load()' carga un archivo FXML, parsea el archivo FXML y crea la jerarquía de árbol / nodos
@@ -79,10 +78,10 @@ public class LanzadorVentanaPrincipal extends Application {
             // new Scene(): Crear una escena, que es el contenedor principal de lo que se muestra en una ventana.
             // La raíz es el nodo raíz de la interfaz, con archivo FXML cargado con FXMLLoader.
             // Puedes especificar ancho (v) y alto (v1)
-            Scene escena = new Scene(raiz, 900, 700);
+            Scene escena = new Scene(raiz, 600, 500);
 
             // Lo que pone en la barra de título de la ventana
-            stage.setTitle("Sistema de matriculación");
+            stage.setTitle("Sistema de matriculacion");
 
             // Al escenario asigna escena
             stage.setScene(escena);
