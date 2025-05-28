@@ -89,7 +89,8 @@ public class Alumnos implements IAlumnos {
         String dniAlum = alumnoDOM.getAttribute("Dni");
 
         // Nodos hijo:
-        // - "(Element)" parsea cada tipo Node (nodos hijo del Element Alumno) a Element
+        // - "(Element)": parsea cada tipo Node (nodos hijo del Element Alumno) a Element
+        // - .item(0): 1ª etiqueta <Nombre> dentro de <Alumno>
         Element eNombre = (Element) alumnoDOM.getElementsByTagName("Nombre").item(0);
         Element eTelefono = (Element) alumnoDOM.getElementsByTagName("Telefono").item(0);
         Element eCorreo = (Element) alumnoDOM.getElementsByTagName("Correo").item(0);
@@ -115,7 +116,7 @@ public class Alumnos implements IAlumnos {
     /* Método que almacena en el fichero XML la coleccionAlumnos (al usar FileOutputStream
     el UtilidadesXML.domToXml(), si existe el fichero XML lo sobreescribe).
     Llamado desde método terminar() */
-    private void escribirXml() {
+    private void escribirXML() {
 
         // 1º Crea Document DOM vacío, con el nombre del elemento raíz.
         Document DOMAlumnos = UtilidadesXML.crearDomVacio("Alumnos");
@@ -163,14 +164,14 @@ public class Alumnos implements IAlumnos {
         alumnoDOM.setAttribute("Dni", dniAlum);
 
         // Nodos hijos de Element Alumno:
-        // crea elemento
+        // ...crea elemento en el DOM
         Element eNombre = DOMAlumnos.createElement("Nombre");
-        // establece texto contenido entre las etiquetas del nodo hijo
+        // ...establece texto contenido entre las etiquetas del elemento creado
         eNombre.setTextContent(nombreAlum);
-        // establece el nodo como hijo de Element Alumno
+        // ...establece el elemento como hijo de Element Alumno
         alumnoDOM.appendChild(eNombre);
 
-        // y así sucesivamente...
+        // ...y así sucesivamente...
         Element eTelefono = DOMAlumnos.createElement("Telefono");
         eTelefono.setTextContent(telefonoAlum);
         alumnoDOM.appendChild(eTelefono);
@@ -186,15 +187,6 @@ public class Alumnos implements IAlumnos {
 
 
 
-    /* TO08.
-    todo
-     - Método leerXML lee cada uno de los alumnos almacenados en el fichero XML y los
-       inserta en la colección de alumnos.
-     - Método alumnoToElement que a partir de un objeto de tipo Alumno obtiene un elemento
-       XML con el formato adecuado para escribirlo en el fichero XML.
-     - Método escribirXML escribe en el fichero XML cada uno de los alumnos existente en
-       la colección de alumnos.
-    */
 
     /* Implementa el patrón singlenton a través del atributo instancia y del método getInstancia
     que si el atributo instancia es nulo devolverá una instancia de la clase Alumnos,
@@ -226,7 +218,7 @@ public class Alumnos implements IAlumnos {
 
     @Override
     public void terminar() {
-        escribirXml();
+        escribirXML();
     }
 
 

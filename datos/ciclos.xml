@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<CiclosFormativos>
+    <!-- ejemplo:
+
+    <CicloFormativo Codigo="0000">
+        <Nombre>DAW</Nombre>
+        <FamiliaProfesional>Informatica</FamiliaProfesional>
+        <Horas>20</Horas>
+        <Grado Tipo="GradoD">
+            <Nombre>GradoD1</Nombre>
+            <NumAnios>2</NumAnios>
+            <Modalidad>Presencial</Modalidad>
+        </Grado>
+    </CicloFormativo>
+    -->
+
+    <!--
+    <CicloFormativo Codigo="1111">
+        <Nombre>ASIR</Nombre>
+        <FamiliaProfesional>FOL</FamiliaProfesional>
+        <Horas>30</Horas>
+        <Grado Tipo="GradoE">
+            <Nombre>GradoE2</Nombre>
+            <NumAnios>1</NumAnios>
+            <NumEdiciones>1</NumEdiciones>
+        </Grado>
+    </CicloFormativo>
+    -->
+</CiclosFormativos>
