@@ -18,7 +18,7 @@ import java.io.*;
 public class UtilidadesXML {
 
     /* El método xmlToDom es el encargado de convertir un archivo XML en un árbol DOM.*/
-    private static Document xmlToDom (String rutaXML) {
+    public static Document xmlToDom (String rutaXML) {
 
         // Crea instancia de DocumentBuilderFactory, la clase que crea objs DocumentBuilder
         // (constructores de DOM).
@@ -53,7 +53,7 @@ public class UtilidadesXML {
     /* El método domToXml implementa la transformación de un árbol DOM en un archivo XML. */
         // Document DOM: el objeto DOM que representa el contenido XML.
         // String rutaXml: la ruta donde se guardará el archivo XML.
-    private static void domToXml (Document DOM, String rutaXml) {
+    public static void domToXml (Document DOM, String rutaXml) {
         try {
 
             // Crea obj File, que representa la ruta del archivo.
@@ -108,7 +108,7 @@ public class UtilidadesXML {
 
     /* El método crearDomVacio creará un DOM vacío que tenga como elemento raíz la etiqueta
     especificada como parámetro. */
-    private static Document crearDomVacio(String etiquetaRaiz) {
+    public static Document crearDomVacio(String etiquetaRaiz) {
         // Crea instancia de DocumentBuilderFactory, la clase que crea objs DocumentBuilder
         // (constructores de DOM).
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
