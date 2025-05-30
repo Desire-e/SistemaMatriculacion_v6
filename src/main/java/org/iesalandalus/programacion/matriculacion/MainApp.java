@@ -8,6 +8,7 @@ import org.iesalandalus.programacion.matriculacion.vista.FactoriaVista;
 import org.iesalandalus.programacion.matriculacion.vista.Vista;
 
 public class MainApp {
+
     public static void main(String[] args) {
 
         // Pasa al modelo una instancia de clase hija de FactoriaFuenteDatos,
@@ -29,7 +30,15 @@ public class MainApp {
 
     }
 
-    /*
+    /* V.6 (TO08).
+    Modifica el método procesarArgumentosFuenteDatos que creará un modelo cuya fuente de datos será
+    la que se indique a través de los parámetros de la aplicación.
+    Si el parámetro es -fdmemoria, se creará un modelo cuya fuente de datos será de tipo MEMORIA.
+    En cambio, si el parámetro es -fdmysql, se creará un modelo cuya fuente de datos será de tipo MySQL.
+    Por último, si el parámetro es -fdfichero, se creará un modelo cuya fuente de datos será de tipo FICHERO.
+    */
+
+    /* V.4 (TO10).
     Implementa el método procesarArgumentosFuenteDatos que creará un modelo cuya fuente de datos
     será la que se indique a través de los parámetros de la aplicación.
     Si el parámetro es -fdmemoria, se creará un modelo cuya fuente de datos será de tipo MEMORIA.
@@ -52,6 +61,8 @@ public class MainApp {
 
             } else if ("-fdmysql".equalsIgnoreCase(arg)){
                 return FactoriaFuenteDatos.MYSQL;
+            } else if ("-fdfichero".equalsIgnoreCase(arg)){
+                return FactoriaFuenteDatos.FICHERO;
             }
 
             // Cuando haces un return, se termina la ejecución del método inmediatamente.
@@ -61,7 +72,7 @@ public class MainApp {
         // Solo si ninguno de los argumentos coincide con "fdmemoria" ni "fdmysql",
         // entonces se termina el bucle y se ejecuta la excepción:
         throw new IllegalArgumentException("ERROR: El argumento de fuente de datos " +
-                                                "no es correcto, solo puede ser -fdmemoria o -fdmysql.");
+                                                "no es correcto, solo puede ser -fdmemoria, -fdmysql o -fdfichero");
     }
 
 
@@ -79,6 +90,8 @@ public class MainApp {
         throw new IllegalArgumentException("ERROR: El argumento de vista " +
                     "no es correcto, solo puede ser -vTexto o -vGrafica.");
     }
+
+
 }
 /* * * * *
 
