@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Asignaturas>
+    <!-- ejemplo: -->
+    <Asignatura Codigo="ABC123">
+        <Nombre>Programacion</Nombre>
+        <Curso>Primero</Curso>
+        <EspecialidadProfesorado>Informatica</EspecialidadProfesorado>
+        <CicloFormativo>1234</CicloFormativo>
+        <Horas>
+            <Anuales>100</Anuales>
+            <Desdoble>2</Desdoble>
+        </Horas>
+    </Asignatura>
+</Asignaturas>

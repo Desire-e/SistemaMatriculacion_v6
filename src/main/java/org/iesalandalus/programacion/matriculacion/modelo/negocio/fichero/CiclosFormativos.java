@@ -218,7 +218,7 @@ public class CiclosFormativos implements ICiclosFormativos {
         Element raizDOM = DOMCiclos.getDocumentElement();
 
 
-        // 2º Convierte cada obj Alumno en un Element alumno, y se añade al Document del
+        // 2º Convierte cada obj CicloFormativo en un Element Ciclo, y se añade al Document del
         // arbol DOM
         if (!coleccionCiclosFormativos.isEmpty()) {
             for (CicloFormativo ciclo : coleccionCiclosFormativos) {
