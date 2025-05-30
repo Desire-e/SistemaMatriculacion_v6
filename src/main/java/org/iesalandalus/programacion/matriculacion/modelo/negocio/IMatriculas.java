@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface IMatriculas {
 
-    void comenzar();
+    void comenzar() throws OperationNotSupportedException;
     void terminar();
 
     List<Matricula> get() throws OperationNotSupportedException;

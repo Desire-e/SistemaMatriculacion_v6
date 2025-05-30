@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Matriculas>
+    <Matricula Id="123" Alumno="12345678A">
+        <CursoAcademico>25-26</CursoAcademico>
+        <FechaMatriculacion>10/05/2025</FechaMatriculacion>
+        <FechaAnulacion>20/05/2025</FechaAnulacion>
+        <Asignaturas>
+            <Asignatura Codigo="ABC123"/>
+            <!--<Asignatura Codigo="123ABC"/>-->
+        </Asignaturas>
+    </Matricula>
+</Matriculas>
