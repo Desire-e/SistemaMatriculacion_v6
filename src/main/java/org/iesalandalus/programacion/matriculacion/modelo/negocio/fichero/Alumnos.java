@@ -11,6 +11,7 @@ import org.w3c.dom.NodeList;
 import javax.naming.OperationNotSupportedException;
 import java.io.File;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -95,17 +96,19 @@ public class Alumnos implements IAlumnos {
         Element eTelefono = (Element) alumnoDOM.getElementsByTagName("Telefono").item(0);
         Element eCorreo = (Element) alumnoDOM.getElementsByTagName("Correo").item(0);
         Element eFechaNacimiento = (Element) alumnoDOM.getElementsByTagName("FechaNacimiento").item(0);
-        // Se comprueba que los Element obtenidos del XML no contienen nulos:
+        // * Se comprueba que los Element obtenidos del XML no contienen nulos:
         if (eNombre == null || eTelefono == null || eCorreo == null || eFechaNacimiento == null ) {
             return null;
         }
+
 
         // 2º Pasar los nodos hijo de tipo Element a su tipo correspondiente:
         String nombreAlum = eNombre.getTextContent();
         String correoAlum = eCorreo.getTextContent();
         String telefonoAlum = eTelefono.getTextContent();
-        LocalDate fechaNacimientoAlum = LocalDate.parse(eFechaNacimiento.getTextContent());
-
+        // * Pasar fecha teniendo en cuenta el formato que hay en la fecha escrita en XML
+        DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern(Alumno.FORMATO_FECHA);
+        LocalDate fechaNacimientoAlum = LocalDate.parse(eFechaNacimiento.getTextContent(), formatoFecha);
 
         // 3º Dar valores a obj Alumno
         return new Alumno(nombreAlum, dniAlum, correoAlum, telefonoAlum, fechaNacimientoAlum);
@@ -159,6 +162,9 @@ public class Alumnos implements IAlumnos {
         String telefonoAlum = alumno.getTelefono();
         String correoAlum = alumno.getCorreo();
         LocalDate fechaNacimientoAlum = alumno.getFechaNacimiento();
+        // * Dar formato a la fecha en el XML
+        DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern(Alumno.FORMATO_FECHA);
+        String fFechaNacimientoAlum = fechaNacimientoAlum.format(formatoFecha);
 
         // Atributos de Element Alumno:
         alumnoDOM.setAttribute("Dni", dniAlum);
@@ -179,7 +185,7 @@ public class Alumnos implements IAlumnos {
         eCorreo.setTextContent(correoAlum);
         alumnoDOM.appendChild(eCorreo);
         Element eFechaNacimiento = DOMAlumnos.createElement("FechaNacimiento");
-        eFechaNacimiento.setTextContent(String.valueOf(fechaNacimientoAlum));
+        eFechaNacimiento.setTextContent(fFechaNacimientoAlum);
         alumnoDOM.appendChild(eFechaNacimiento);
 
         return alumnoDOM;

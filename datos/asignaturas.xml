@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Asignaturas>
-    <!-- ejemplo: -->
-    <Asignatura Codigo="ABC123">
+    <Asignatura Codigo="1000">
         <Nombre>Programacion</Nombre>
         <Curso>Primero</Curso>
         <EspecialidadProfesorado>Informatica</EspecialidadProfesorado>
         <CicloFormativo>1234</CicloFormativo>
         <Horas>
-            <Anuales>100</Anuales>
+            <Anuales>2</Anuales>
+            <Desdoble>2</Desdoble>
+        </Horas>
+    </Asignatura>
+    <Asignatura Codigo="2000">
+        <Nombre>asignatura2</Nombre>
+        <Curso>Segundo</Curso>
+        <EspecialidadProfesorado>FOL</EspecialidadProfesorado>
+        <CicloFormativo>1234</CicloFormativo>
+        <Horas>
+            <Anuales>2</Anuales>
             <Desdoble>2</Desdoble>
         </Horas>
     </Asignatura>

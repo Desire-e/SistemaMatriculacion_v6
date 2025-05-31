@@ -12,6 +12,7 @@ import org.w3c.dom.NodeList;
 import javax.naming.OperationNotSupportedException;
 import java.io.File;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,7 +21,7 @@ public class Matriculas implements IMatriculas {
     private List<Matricula> coleccionMatriculas;
     private static final String RUTA_FICHERO = "datos/matriculas.xml";
 
-    public Matriculas() throws OperationNotSupportedException {
+    public Matriculas() {
         this.coleccionMatriculas = new ArrayList<>();
         comenzar();
     }
@@ -77,13 +78,15 @@ public class Matriculas implements IMatriculas {
 
         // 2º Pasar los nodos hijo de tipo Element a su tipo correspondiente:
         String cursoAcaMatr = eCursoAca.getTextContent();
-        LocalDate fechaMatr = LocalDate.parse(eFechaMatriculacion.getTextContent());
+        // * Pasar fecha teniendo en cuenta el formato que hay en la fecha escrita en XML
+        DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern(Matricula.FORMATO_FECHA);
+        LocalDate fechaMatr = LocalDate.parse(eFechaMatriculacion.getTextContent(), formatoFecha);
 
 
         // 3º Dar valores a obj Matricula
         Matricula matricula = new Matricula(idMatr, cursoAcaMatr, fechaMatr, alumnoMatr, listaAsignaturasMatr);
-        if (eFechaAnulacion != null) {
-            LocalDate fechaAnulaMatr = LocalDate.parse(eFechaAnulacion.getTextContent());
+        if (eFechaAnulacion != null && !eFechaAnulacion.getTextContent().isBlank()) {
+            LocalDate fechaAnulaMatr = LocalDate.parse(eFechaAnulacion.getTextContent(), formatoFecha);
             matricula.setFechaAnulacion(fechaAnulaMatr);
             return matricula;
         }
@@ -144,21 +147,15 @@ public class Matriculas implements IMatriculas {
 
 
         // 2º Establece atributos y nodos hijos al Element Matricula.
-        /*
-        (int idMatricula,
-        String cursoAcademico,
-        LocalDate fechaMatriculacion,
-        Alumno alumno,
-        List<Asignatura> coleccionAsignaturas)
-        fechaAnulacion
-        */
         int idMatr = matricula.getIdMatricula();
         String cursoAcaMatr = matricula.getCursoAcademico();
-        LocalDate fechaMatr = matricula.getFechaMatriculacion();
         Alumno alumnoMatr = matricula.getAlumno();
         List<Asignatura> asignaturasMatr = matricula.getColeccionAsignaturas();
+        LocalDate fechaMatr = matricula.getFechaMatriculacion();
+        // * Dar formato a la fecha en el XML
+        DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern(Matricula.FORMATO_FECHA);
+        String fFechaMatr = fechaMatr.format(formatoFecha);
         LocalDate fechaAnulaMatr = matricula.getFechaAnulacion();
-
 
         // Atributos de Element Matricula:
         matriculaDOM.setAttribute("Id", String.valueOf(idMatr));
@@ -173,12 +170,13 @@ public class Matriculas implements IMatriculas {
         matriculaDOM.appendChild(eCursoAca);
         // ...y así sucesivamente...
         Element eFechaMatriculacion = DOMMatriculas.createElement("FechaMatriculacion");
-        eCursoAca.setTextContent(String.valueOf(fechaMatr));
+        eFechaMatriculacion.setTextContent(fFechaMatr);
         matriculaDOM.appendChild(eFechaMatriculacion);
         // * fecha de anulación vacía a no ser que el valor en el obj matricula no sea nulo
         Element eFechaAnulacion = DOMMatriculas.createElement("FechaAnulacion");
         if (fechaAnulaMatr != null) {
-            eFechaAnulacion.setTextContent(String.valueOf(fechaAnulaMatr));
+            String fFechaAnulaMatr = fechaAnulaMatr.format(formatoFecha);
+            eFechaAnulacion.setTextContent(fFechaAnulaMatr);
         }
         matriculaDOM.appendChild(eFechaAnulacion);
         // * recorre lista de asignaturas del obj matricula  para insertar cada una como
@@ -234,7 +232,7 @@ public class Matriculas implements IMatriculas {
 
     private static Matriculas instancia;
     // getInstancia es package, para que solo accedan las clases de mismo paquete
-    static Matriculas getInstancia() throws OperationNotSupportedException {
+    static Matriculas getInstancia() {
         if (instancia == null){
             instancia = new Matriculas();
         }
@@ -242,8 +240,12 @@ public class Matriculas implements IMatriculas {
     }
 
     @Override
-    public void comenzar() throws OperationNotSupportedException {
+    public void comenzar()  {
+        try{
         leerXML(RUTA_FICHERO);
+        } catch (OperationNotSupportedException e){
+            e.getMessage();
+        }
     }
     @Override
     public void terminar() {

@@ -172,21 +172,7 @@ public class CiclosFormativos implements ICiclosFormativos {
 
         // nodo hijo Grado, de Element CicloFormativo
         Element eGrado = DOMCiclos.createElement("Grado");
-        // atributos de Grado y nodos hijo opcionales:
-        String tipoGrado = null;
-        String modalidadGrado = null;
-        String numEdicionesGrado = null;
-        if (gradoCiclo instanceof GradoD){
-            tipoGrado = "GradoD";
-            if (((GradoD) gradoCiclo).getModalidad() == Modalidad.PRESENCIAL){
-                modalidadGrado = "Presencial";
-            } else modalidadGrado = "Semipresencial";
-
-        } else if(gradoCiclo instanceof GradoE) {
-            tipoGrado = "GradoE";
-            numEdicionesGrado = String.valueOf(((GradoE) gradoCiclo).getNumEdiciones());
-        }
-        eGrado.setAttribute("Tipo", tipoGrado);
+        cicloDOM.appendChild(eGrado);
         // nodos hijo de Grado:
         Element eNombreGrado = DOMCiclos.createElement("Nombre");
         eNombreGrado.setTextContent(gradoCiclo.getNombre());
@@ -194,13 +180,31 @@ public class CiclosFormativos implements ICiclosFormativos {
         Element eNumAniosGrado = DOMCiclos.createElement("NumAnios");
         eNumAniosGrado.setTextContent(String.valueOf(gradoCiclo.getNumAnios()));
         eGrado.appendChild(eNumAniosGrado);
-        Element eModalidadGD = DOMCiclos.createElement("Modalidad");
-        eModalidadGD.setTextContent(modalidadGrado);
-        eGrado.appendChild(eModalidadGD);
-        Element eNumEdicionesGE = DOMCiclos.createElement("NumEdiciones");
-        eNumEdicionesGE.setTextContent(numEdicionesGrado);
-        eGrado.appendChild(eNumEdicionesGE);
+        // atributos de Grado y nodos hijo opcionales:
+        String tipoGrado = null;
+        String modalidadGrado = null;
+        String numEdicionesGrado = null;
+        if (gradoCiclo instanceof GradoD){
+            tipoGrado = "GradoD";
 
+            if (((GradoD) gradoCiclo).getModalidad() == Modalidad.PRESENCIAL){
+                modalidadGrado = "Presencial";
+            } else if (((GradoD) gradoCiclo).getModalidad() == Modalidad.SEMIPRESENCIAL){
+                modalidadGrado = "Semipresencial";
+            }
+            Element eModalidadGD = DOMCiclos.createElement("Modalidad");
+            eModalidadGD.setTextContent(modalidadGrado);
+            eGrado.appendChild(eModalidadGD);
+
+        } else if(gradoCiclo instanceof GradoE) {
+            tipoGrado = "GradoE";
+
+            numEdicionesGrado = String.valueOf(((GradoE) gradoCiclo).getNumEdiciones());
+            Element eNumEdicionesGE = DOMCiclos.createElement("NumEdiciones");
+            eNumEdicionesGE.setTextContent(numEdicionesGrado);
+            eGrado.appendChild(eNumEdicionesGE);
+        }
+        eGrado.setAttribute("Tipo", tipoGrado);
 
         return cicloDOM;
     }

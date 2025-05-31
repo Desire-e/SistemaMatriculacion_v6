@@ -1,12 +1,36 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <Matriculas>
-    <Matricula Id="123" Alumno="12345678A">
+    <Matricula Alumno="77699979E" Id="333">
         <CursoAcademico>25-26</CursoAcademico>
-        <FechaMatriculacion>10/05/2025</FechaMatriculacion>
-        <FechaAnulacion>20/05/2025</FechaAnulacion>
+        <FechaMatriculacion>28/05/2025</FechaMatriculacion>
+        <FechaAnulacion>30/05/2025</FechaAnulacion>
         <Asignaturas>
-            <Asignatura Codigo="ABC123"/>
-            <!--<Asignatura Codigo="123ABC"/>-->
+            <Asignatura Codigo="1000"/>
+        </Asignaturas>
+    </Matricula>
+    <Matricula Alumno="00662771A" Id="321">
+        <CursoAcademico>24-25</CursoAcademico>
+        <FechaMatriculacion>27/05/2025</FechaMatriculacion>
+        <FechaAnulacion/>
+        <Asignaturas>
+            <Asignatura Codigo="2000"/>
+            <Asignatura Codigo="1000"/>
+        </Asignaturas>
+    </Matricula>
+    <Matricula Alumno="30070384T" Id="222">
+        <CursoAcademico>25-26</CursoAcademico>
+        <FechaMatriculacion>22/05/2025</FechaMatriculacion>
+        <FechaAnulacion>24/05/2025</FechaAnulacion>
+        <Asignaturas>
+            <Asignatura Codigo="1000"/>
+        </Asignaturas>
+    </Matricula>
+    <Matricula Alumno="77699979E" Id="123">
+        <CursoAcademico>25-26</CursoAcademico>
+        <FechaMatriculacion>20/05/2025</FechaMatriculacion>
+        <FechaAnulacion>25/05/2025</FechaAnulacion>
+        <Asignaturas>
+            <Asignatura Codigo="1000"/>
         </Asignaturas>
     </Matricula>
 </Matriculas>

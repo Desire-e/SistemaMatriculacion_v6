@@ -186,6 +186,7 @@ public class Asignaturas implements IAsignaturas {
         asignaturaDOM.appendChild(eCiclo);
 
         Element eHoras = DOMAsignaturas.createElement("Horas");
+        asignaturaDOM.appendChild(eHoras);
         // nodos hijo de Element Horas
         Element eHorasAnual = DOMAsignaturas.createElement("Anuales");
         eHorasAnual.setTextContent(String.valueOf(horasAnualAsign));
