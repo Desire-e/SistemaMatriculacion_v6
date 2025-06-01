@@ -15,7 +15,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.iesalandalus.programacion.matriculacion.vista.grafica.controladores.ControladorGestionAsignaturas">
    <children>
       <MenuBar>
@@ -40,9 +39,10 @@
                   <MenuItem fx:id="miGestionMatriculas" mnemonicParsing="false" onAction="#abrirVentanaGestionMatriculas" text="Gestión de matrículas" />
                </items>
             </Menu>
-            <Menu mnemonicParsing="false" onAction="#salir" text="Sistema">
+            <Menu mnemonicParsing="false" text="Sistema">
                <items>
                   <MenuItem fx:id="miSalir" mnemonicParsing="false" onAction="#salir" text="Salir" />
+                  <MenuItem fx:id="miAcercaDe" mnemonicParsing="false" onAction="#acercaDe" text="Acerca de..." />
                </items>
             </Menu>
          </menus>

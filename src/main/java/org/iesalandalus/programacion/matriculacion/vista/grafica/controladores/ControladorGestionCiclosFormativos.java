@@ -38,6 +38,8 @@ public class ControladorGestionCiclosFormativos implements Initializable {
     @FXML private MenuItem miGestionMatriculas;
     // ejecuta salir()
     @FXML private MenuItem miSalir;
+    // ejecuta acercaDe()
+    @FXML private MenuItem miAcercaDe;
 
 
     /* BUTTON */
@@ -329,6 +331,16 @@ public class ControladorGestionCiclosFormativos implements Initializable {
             System.exit(0);
         }
         else event.consume();
+    }
+    /* Método que muestra un diálogo descriptivo de las funciones en la ventana actual */
+    @FXML
+    void acercaDe(ActionEvent event) {
+        String informacion = "Esta ventana se encarga de la gestion de ciclos formativos. Aqui podras: \n" +
+                "- Añadir un nuevo ciclo formativo \n" +
+                "- Borrar ciclos formativos \n" +
+                "- Acceder a las matriculas donde esta presente cada ciclo formativo \n" +
+                "- Buscar ciclos formativos por su nombre, y ordenarlos";
+        Dialogos.mostrarDialogoInformacion("Gestion de ciclos formativos", informacion);
     }
     @FXML
     void abrirVentanaGestionAlumnos(ActionEvent event) {

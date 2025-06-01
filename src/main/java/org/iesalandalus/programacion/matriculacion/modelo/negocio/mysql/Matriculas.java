@@ -248,15 +248,21 @@ public class Matriculas implements IMatriculas {
                 Alumno alumnoInventado = new Alumno("alumnoInventado", dni, "correoInventado@gmail.com", "989890989", fechaNacInventada);
                 Alumno alumno = Alumnos.getInstancia().buscar(alumnoInventado);
 
+                // DEBUGG: para que no dé errores, si en bd hay matrículas con fecha de matriculación anterior a 15 días
+                try {
+                    Matricula matricula = new Matricula(idMatricula, cursoAcademico, fechaMatriculacion,
+                            alumno, coleccionAsignaturas);
 
-                Matricula matricula = new Matricula(idMatricula, cursoAcademico, fechaMatriculacion,
-                                                    alumno, coleccionAsignaturas);
-                // Insertar fechaAnulacion, si hay
-                if(fechaAnulacion != null){
-                    matricula.setFechaAnulacion(fechaAnulacionMatr);
+                    // Insertar fechaAnulacion, si hay
+                    if(fechaAnulacion != null){
+                        matricula.setFechaAnulacion(fechaAnulacionMatr);
+                    }
+
+                    listadoMatriculas.add(matricula);
+
+                } catch(IllegalArgumentException e){
+                    e.getMessage();
                 }
-
-                listadoMatriculas.add(matricula);
             }
         } catch (SQLException e) {
             System.out.println("Error al obtener matrículas de la base de datos." + e.getMessage());
@@ -435,11 +441,16 @@ public class Matriculas implements IMatriculas {
                 Alumno alumno = Alumnos.getInstancia().buscar(alumnoInventado);
 
 
-                matriculaEncontrada = new Matricula(idMatricula, cursoAcademico, fechaMatriculacion, alumno,
-                                                    coleccionAsignaturas);
-                // Manejar fechaAnulacion, que puede ser null
-                if(fechaAnulacionMatr != null){
-                    matriculaEncontrada.setFechaAnulacion(fechaAnulacionMatr);
+                // DEBUGG: para que no dé errores, si en bd hay matrículas con fecha de matriculación anterior a 15 días
+                try {
+                    matriculaEncontrada = new Matricula(idMatricula, cursoAcademico, fechaMatriculacion, alumno,
+                            coleccionAsignaturas);
+                    // Manejar fechaAnulacion, que puede ser null
+                    if(fechaAnulacionMatr != null){
+                        matriculaEncontrada.setFechaAnulacion(fechaAnulacionMatr);
+                    }
+                } catch(IllegalArgumentException e){
+                    e.getMessage();
                 }
             }
         } catch (SQLException e) {
@@ -543,13 +554,18 @@ public class Matriculas implements IMatriculas {
                 List<Asignatura> coleccionAsignaturas = getAsignaturasMatricula(idMatricula);
 
 
-                Matricula matricula = new Matricula(idMatricula, cursoAcademico, fechaMatriculacion,
-                        alumno, coleccionAsignaturas);
-                // Insertar fechaAnulacion si hay
-                if(fechaAnulacionMatr != null){
-                    matricula.setFechaAnulacion(fechaAnulacionMatr);
+                // DEBUGG: para que no dé errores, si en bd hay matrículas con fecha de matriculación anterior a 15 días
+                try {
+                    Matricula matricula = new Matricula(idMatricula, cursoAcademico, fechaMatriculacion,
+                            alumno, coleccionAsignaturas);
+                    // Insertar fechaAnulacion si hay
+                    if(fechaAnulacionMatr != null){
+                        matricula.setFechaAnulacion(fechaAnulacionMatr);
+                    }
+                    listadoMatriculasAlumno.add(matricula);
+                } catch(IllegalArgumentException e){
+                    e.getMessage();
                 }
-                listadoMatriculasAlumno.add(matricula);
             }
 
         } catch (SQLException e) {
@@ -604,13 +620,18 @@ public class Matriculas implements IMatriculas {
                 Alumno alumnoInventado = new Alumno("alumnoInventado", dni, "correoInventado@gmail.com", "989890989", fechaNacInventada);
                 Alumno alumno = Alumnos.getInstancia().buscar(alumnoInventado);
 
-                Matricula matricula = new Matricula(idMatricula, cursoAcademico, fechaMatriculacion,
-                        alumno, coleccionAsignaturas);
-                // Manejar fechaAnulacion, que puede ser null
-                if(fechaAnulacionMatr != null){
-                    matricula.setFechaAnulacion(fechaAnulacionMatr);
+                // DEBUGG: para que no dé errores, si en bd hay matrículas con fecha de matriculación anterior a 15 días
+                try {
+                    Matricula matricula = new Matricula(idMatricula, cursoAcademico, fechaMatriculacion,
+                            alumno, coleccionAsignaturas);
+                    // Manejar fechaAnulacion, que puede ser null
+                    if(fechaAnulacionMatr != null){
+                        matricula.setFechaAnulacion(fechaAnulacionMatr);
+                    }
+                    listadoMatriculasCurso.add(matricula);
+                } catch(IllegalArgumentException e){
+                    e.getMessage();
                 }
-                listadoMatriculasCurso.add(matricula);
             }
 
         } catch (SQLException e) {
@@ -670,13 +691,18 @@ public class Matriculas implements IMatriculas {
                 Alumno alumnoInventado = new Alumno("alumnoInventado", dni, "correoInventado@gmail.com", "989890989", fechaNacInventada);
                 Alumno alumno = Alumnos.getInstancia().buscar(alumnoInventado);
 
-                Matricula matricula = new Matricula(idMatricula, cursoAcademico, fechaMatriculacion,
-                        alumno, coleccionAsignaturas);
-                // Manejar fechaAnulacion, que puede ser null
-                if(fechaAnulacionMatr != null){
-                    matricula.setFechaAnulacion(fechaAnulacionMatr);
+                // DEBUGG: para que no dé errores, si en bd hay matrículas con fecha de matriculación anterior a 15 días
+                try {
+                    Matricula matricula = new Matricula(idMatricula, cursoAcademico, fechaMatriculacion,
+                            alumno, coleccionAsignaturas);
+                    // Manejar fechaAnulacion, que puede ser null
+                    if(fechaAnulacionMatr != null){
+                        matricula.setFechaAnulacion(fechaAnulacionMatr);
+                    }
+                    listadoMatriculasCiclo.add(matricula);
+                } catch(IllegalArgumentException e){
+                    e.getMessage();
                 }
-                listadoMatriculasCiclo.add(matricula);
             }
 
         } catch (SQLException e) {

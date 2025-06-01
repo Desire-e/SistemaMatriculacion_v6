@@ -39,7 +39,8 @@ public class ControladorGestionAlumnos implements Initializable {
     @FXML private MenuItem miGestionMatriculas;
     // ejecuta salir()
     @FXML private MenuItem miSalir;
-
+    // ejecuta acercaDe()
+    @FXML private MenuItem miAcercaDe;
 
     /* BUTTON */
     // ejecuta abrirVentanaAniadirAlum()
@@ -385,6 +386,17 @@ public class ControladorGestionAlumnos implements Initializable {
             System.exit(0);
         }
         else event.consume();
+    }
+
+    /* Método que muestra un diálogo descriptivo de las funciones en la ventana actual */
+    @FXML
+    void acercaDe(ActionEvent event) {
+        String informacion = "Esta ventana se encarga de la gestion de alumnos. Aqui podras: \n" +
+                                "- Añadir un nuevo alumno \n" +
+                                "- Borrar alumnos \n" +
+                                "- Acceder a las matriculas de cada alumno \n" +
+                                "- Buscar alumnos por su nombre, y ordenarlos";
+        Dialogos.mostrarDialogoInformacion("Gestion de alumnos", informacion);
     }
 
     /* Método que abre la ventana de gestión de ciclos formativos (menubar) */

@@ -38,6 +38,7 @@ public class ControladorGestionAsignaturas implements Initializable {
     @FXML private MenuItem miGestionAsignaturas;     // en esta ventana no hace nada
     @FXML private MenuItem miGestionMatriculas;
     @FXML private MenuItem miSalir;
+    @FXML private MenuItem miAcercaDe;
 
 
     // ejecuta abrirVentanaAniadirAsig()
@@ -144,6 +145,15 @@ public class ControladorGestionAsignaturas implements Initializable {
             System.exit(0);
         }
         else event.consume();
+    }
+    /* Método que muestra un diálogo descriptivo de las funciones en la ventana actual */
+    @FXML
+    void acercaDe(ActionEvent event) {
+        String informacion = "Esta ventana se encarga de la gestion de asignaturas. Aqui podras: \n" +
+                "- Añadir una nueva asignatura \n" +
+                "- Borrar asignaturas \n" +
+                "- Buscar asignaturas por su nombre, y ordenarlos";
+        Dialogos.mostrarDialogoInformacion("Gestion de asignaturas", informacion);
     }
     @FXML
     void abrirVentanaGestionAlumnos(ActionEvent event) {

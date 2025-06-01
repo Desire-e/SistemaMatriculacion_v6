@@ -84,11 +84,18 @@ public class Matriculas implements IMatriculas {
 
 
         // 3º Dar valores a obj Matricula
-        Matricula matricula = new Matricula(idMatr, cursoAcaMatr, fechaMatr, alumnoMatr, listaAsignaturasMatr);
-        if (eFechaAnulacion != null && !eFechaAnulacion.getTextContent().isBlank()) {
-            LocalDate fechaAnulaMatr = LocalDate.parse(eFechaAnulacion.getTextContent(), formatoFecha);
-            matricula.setFechaAnulacion(fechaAnulaMatr);
-            return matricula;
+        // * Por si en el fichero hay matriculas con fecha anterior a 15 días, así no dará error (ignora esas matriculas)
+        Matricula matricula = null;
+        try {
+            matricula = new Matricula(idMatr, cursoAcaMatr, fechaMatr, alumnoMatr, listaAsignaturasMatr);
+
+            if (eFechaAnulacion != null && !eFechaAnulacion.getTextContent().isBlank()) {
+                LocalDate fechaAnulaMatr = LocalDate.parse(eFechaAnulacion.getTextContent(), formatoFecha);
+                matricula.setFechaAnulacion(fechaAnulaMatr);
+                return matricula;
+            }
+        } catch (IllegalArgumentException e) {
+            e.getMessage();
         }
         return matricula;
     }

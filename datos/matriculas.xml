@@ -33,4 +33,13 @@
             <Asignatura Codigo="1000"/>
         </Asignaturas>
     </Matricula>
+    <!-- matricula que será ignorada por la fecha de matriculación: -->
+    <Matricula Alumno="77699979E" Id="444">
+        <CursoAcademico>25-26</CursoAcademico>
+        <FechaMatriculacion>07/05/2025</FechaMatriculacion>
+        <FechaAnulacion>25/05/2025</FechaAnulacion>
+        <Asignaturas>
+            <Asignatura Codigo="1000"/>
+        </Asignaturas>
+    </Matricula>
 </Matriculas>

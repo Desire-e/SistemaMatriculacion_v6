@@ -39,9 +39,10 @@
                   <MenuItem fx:id="miGestionMatriculas" mnemonicParsing="false" onAction="#abrirVentanaGestionMatriculas" text="Gestión de matrículas" />
                </items>
             </Menu>
-            <Menu mnemonicParsing="false" onAction="#salir" text="Sistema">
+            <Menu mnemonicParsing="false" text="Sistema">
                <items>
                   <MenuItem fx:id="miSalir" mnemonicParsing="false" onAction="#salir" text="Salir" />
+                  <MenuItem fx:id="miAcercaDe" mnemonicParsing="false" onAction="#acercaDe" text="Acerca de..." />
                </items></Menu>
         </menus>
       </MenuBar>

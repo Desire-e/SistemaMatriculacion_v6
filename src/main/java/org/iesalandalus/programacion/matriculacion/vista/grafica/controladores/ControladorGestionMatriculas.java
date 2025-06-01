@@ -35,8 +35,11 @@ public class ControladorGestionMatriculas implements Initializable {
     // en esta ventana no hará nada
     @FXML private MenuItem miGestionMatriculas;
     @FXML private MenuItem miSalir;
+    @FXML private MenuItem miAcercaDe;
+
 
     @FXML private Button btnAniadirMatricula;
+
 
     /* CONTEXT MENU */
     @FXML private MenuItem miAnularMatricula;
@@ -52,6 +55,18 @@ public class ControladorGestionMatriculas implements Initializable {
     private ObservableList<Matricula> obsMatriculas = FXCollections.observableArrayList();
     // La colección que usa ObservableList para pasar datos a tabla, inicialmente vacía
     private List<Matricula> coleccionMatriculas = new ArrayList<>();
+
+
+    /* DEBUGG: BUSCADORES */
+    /* Buscador por ciclo */
+    @FXML private Button btnBusquedaCiclo;      // ejecuta busquedaCiclo()
+    @FXML private TextField tfBusquedaCiclo;
+
+    /* Buscador por curso académico */
+    @FXML private Button btnBusquedaCursoAca;   // ejecuta busquedaCursoAca()
+    @FXML private TextField tfBusquedaCursoAca;
+
+
 
 
     @Override
@@ -161,6 +176,15 @@ public class ControladorGestionMatriculas implements Initializable {
             System.exit(0);
         }
         else event.consume();
+    }
+    /* Método que muestra un diálogo descriptivo de las funciones en la ventana actual */
+    @FXML
+    void acercaDe(ActionEvent event) {
+        String informacion = "Esta ventana se encarga de la gestion de matriculas. Aqui podras: \n" +
+                "- Añadir nueva matricula \n" +
+                "- Anular matriculas \n" +
+                "- Buscar matriculas por codigo del ciclo de alguna de sus asignaturas, o por curso academico";
+        Dialogos.mostrarDialogoInformacion("Gestion de matriculas", informacion);
     }
     @FXML
     void abrirVentanaGestionAlumnos(ActionEvent event) {
@@ -297,4 +321,60 @@ public class ControladorGestionMatriculas implements Initializable {
         }
     }
 
+
+    /* DEBUGG: BUSCADORES */
+    @FXML
+    void busquedaCiclo(ActionEvent event) {
+        // Coleccion de matriculas a mostrar (por codigo del ciclo)
+        List<Matricula> coleccionMatriculasBusqueda = new ArrayList<>();
+
+
+        // Si el TextField está vacío...
+        if (tfBusquedaCiclo.getText().isBlank() || tfBusquedaCiclo.getText().isEmpty()) {
+            // obtiene todos las Matriculas registrados ya en coleccionMatriculas, y los pasa a
+            // la ObservableList (la fuente de datos de la TableView)
+            obsMatriculas.setAll(coleccionMatriculas);
+            return;
+        }
+
+
+        // Si TextField no está vacío...
+        // obtener cadena introducida en TextField
+        String codigoBusqueda = tfBusquedaCiclo.getText();
+
+        // recorre todas las Matriculas registradas ya, que contengan el ciclo en alguna de sus asignaturas
+        for (Matricula matr : coleccionMatriculas) {
+            for (Asignatura asign : matr.getColeccionAsignaturas()){
+                if (String.valueOf(asign.getCicloFormativo().getCodigo()).equals(codigoBusqueda)){
+                    coleccionMatriculasBusqueda.add(matr);
+                    break;      //sale del bucle for actual (pero continúa el superior)
+                }
+            }
+        }
+
+        // obtiene todas las Matriculas registradas en la resultante coleccionMatriculasBusqueda,
+        // y las pasa a la ObservableList (la fuente de datos de la TableView)
+        obsMatriculas.setAll(coleccionMatriculasBusqueda);
+    }
+    @FXML
+    void busquedaCursoAca(ActionEvent event) {
+        List<Matricula> coleccionMatriculasBusqueda = new ArrayList<>();
+
+
+        if (tfBusquedaCursoAca.getText().isBlank() || tfBusquedaCursoAca.getText().isEmpty()) {
+            obsMatriculas.setAll(coleccionMatriculas);
+            return;
+        }
+
+
+        String cadenaBusqueda = tfBusquedaCursoAca.getText();
+
+        for(Matricula matr : coleccionMatriculas) {
+            if (matr.getCursoAcademico().equals(cadenaBusqueda)) {
+                coleccionMatriculasBusqueda.add(matr);
+            }
+        }
+
+        obsMatriculas.setAll(coleccionMatriculasBusqueda);
+    }
 }
